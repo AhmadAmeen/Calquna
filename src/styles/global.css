@@ -7,9 +7,10 @@
 
 :root {
   --container: 68rem;
-  --color-nav-dim: oklch(84% 0.012 245);
-  --color-foot-dim: oklch(78% 0.012 245);
-  --color-qr-bg: oklch(98% 0.004 245);
+  --color-nav-dim: oklch(87% 0.022 84);
+  --color-foot-dim: oklch(80% 0.020 84);
+  --color-qr-bg: oklch(98% 0.008 88);
+  --color-hero: oklch(84% 0.135 85);
   --c-dates: oklch(50% 0.105 185);
   --c-health: oklch(50% 0.115 150);
   --c-money: oklch(52% 0.115 70);
@@ -42,6 +43,12 @@ a:hover { text-decoration-thickness: 2px; }
 .site-head nav { display: flex; gap: var(--space-lg); margin-left: auto; flex-wrap: wrap; }
 .site-head nav a { font: 500 var(--text-sm)/1 var(--font-body); color: var(--color-nav-dim); text-decoration: none; }
 .site-head nav a:hover { color: var(--color-paper); text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 3px; }
+
+/* ————— Homepage hero band ————— */
+.hero-band { background: var(--color-hero); border: var(--rule-bar) solid var(--color-ink); box-shadow: 8px 8px 0 var(--color-ink); padding: var(--space-xl) var(--space-lg) var(--space-lg); margin: var(--space-lg) 0 var(--space-xl); }
+.hero-band h1 { margin-top: 0; }
+.hero-band .fig { margin: var(--space-lg) 0 0; }
+.hero-band .fig img { border-top-color: var(--color-ink); }
 
 /* ————— Photographs ————— */
 .fig { margin: var(--space-lg) 0 var(--space-xl); }
