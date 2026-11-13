@@ -24,8 +24,9 @@ import Base from '../../layouts/Base.astro';
     <label for="toolfilter">Trouver un outil</label>
     <input id="toolfilter" data-toolfilter type="search" placeholder="Tapez pour filtrer les outils…" autocomplete="off">
   </div>
+  <p class="matchcount" data-matchcount aria-live="polite" style="display:none"></p>
   <p class="nomatch" data-nomatch style="display:none">Aucun outil ne correspond. Essayez un mot plus court.</p>
-  <p>
+  <p data-startcta>
     <a class="btn btn--primary" href="/fr/calculateur-age/" style="display:inline-block;text-decoration:none;">Commencer par le calculateur d’âge</a>
   </p>
 
@@ -174,6 +175,10 @@ import Base from '../../layouts/Base.astro';
     (function () {
       var input = document.querySelector('[data-toolfilter]');
       var none = document.querySelector('[data-nomatch]');
+      var count = document.querySelector('[data-matchcount]');
+      var hero = document.querySelector('.hero-band');
+      var cta = document.querySelector('[data-startcta]');
+      var well = document.querySelector('.well');
       if (!input) return;
       var norm = function (s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
       input.addEventListener('input', function () {
@@ -193,7 +198,22 @@ import Base from '../../layouts/Base.astro';
             if (el) el.style.display = visible ? '' : 'none';
           });
         });
+        // While searching, clear everything above and below the results off
+        // the page: on a phone the hero alone is taller than the screen, so
+        // the matches used to land far below the fold and the filter looked
+        // broken. The match count sits right under the box as feedback.
+        [hero, cta, well].forEach(function (el) {
+          if (el) el.style.display = q ? 'none' : '';
+        });
         if (none) none.style.display = total ? 'none' : '';
+        if (count) {
+          if (q && total) {
+            count.textContent = total === 1 ? '1 outil correspond à votre recherche.' : total + ' outils correspondent à votre recherche.';
+            count.style.display = '';
+          } else {
+            count.style.display = 'none';
+          }
+        }
       });
     })();
   </script>

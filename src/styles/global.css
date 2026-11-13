@@ -48,6 +48,28 @@ a:hover { text-decoration-thickness: 2px; }
 .lang-switch select { background: var(--color-ink); color: var(--color-paper); border: 1px solid var(--color-nav-dim); border-radius: var(--radius-pill); font: 500 var(--text-sm)/1.2 var(--font-body); padding: 0.4rem 0.5rem; cursor: pointer; }
 .lang-switch select option { background: var(--color-sheet); color: var(--color-ink); }
 
+/* ————— Mobile drawer menu (desktop keeps the inline nav) ————— */
+.drawer { display: contents; }
+.drawer-head { display: none; }
+.menu-btn { display: none; }
+.scrim[hidden] { display: none; }
+
+@media (max-width: 45rem) {
+  .site-head .wrap { flex-wrap: nowrap; align-items: center; }
+  .menu-btn { display: inline-flex; align-items: center; gap: var(--space-xs); margin-left: auto; background: transparent; color: var(--color-paper); border: 1px solid var(--color-nav-dim); border-radius: var(--radius-pill); font: 500 var(--text-sm)/1 var(--font-body); padding: var(--space-xs) var(--space-sm); cursor: pointer; }
+  .menu-bars { display: inline-flex; flex-direction: column; gap: var(--space-2xs); }
+  .menu-bars span { display: block; width: 16px; height: 2px; background: var(--color-paper); }
+  .scrim { position: fixed; inset: 0; background: var(--color-scrim); z-index: 55; }
+  .drawer { position: fixed; top: 0; right: 0; height: 100dvh; width: min(20rem, 86vw); background: var(--color-ink); z-index: 60; transform: translateX(105%); transition: transform 0.25s ease; display: flex; flex-direction: column; padding: var(--space-md); gap: var(--space-lg); border-left: 2px solid var(--color-accent); box-shadow: -12px 0 24px var(--color-drawer-shadow); overflow-y: auto; }
+  .site-head.open .drawer { transform: none; }
+  .drawer-head { display: flex; align-items: center; justify-content: space-between; }
+  .menu-close { background: transparent; color: var(--color-paper); border: 1px solid var(--color-nav-dim); border-radius: 50%; width: 2.25rem; height: 2.25rem; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+  .site-head .drawer nav { flex-direction: column; flex-wrap: nowrap; margin-left: 0; gap: 0; }
+  .site-head .drawer nav a { color: var(--color-paper); font-size: 1rem; padding: var(--space-sm) var(--space-2xs); border-bottom: 1px solid var(--color-nav-dim); }
+  .drawer .lang-switch select { width: 100%; padding: var(--space-sm); }
+  body.menu-open { overflow: hidden; }
+}
+
 /* ————— Homepage hero band ————— */
 .hero-band { background: var(--color-hero); border: var(--rule-bar) solid var(--color-ink); box-shadow: 8px 8px 0 var(--color-ink); padding: var(--space-xl) var(--space-lg) var(--space-lg); margin: var(--space-lg) 0 var(--space-xl); }
 .hero-band h1 { margin-top: 0; }
@@ -177,6 +199,7 @@ tr.point td { color: var(--color-accent-2); font-weight: 500; }
 .toolfilter label { display: block; font: 600 var(--text-sm)/1 var(--font-display); margin-bottom: var(--space-xs); color: var(--color-ink); }
 .toolfilter input { width: 100%; max-width: 26rem; padding: 0.65rem 0.75rem; font: inherit; color: var(--color-ink); background: var(--color-sheet); border: 1px solid var(--color-rule-2); border-radius: var(--radius-pill); }
 .nomatch { color: var(--color-muted); }
+.matchcount { font: 500 var(--text-sm)/1.4 var(--font-body); color: var(--color-ink); }
 table.catalogue tbody tr:hover { background: var(--color-paper-2); }
 
 /* ————— Homepage section colour bars ————— */

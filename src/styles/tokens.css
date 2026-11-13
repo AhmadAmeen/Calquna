@@ -14,6 +14,7 @@
   --color-rule: oklch(76% 0.024 80); --color-rule-2: oklch(34% 0.026 58);
   --color-accent: oklch(45% 0.180 350); --color-accent-2: oklch(37% 0.160 350); --color-accent-ink: oklch(97% 0.008 84); --color-focus: oklch(46% 0.190 350);
   --color-sheet: oklch(97% 0.014 88);
+  --color-scrim: oklch(12% 0.02 58 / 0.55); --color-drawer-shadow: oklch(12% 0.02 58 / 0.35);
   --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Newsreader", ui-serif, Georgia, serif;
   --font-outlier: "IBM Plex Mono", ui-monospace, monospace;

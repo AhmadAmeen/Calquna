@@ -84,6 +84,8 @@ const L = {
     contact: 'Contact',
     foot: 'Every tool on this site runs in your browser. Nothing you type is sent anywhere.',
     navLabel: 'Main',
+    menu: 'Menu',
+    close: 'Close',
     anchors: { dates: 'dates', health: 'health', money: 'money', words: 'words' },
   },
   es: {
@@ -97,6 +99,8 @@ const L = {
     contact: 'Contacto',
     foot: 'Cada herramienta de este sitio funciona en tu navegador. Nada de lo que escribes se envía a ningún sitio.',
     navLabel: 'Principal',
+    menu: 'Menú',
+    close: 'Cerrar',
     anchors: { dates: 'fechas', health: 'salud', money: 'dinero', words: 'palabras' },
   },
   fr: {
@@ -110,6 +114,8 @@ const L = {
     contact: 'Contact',
     foot: 'Chaque outil de ce site fonctionne dans votre navigateur. Rien de ce que vous saisissez n’est envoyé nulle part.',
     navLabel: 'Principal',
+    menu: 'Menu',
+    close: 'Fermer',
     anchors: { dates: 'dates', health: 'sante', money: 'argent', words: 'mots' },
   },
 }[lang] ?? {
@@ -123,6 +129,8 @@ const L = {
   contact: 'Contact',
   foot: 'Every tool on this site runs in your browser. Nothing you type is sent anywhere.',
   navLabel: 'Main',
+  menu: 'Menu',
+  close: 'Close',
   anchors: { dates: 'dates', health: 'health', money: 'money', words: 'words' },
 };
 ---
@@ -159,25 +167,62 @@ const L = {
     <header class="site-head">
       <div class="wrap">
         <a class="wordmark" href={L.home}>Calquna</a>
-        <nav aria-label={L.navLabel}>
-          <a href={L.home + '#' + L.anchors.dates}>{L.dates}</a>
-          <a href={L.home + '#' + L.anchors.health}>{L.health}</a>
-          <a href={L.home + '#' + L.anchors.money}>{L.money}</a>
-          <a href={L.home + '#' + L.anchors.words}>{L.words}</a>
-          <a href={L.home + (lang === 'en' ? 'about/' : lang === 'es' ? 'acerca-de/' : 'a-propos/')}>{L.about}</a>
-        </nav>
-        <div class="lang-switch">
-          <label class="sr" for="langsel">Language</label>
-          <select id="langsel" data-langsel>
-            <option value={urlEn.pathname} selected={lang === 'en'}>English</option>
-            <option value={urlEs.pathname} selected={lang === 'es'}>Español</option>
-            <option value={urlFr.pathname} selected={lang === 'fr'}>Français</option>
-          </select>
+        <button class="menu-btn" type="button" data-menubtn aria-expanded="false" aria-controls="drawer">
+          <span class="menu-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+          {L.menu}
+        </button>
+        <div class="scrim" data-scrim hidden></div>
+        <div class="drawer" id="drawer">
+          <div class="drawer-head">
+            <span class="wordmark">Calquna</span>
+            <button class="menu-close" type="button" data-menuclose aria-label={L.close}>×</button>
+          </div>
+          <nav aria-label={L.navLabel}>
+            <a href={L.home + '#' + L.anchors.dates}>{L.dates}</a>
+            <a href={L.home + '#' + L.anchors.health}>{L.health}</a>
+            <a href={L.home + '#' + L.anchors.money}>{L.money}</a>
+            <a href={L.home + '#' + L.anchors.words}>{L.words}</a>
+            <a href={L.home + (lang === 'en' ? 'about/' : lang === 'es' ? 'acerca-de/' : 'a-propos/')}>{L.about}</a>
+          </nav>
+          <div class="lang-switch">
+            <label class="sr" for="langsel">Language</label>
+            <select id="langsel" data-langsel>
+              <option value={urlEn.pathname} selected={lang === 'en'}>English</option>
+              <option value={urlEs.pathname} selected={lang === 'es'}>Español</option>
+              <option value={urlFr.pathname} selected={lang === 'fr'}>Français</option>
+            </select>
+          </div>
         </div>
         <script is:inline>
           document.querySelector('[data-langsel]').addEventListener('change', function () {
             window.location.href = this.value;
           });
+        </script>
+        <script is:inline>
+          (function () {
+            var head = document.querySelector('.site-head');
+            var btn = document.querySelector('[data-menubtn]');
+            var scrim = document.querySelector('[data-scrim]');
+            var closeBtn = document.querySelector('[data-menuclose]');
+            if (!head || !btn) return;
+            function setOpen(open) {
+              head.classList.toggle('open', open);
+              btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+              if (scrim) scrim.hidden = !open;
+              document.body.classList.toggle('menu-open', open);
+            }
+            btn.addEventListener('click', function () {
+              setOpen(!head.classList.contains('open'));
+            });
+            if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
+            if (scrim) scrim.addEventListener('click', function () { setOpen(false); });
+            head.querySelectorAll('.drawer nav a').forEach(function (a) {
+              a.addEventListener('click', function () { setOpen(false); });
+            });
+            document.addEventListener('keydown', function (e) {
+              if (e.key === 'Escape') setOpen(false);
+            });
+          })();
         </script>
       </div>
     </header>
