@@ -77,6 +77,14 @@ const L = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta name="google-site-verification" content="URb-Z-oa40DE9YrO0hkgAenVVRxukxLL_0O1CFuHge4" />
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-X13MBGVFWD"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-X13MBGVFWD');
+    </script>
     {altEn && <link rel="alternate" hreflang="en" href={new URL(altEn, site)} />}
     {altEs && <link rel="alternate" hreflang="es" href={new URL(altEs, site)} />}
     {altFr && <link rel="alternate" hreflang="fr" href={new URL(altFr, site)} />}
