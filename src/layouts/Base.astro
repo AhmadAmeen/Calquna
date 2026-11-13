@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { TOOLS } from '../data/tools';
 
 interface Props {
   title: string;
@@ -13,6 +14,63 @@ interface Props {
 const { title, description, lang = 'en', altEn, altEs, altFr } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const site = Astro.site;
+
+// Every page exists in three languages; this table is the single source for
+// the hreflang cluster and the language switcher.
+const PATHS: [string, string, string][] = [
+  ['/', '/es/', '/fr/'],
+  ['/age-calculator/', '/es/calculadora-de-edad/', '/fr/calculateur-age/'],
+  ['/days-between-dates/', '/es/dias-entre-fechas/', '/fr/jours-entre-dates/'],
+  ['/bmi-calculator/', '/es/calculadora-imc/', '/fr/calculateur-imc/'],
+  ['/due-date-calculator/', '/es/calculadora-de-embarazo/', '/fr/calculateur-date-accouchement/'],
+  ['/sleep-calculator/', '/es/calculadora-de-sueno/', '/fr/calculateur-de-sommeil/'],
+  ['/compound-interest-calculator/', '/es/calculadora-interes-compuesto/', '/fr/calculateur-interets-composes/'],
+  ['/salary-to-hourly-calculator/', '/es/salario-por-hora/', '/fr/salaire-brut-net/'],
+  ['/percentage-calculator/', '/es/calculadora-de-porcentajes/', '/fr/calculateur-de-pourcentage/'],
+  ['/gpa-calculator/', '/es/calculadora-de-promedio/', '/fr/calculateur-de-moyenne/'],
+  ['/word-counter/', '/es/contador-de-palabras/', '/fr/compteur-de-mots/'],
+  ['/password-generator/', '/es/generador-de-contrasenas/', '/fr/generateur-de-mot-de-passe/'],
+  ['/qr-code-generator/', '/es/generador-de-codigos-qr/', '/fr/generateur-qr-code/'],
+  ['/youtube-money-calculator/', '/es/calculadora-dinero-youtube/', '/fr/calculateur-revenus-youtube/'],
+  ['/tiktok-money-calculator/', '/es/calculadora-dinero-tiktok/', '/fr/calculateur-revenus-tiktok/'],
+  ['/instagram-unfollowers-checker/', '/es/quien-no-me-sigue-en-instagram/', '/fr/qui-ne-me-suit-pas-sur-instagram/'],
+  ['/about/', '/es/acerca-de/', '/fr/a-propos/'],
+  ['/privacy/', '/es/privacidad/', '/fr/confidentialite/'],
+  ['/contact/', '/es/contacto/', '/fr/contact/'],
+];
+const here = Astro.url.pathname;
+const row = PATHS.find((r) => r.includes(here)) ?? [altEn ?? '/', altEs ?? '/es/', altFr ?? '/fr/'];
+
+// Breadcrumbs and the related-tools strip, on tool pages only.
+const CAT_LABELS: Record<string, Record<string, string>> = {
+  en: { dates: 'Dates and time', health: 'Health', money: 'Money', words: 'Words', school: 'School and study', utilities: 'Utilities', creator: 'Creator tools' },
+  es: { dates: 'Fechas y tiempo', health: 'Salud', money: 'Dinero', words: 'Palabras', school: 'Escuela y estudio', utilities: 'Utilidades', creator: 'Herramientas para creadores' },
+  fr: { dates: 'Dates et durées', health: 'Santé', money: 'Argent', words: 'Mots', school: 'École et études', utilities: 'Utilitaires', creator: 'Outils pour créateurs' },
+};
+const CAT_ANCHORS: Record<string, Record<string, string>> = {
+  en: { dates: 'dates', health: 'health', money: 'money', words: 'words', school: 'school', utilities: 'utilities', creator: 'creator' },
+  es: { dates: 'fechas', health: 'salud', money: 'dinero', words: 'palabras', school: 'escuela', utilities: 'utilidades', creator: 'creadores' },
+  fr: { dates: 'dates', health: 'sante', money: 'argent', words: 'mots', school: 'ecole', utilities: 'outils', creator: 'createurs' },
+};
+const UI: Record<string, { home: string; related: string; error: string; errorLink: string }> = {
+  en: { home: 'Home', related: 'Related calculators', error: 'Spotted an error in this calculator?', errorLink: 'Let us know' },
+  es: { home: 'Inicio', related: 'Calculadoras relacionadas', error: '¿Has visto un error en esta calculadora?', errorLink: 'Cuéntanoslo' },
+  fr: { home: 'Accueil', related: 'Calculateurs associés', error: 'Vous avez repéré une erreur dans ce calculateur ?', errorLink: 'Dites-le-nous' },
+};
+const tool = TOOLS.find((t) => t.path === here);
+const ui = UI[lang] ?? UI.en;
+const catLabel = tool ? (CAT_LABELS[lang] ?? CAT_LABELS.en)[tool.cat] : '';
+const catHref = tool ? (lang === 'en' ? '/' : `/${lang}/`) + '#' + (CAT_ANCHORS[lang] ?? CAT_ANCHORS.en)[tool.cat] : '';
+const homeHref = lang === 'en' ? '/' : `/${lang}/`;
+const contactHref = homeHref + (lang === 'en' ? 'contact/' : lang === 'es' ? 'contacto/' : 'contact/');
+const related = tool
+  ? TOOLS.filter((t) => t.lang === lang && t.path !== tool.path)
+      .sort((a, b) => (b.cat === tool.cat ? 1 : 0) - (a.cat === tool.cat ? 1 : 0))
+      .slice(0, 4)
+  : [];
+const urlEn = new URL(row[0], site);
+const urlEs = new URL(row[1], site);
+const urlFr = new URL(row[2], site);
 
 const L = {
   en: {
@@ -85,10 +143,10 @@ const L = {
       gtag('js', new Date());
       gtag('config', 'G-X13MBGVFWD');
     </script>
-    {altEn && <link rel="alternate" hreflang="en" href={new URL(altEn, site)} />}
-    {altEs && <link rel="alternate" hreflang="es" href={new URL(altEs, site)} />}
-    {altFr && <link rel="alternate" hreflang="fr" href={new URL(altFr, site)} />}
-    {altEn && <link rel="alternate" hreflang="x-default" href={new URL(altEn, site)} />}
+    <link rel="alternate" hreflang="en" href={urlEn} />
+    <link rel="alternate" hreflang="es" href={urlEs} />
+    <link rel="alternate" hreflang="fr" href={urlFr} />
+    <link rel="alternate" hreflang="x-default" href={urlEn} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -108,11 +166,42 @@ const L = {
           <a href={L.home + '#' + L.anchors.words}>{L.words}</a>
           <a href={L.home + (lang === 'en' ? 'about/' : lang === 'es' ? 'acerca-de/' : 'a-propos/')}>{L.about}</a>
         </nav>
+        <div class="lang-switch">
+          <label class="sr" for="langsel">Language</label>
+          <select id="langsel" data-langsel>
+            <option value={urlEn.pathname} selected={lang === 'en'}>English</option>
+            <option value={urlEs.pathname} selected={lang === 'es'}>Español</option>
+            <option value={urlFr.pathname} selected={lang === 'fr'}>Français</option>
+          </select>
+        </div>
+        <script is:inline>
+          document.querySelector('[data-langsel]').addEventListener('change', function () {
+            window.location.href = this.value;
+          });
+        </script>
       </div>
     </header>
     <main>
       <div class="wrap">
+        {tool && (
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href={homeHref}>{ui.home}</a> <span aria-hidden="true">›</span>
+            <a href={catHref}>{catLabel}</a> <span aria-hidden="true">›</span>
+            <span aria-current="page">{tool.name}</span>
+          </nav>
+        )}
         <slot />
+        {tool && (
+          <section class="related">
+            <h2>{ui.related}</h2>
+            <ul>
+              {related.map((t) => (
+                <li><a href={t.path}>{t.name}</a></li>
+              ))}
+            </ul>
+            <p class="error-note">{ui.error} <a href={contactHref}>{ui.errorLink}</a>.</p>
+          </section>
+        )}
       </div>
     </main>
     <footer class="site-foot">

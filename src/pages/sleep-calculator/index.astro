@@ -13,6 +13,7 @@ import Base from '../../layouts/Base.astro';
     up time and this page counts backwards in cycles, adding 15 minutes to fall asleep.
   </p>
     <figure class="fig fig--health"><img src="/img/sleep.webp" alt="A calm, neatly made bedroom" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#how-the-counting-works">How the counting works</a></li><li><a href="#one-example-worked-by-hand">One example, worked by hand</a></li><li><a href="#how-much-sleep-by-age">How much sleep, by age</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -28,7 +29,7 @@ import Base from '../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>How the counting works</h2>
+  <h2 id="how-the-counting-works">How the counting works</h2>
   <p>
     One full cycle of light sleep, deep sleep and dreaming takes about 90 minutes in most
     adults, and a night holds four to six of them. The calculator subtracts whole cycles from
@@ -44,7 +45,7 @@ import Base from '../../layouts/Base.astro';
     your own head.
   </p>
 
-  <h2>One example, worked by hand</h2>
+  <h2 id="one-example-worked-by-hand">One example, worked by hand</h2>
   <table>
     <thead>
       <tr><th scope="col">Cycles</th><th scope="col">Sleep</th><th scope="col" class="num">In bed by</th></tr>
@@ -57,7 +58,7 @@ import Base from '../../layouts/Base.astro';
   </table>
   <p>That is for a 06:30 alarm. The marked row, five cycles, is where most adults settle.</p>
 
-  <h2>How much sleep, by age</h2>
+  <h2 id="how-much-sleep-by-age">How much sleep, by age</h2>
   <table>
     <thead>
       <tr><th scope="col">Age</th><th scope="col" class="num">Recommended</th></tr>
@@ -74,7 +75,7 @@ import Base from '../../layouts/Base.astro';
     sitting down in the evening, are both signs the night is too short, whatever the table says.
   </p>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>Is 6 hours enough if it is four full cycles?</dt>
     <dd>

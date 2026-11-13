@@ -17,6 +17,7 @@ import Base from '../../../layouts/Base.astro';
     bascule. Toutes les dates ici sont des estimations, et la page explique pourquoi plus bas.
   </p>
     <figure class="fig fig--health"><img src="/img/due.webp" alt="Un bébé avec un chapeau de soleil dans une bouée" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#comment-lestimation-est-faite">Comment l’estimation est faite</a></li><li><a href="#un-exemple-calcule-a-la-main">Un exemple, calculé à la main</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -41,7 +42,7 @@ import Base from '../../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>Comment l’estimation est faite</h2>
+  <h2 id="comment-lestimation-est-faite">Comment l’estimation est faite</h2>
   <p>
     La méthode standard est la règle de Naegele, qui remonte au XIXe siècle et reste le
     premier calcul fait dans la plupart des cabinets : prenez le premier jour des dernières
@@ -61,7 +62,7 @@ import Base from '../../../layouts/Base.astro';
     même, seule l’étiquette change.
   </p>
 
-  <h2>Un exemple, calculé à la main</h2>
+  <h2 id="un-exemple-calcule-a-la-main">Un exemple, calculé à la main</h2>
   <table>
     <thead>
       <tr><th scope="col">Étape</th><th scope="col">Calcul</th><th scope="col">Date</th></tr>
@@ -79,7 +80,7 @@ import Base from '../../../layouts/Base.astro';
     le 27 juin 2027.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Quelle est la précision d’une date prévue calculée à partir des dernières règles ?</dt>
     <dd>

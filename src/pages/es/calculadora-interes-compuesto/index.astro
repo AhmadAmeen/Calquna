@@ -18,6 +18,7 @@ import Base from '../../../layouts/Base.astro';
     cifra final con el crecimiento mostrado año a año.
   </p>
     <figure class="fig fig--money"><img src="/img/money.webp" alt="Monedas sobre una mesa con una planta joven creciendo entre ellas" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="En esta página"><p class="onpage-title">En esta página</p><ul><li><a href="#la-formula">La fórmula</a></li><li><a href="#un-ejemplo-calculado-paso-a-paso">Un ejemplo, calculado paso a paso</a></li><li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -48,7 +49,7 @@ import Base from '../../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>La fórmula</h2>
+  <h2 id="la-formula">La fórmula</h2>
   <p>
     Para una cantidad inicial: A = P × (1 + r/n)<sup>nt</sup>, donde P es la cantidad inicial,
     r el tipo anual expresado en decimal, n el número de veces al año que se añaden los
@@ -58,7 +59,7 @@ import Base from '../../../layouts/Base.astro';
     hacen la mayoría de las cuentas de ahorro y las proyecciones de inversión.
   </p>
 
-  <h2>Un ejemplo, calculado paso a paso</h2>
+  <h2 id="un-ejemplo-calculado-paso-a-paso">Un ejemplo, calculado paso a paso</h2>
   <p>
     Empieza con 10.000 al 7 % anual durante 10 años, sin añadir nada: 10.000 × (1 + 0,07/12)<sup>120</sup>
     = <strong>20.096,61</strong>. El dinero prácticamente se duplica, y solo la mitad de esos
@@ -69,7 +70,7 @@ import Base from '../../../layouts/Base.astro';
     la razón de empezar pronto.
   </p>
 
-  <h2>Preguntas frecuentes</h2>
+  <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
   <dl class="faq">
     <dt>¿Qué tipo de interés debo poner?</dt>
     <dd>

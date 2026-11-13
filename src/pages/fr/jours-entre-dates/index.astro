@@ -16,6 +16,7 @@ import Base from '../../../layouts/Base.astro';
     si vous cochez la case, seulement les jours du lundi au vendredi compris entre les deux.
   </p>
     <figure class="fig fig--dates"><img src="/img/dates.webp" alt="Un agenda papier ouvert sur la vue mensuelle, avec une tasse de café" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#ce-qui-compte-comme-un-jour-ici">Ce qui compte comme un jour ici</a></li><li><a href="#un-exemple-entierement-calcule">Un exemple, entièrement calculé</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -39,7 +40,7 @@ import Base from '../../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>Ce qui compte comme un jour ici</h2>
+  <h2 id="ce-qui-compte-comme-un-jour-ici">Ce qui compte comme un jour ici</h2>
   <p>
     Le compte est le nombre de journées entières à attendre à partir de la première date pour
     atteindre la deuxième. Il ne compte pas le jour de départ lui-même. Ainsi, du 1er janvier
@@ -54,7 +55,7 @@ import Base from '../../../layouts/Base.astro';
     différentes.
   </p>
 
-  <h2>Un exemple, entièrement calculé</h2>
+  <h2 id="un-exemple-entierement-calcule">Un exemple, entièrement calculé</h2>
   <table>
     <thead>
       <tr><th scope="col">Période</th><th scope="col">Calcul</th><th scope="col" class="num">Jours</th></tr>
@@ -66,7 +67,7 @@ import Base from '../../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Le premier jour est-il compté ?</dt>
     <dd>

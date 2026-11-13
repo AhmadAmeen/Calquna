@@ -13,6 +13,7 @@ import Base from '../../layouts/Base.astro';
     number.
   </p>
     <figure class="fig fig--money"><img src="/img/salary.webp" alt="United States dollar bills spread out" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#the-working">The working</a></li><li><a href="#common-salaries-converted">Common salaries, converted</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -46,7 +47,7 @@ import Base from '../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>The working</h2>
+  <h2 id="the-working">The working</h2>
   <p>
     Hourly pay = yearly salary ÷ (hours per week × weeks per year). The standard full time
     assumption, 40 hours for 52 weeks, is 2,080 hours, and most quoted conversions use it.
@@ -55,7 +56,7 @@ import Base from '../../layouts/Base.astro';
     term time work come out right too.
   </p>
 
-  <h2>Common salaries, converted</h2>
+  <h2 id="common-salaries-converted">Common salaries, converted</h2>
   <table>
     <thead>
       <tr><th scope="col">Yearly salary</th><th scope="col" class="num">Per hour</th><th scope="col" class="num">Per week</th><th scope="col" class="num">Per month</th></tr>
@@ -70,7 +71,7 @@ import Base from '../../layouts/Base.astro';
   </table>
   <p>At 40 hours a week, 52 weeks a year, before tax. Monthly is the salary divided by 12.</p>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>Why does my payslip show a different hourly rate?</dt>
     <dd>

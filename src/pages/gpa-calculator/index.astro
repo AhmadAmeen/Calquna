@@ -13,6 +13,7 @@ import Base from '../../layouts/Base.astro';
     their head.
   </p>
     <figure class="fig fig--school"><img src="/img/gpa.webp" alt="Open books and a notebook on a library desk" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#how-gpa-is-counted">How GPA is counted</a></li><li><a href="#one-example-worked-by-hand">One example, worked by hand</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <table>
@@ -30,7 +31,7 @@ import Base from '../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>How GPA is counted</h2>
+  <h2 id="how-gpa-is-counted">How GPA is counted</h2>
   <p>
     Each letter grade carries points: A is 4.0, B is 3.0, C is 2.0, D is 1.0, F is 0. Multiply
     the points by the subject’s credit hours, add those products up, and divide by the total
@@ -55,7 +56,7 @@ import Base from '../../layouts/Base.astro';
     school publishes its own scale, your school’s wins.
   </p>
 
-  <h2>One example, worked by hand</h2>
+  <h2 id="one-example-worked-by-hand">One example, worked by hand</h2>
   <table>
     <thead>
       <tr><th scope="col">Subject</th><th scope="col">Grade</th><th scope="col" class="num">Credits</th><th scope="col" class="num">Points × credits</th></tr>
@@ -68,7 +69,7 @@ import Base from '../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>What is a good GPA?</dt>
     <dd>

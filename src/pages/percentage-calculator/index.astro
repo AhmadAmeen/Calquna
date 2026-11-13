@@ -13,9 +13,10 @@ import Base from '../../layouts/Base.astro';
     is 25% of.
   </p>
     <figure class="fig fig--money"><img src="/img/percent.webp" alt="Red sale tags on a dark background" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#the-three-sums">The three sums</a></li><li><a href="#the-three-formulas">The three formulas</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
-    <h2 style="margin-top:0;">The three sums</h2>
+    <h2 id="the-three-sums" style="margin-top:0;">The three sums</h2>
     <div class="field-grid">
       <div>
         <label for="a1">What is this percent</label>
@@ -51,7 +52,7 @@ import Base from '../../layouts/Base.astro';
     <p class="result-figure" id="out-c" aria-live="polite"></p>
   </div>
 
-  <h2>The three formulas</h2>
+  <h2 id="the-three-formulas">The three formulas</h2>
   <table>
     <thead>
       <tr><th scope="col">Question</th><th scope="col">Formula</th><th scope="col" class="num">Example</th></tr>
@@ -69,7 +70,7 @@ import Base from '../../layouts/Base.astro';
     50% does not end up back where it started: it ends 25% down.
   </p>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>What is the difference between percent and percentage points?</dt>
     <dd>

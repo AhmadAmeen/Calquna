@@ -18,6 +18,7 @@ import Base from '../../../layouts/Base.astro';
     quelle approximation se cache derrière le chiffre.
   </p>
     <figure class="fig fig--money"><img src="/img/salary.webp" alt="Des billets en dollars américains étalés" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#comment-le-calcul-marche">Comment le calcul marche</a></li><li><a href="#salaires-courants-convertis">Salaires courants, convertis</a></li><li><a href="#un-exemple-calcule-a-la-main">Un exemple, calculé à la main</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -47,7 +48,7 @@ import Base from '../../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>Comment le calcul marche</h2>
+  <h2 id="comment-le-calcul-marche">Comment le calcul marche</h2>
   <p>
     Entre le brut et le net, il y a les cotisations salariales : retraite, santé, chômage,
     prévoyance et quelques contributions plus petites. Pour un salarié du privé, elles
@@ -63,7 +64,7 @@ import Base from '../../../layouts/Base.astro';
     temps plein, mérite une vérification.
   </p>
 
-  <h2>Salaires courants, convertis</h2>
+  <h2 id="salaires-courants-convertis">Salaires courants, convertis</h2>
   <table>
     <thead>
       <tr><th scope="col">Brut mensuel</th><th scope="col" class="num">Net non-cadre</th><th scope="col" class="num">Net cadre</th><th scope="col" class="num">Brut annuel</th></tr>
@@ -78,7 +79,7 @@ import Base from '../../../layouts/Base.astro';
   </table>
   <p>Net mensuel avant impôt, estimé avec les coefficients 0,77 et 0,75 décrits ci-dessus.</p>
 
-  <h2>Un exemple, calculé à la main</h2>
+  <h2 id="un-exemple-calcule-a-la-main">Un exemple, calculé à la main</h2>
   <p>
     Un salaire de 2 500 € brut par mois pour un non-cadre : 2 500 × 0,77 =
     <strong>1 925 € net avant impôt</strong>, soit 23 100 € net sur l’année. Pour un cadre à
@@ -86,7 +87,7 @@ import Base from '../../../layouts/Base.astro';
     revenu vient ensuite, prélevé à la source chaque mois.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Pourquoi le brut n’est-il pas ce qui arrive sur mon compte ?</dt>
     <dd>

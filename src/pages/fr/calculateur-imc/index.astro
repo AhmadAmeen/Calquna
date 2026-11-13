@@ -18,6 +18,7 @@ import Base from '../../../layouts/Base.astro';
     cette page le traite comme tel.
   </p>
     <figure class="fig fig--health"><img src="/img/bmi.webp" alt="Une personne soulevant une barre dans une salle de sport" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#la-formule-et-les-categories">La formule et les catégories</a></li><li><a href="#un-exemple-calcule-a-la-main">Un exemple, calculé à la main</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -55,7 +56,7 @@ import Base from '../../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>La formule et les catégories</h2>
+  <h2 id="la-formule-et-les-categories">La formule et les catégories</h2>
   <p>
     IMC = poids en kilogrammes divisé par la taille en mètres, au carré. Avec les livres et
     les pouces, la même idée s’accompagne d’un facteur de conversion : IMC = 703 × livres ÷
@@ -74,7 +75,7 @@ import Base from '../../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>Un exemple, calculé à la main</h2>
+  <h2 id="un-exemple-calcule-a-la-main">Un exemple, calculé à la main</h2>
   <p>
     Une personne qui pèse 70 kg et mesure 175 cm. La taille en mètres est 1,75, et 1,75 au
     carré donne 3,0625. Divisez 70 par 3,0625 et vous obtenez 22,86, arrondi à
@@ -85,7 +86,7 @@ import Base from '../../../layouts/Base.astro';
     rien de plus.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Pourquoi l’IMC est-il autant critiqué ?</dt>
     <dd>

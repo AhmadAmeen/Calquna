@@ -17,6 +17,7 @@ import Base from '../../../layouts/Base.astro';
     cabe en el tiempo que le han asignado.
   </p>
     <figure class="fig fig--words"><img src="/img/words.webp" alt="Una pluma estilográfica escribiendo en papel rayado" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="En esta página"><p class="onpage-title">En esta página</p><ul><li><a href="#que-cuenta-como-palabra">Qué cuenta como palabra</a></li><li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li></ul></nav>
 
   <div class="sheet">
     <label for="text">Tu texto</label>
@@ -35,7 +36,7 @@ import Base from '../../../layouts/Base.astro';
     <p class="result-note">Nada de lo que pegas aquí se envía a ningún sitio. Cierras la pestaña y desaparece.</p>
   </div>
 
-  <h2>Qué cuenta como palabra</h2>
+  <h2 id="que-cuenta-como-palabra">Qué cuenta como palabra</h2>
   <p>
     Una palabra es cualquier cadena de caracteres separada por espacios, la misma regla que
     usa tu procesador de textos. «Físico-químico» cuenta como una sola palabra, porque no
@@ -51,7 +52,7 @@ import Base from '../../../layouts/Base.astro';
     habla en público por primera vez.
   </p>
 
-  <h2>Preguntas frecuentes</h2>
+  <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
   <dl class="faq">
     <dt>¿El conteo incluye el título y los encabezados?</dt>
     <dd>Cuenta todo lo que hay en el cuadro, títulos incluidos. Si tu límite los deja fuera, cuenta el cuerpo por separado.</dd>

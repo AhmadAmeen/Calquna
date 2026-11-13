@@ -17,6 +17,7 @@ import Base from '../../../layouts/Base.astro';
     passe jamais par un serveur, et le code ne contient aucun suivi de notre part.
   </p>
     <figure class="fig fig--utilities fig--qr"><img src="/img/qr.png" alt="Un code QR qui mène au générateur de codes QR" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#ce-quun-qr-code-peut-contenir">Ce qu’un QR code peut contenir</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -93,7 +94,7 @@ import Base from '../../../layouts/Base.astro';
     <p class="result-note" id="note">Imprimez-le, puis testez-le avec votre propre téléphone avant d’en imprimer cinquante.</p>
   </div>
 
-  <h2>Ce qu’un QR code peut contenir</h2>
+  <h2 id="ce-quun-qr-code-peut-contenir">Ce qu’un QR code peut contenir</h2>
   <p>
     Un QR code n’est que du texte dessiné dans un carré. Une adresse web s’ouvre dans le
     navigateur du téléphone. Le format Wi-Fi, WIFI:T:WPA;S:name;P:password;; est une
@@ -106,7 +107,7 @@ import Base from '../../../layouts/Base.astro';
     robustesse et densité du code.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Les QR codes expirent-ils ?</dt>
     <dd>

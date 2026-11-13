@@ -18,6 +18,7 @@ import Base from '../../../layouts/Base.astro';
     vous obtenez le montant final avec la croissance montrée année par année.
   </p>
     <figure class="fig fig--money"><img src="/img/money.webp" alt="Des pièces sur une table et une jeune pousse qui grandit au milieu" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#la-formule">La formule</a></li><li><a href="#un-exemple-deroule-pas-a-pas">Un exemple, déroulé pas à pas</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -48,7 +49,7 @@ import Base from '../../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>La formule</h2>
+  <h2 id="la-formule">La formule</h2>
   <p>
     Pour un capital unique : A = P × (1 + r/n)<sup>nt</sup>, où P est le montant de départ, r le taux
     annuel sous forme décimale, n le nombre de fois par an où les intérêts sont ajoutés (12 en
@@ -58,7 +59,7 @@ import Base from '../../../layouts/Base.astro';
     des comptes d’épargne et des projections de placement.
   </p>
 
-  <h2>Un exemple, déroulé pas à pas</h2>
+  <h2 id="un-exemple-deroule-pas-a-pas">Un exemple, déroulé pas à pas</h2>
   <p>
     Partez de 10 000 à 7 % par an pendant 10 ans, sans rien ajouter : 10 000 × (1 + 0,07/12)<sup>120</sup>
     = <strong>20 096,61</strong>. L’argent double à peu près, et seulement la moitié de ces
@@ -69,7 +70,7 @@ import Base from '../../../layouts/Base.astro';
     dépassent la moitié de ce que vous avez versé, est tout l’intérêt de commencer tôt.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Quel taux dois-je mettre ?</dt>
     <dd>

@@ -13,6 +13,7 @@ import Base from '../../layouts/Base.astro';
     code carries no tracking of ours.
   </p>
     <figure class="fig fig--utilities fig--qr"><img src="/img/qr.png" alt="A QR code linking to the QR code generator" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#what-a-qr-code-can-hold">What a QR code can hold</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -89,7 +90,7 @@ import Base from '../../layouts/Base.astro';
     <p class="result-note" id="note">Print it, then test it with your own phone before you print fifty.</p>
   </div>
 
-  <h2>What a QR code can hold</h2>
+  <h2 id="what-a-qr-code-can-hold">What a QR code can hold</h2>
   <p>
     A QR code is just text drawn in a square. A web address opens in the phone’s browser. The
     Wi-Fi format, WIFI:T:WPA;S:name;P:password;; is a convention phones understand, so a guest
@@ -100,7 +101,7 @@ import Base from '../../layouts/Base.astro';
     sturdiness against code density.
   </p>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>Do QR codes expire?</dt>
     <dd>

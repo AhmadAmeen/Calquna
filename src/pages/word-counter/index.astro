@@ -12,6 +12,7 @@ import Base from '../../layouts/Base.astro';
     writers for chapter lengths, and speakers to check whether a talk fits its slot.
   </p>
     <figure class="fig fig--words"><img src="/img/words.webp" alt="A fountain pen writing on lined paper" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#what-counts-as-a-word">What counts as a word</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <label for="text">Your text</label>
@@ -30,7 +31,7 @@ import Base from '../../layouts/Base.astro';
     <p class="result-note">Nothing you paste here is sent anywhere. Close the tab and it is gone.</p>
   </div>
 
-  <h2>What counts as a word</h2>
+  <h2 id="what-counts-as-a-word">What counts as a word</h2>
   <p>
     A word is any run of characters separated by spaces, the same rule your word processor
     uses. “Well-known” counts as one word. A number counts as a word. A line of dashes with
@@ -44,7 +45,7 @@ import Base from '../../layouts/Base.astro';
     1,300 words, which surprises most first-time speakers.
   </p>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>Does the count include the title and headings?</dt>
     <dd>It counts everything in the box, titles included. If your limit excludes them, count the body on its own.</dd>

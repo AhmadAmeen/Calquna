@@ -18,6 +18,7 @@ import Base from '../../../layouts/Base.astro';
     écran et dans le gestionnaire de mots de passe où vous le rangez.
   </p>
     <figure class="fig fig--utilities"><img src="/img/password.webp" alt="Des lignes de code sur un écran" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#quelle-longueur-suffit">Quelle longueur suffit ?</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <p class="result-figure" id="password" style="word-break:break-all;" aria-live="polite"></p>
@@ -52,7 +53,7 @@ import Base from '../../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>Quelle longueur suffit ?</h2>
+  <h2 id="quelle-longueur-suffit">Quelle longueur suffit ?</h2>
   <p>
     La force d’un mot de passe tient surtout à sa longueur et à l’imprévisibilité de chaque
     caractère, une grandeur appelée entropie et mesurée en bits. La ligne de force sous les
@@ -73,7 +74,7 @@ import Base from '../../../layouts/Base.astro';
     change rien à l’entropie, et les phrases restent faciles à saisir.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Est-ce sûr de créer un mot de passe sur une page web ?</dt>
     <dd>

@@ -17,6 +17,7 @@ import Base from '../../../layouts/Base.astro';
     trompe à faire de tête.
   </p>
     <figure class="fig fig--school"><img src="/img/gpa.webp" alt="Des livres ouverts et un cahier sur une table de bibliothèque" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#comment-la-moyenne-est-calculee">Comment la moyenne est calculée</a></li><li><a href="#un-exemple-calcule-a-la-main">Un exemple, calculé à la main</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <table>
@@ -34,7 +35,7 @@ import Base from '../../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>Comment la moyenne est calculée</h2>
+  <h2 id="comment-la-moyenne-est-calculee">Comment la moyenne est calculée</h2>
   <p>
     Chaque note est multipliée par son coefficient, on additionne tous ces produits, puis on
     divise par la somme des coefficients. Une note de 11 avec un coefficient 4 (44 points)
@@ -43,7 +44,7 @@ import Base from '../../../layouts/Base.astro';
     et la plupart des universités.
   </p>
 
-  <h2>Un exemple, calculé à la main</h2>
+  <h2 id="un-exemple-calcule-a-la-main">Un exemple, calculé à la main</h2>
   <table>
     <thead>
       <tr><th scope="col">Matière</th><th scope="col" class="num">Note / 20</th><th scope="col" class="num">Coefficient</th><th scope="col" class="num">Note × coefficient</th></tr>
@@ -57,7 +58,7 @@ import Base from '../../../layouts/Base.astro';
   </table>
   <p>Les trois lignes pré-remplies ci-dessus sont cet exemple : appuyez sur le bouton et vous retrouvez 13,55.</p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Quelles sont les mentions au baccalauréat ?</dt>
     <dd>

@@ -17,6 +17,7 @@ import Base from '../../../layouts/Base.astro';
     verdad, no entre un número redondo inventado.
   </p>
     <figure class="fig fig--money"><img src="/img/salary.webp" alt="Billetes de dólar estadounidense extendidos" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="En esta página"><p class="onpage-title">En esta página</p><ul><li><a href="#como-se-calcula">Cómo se calcula</a></li><li><a href="#salarios-habituales-convertidos">Salarios habituales, convertidos</a></li><li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -52,7 +53,7 @@ import Base from '../../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>Cómo se calcula</h2>
+  <h2 id="como-se-calcula">Cómo se calcula</h2>
   <p>
     Pago por hora = salario anual ÷ (horas por semana × semanas al año). El supuesto estándar
     de jornada completa, 40 horas durante 52 semanas, son 2.080 horas, y la mayoría de las
@@ -62,7 +63,7 @@ import Base from '../../../layouts/Base.astro';
     trimestres también sale bien.
   </p>
 
-  <h2>Salarios habituales, convertidos</h2>
+  <h2 id="salarios-habituales-convertidos">Salarios habituales, convertidos</h2>
   <table>
     <thead>
       <tr><th scope="col">Salario anual</th><th scope="col" class="num">Por hora</th><th scope="col" class="num">Por semana</th><th scope="col" class="num">Por mes</th></tr>
@@ -77,7 +78,7 @@ import Base from '../../../layouts/Base.astro';
   </table>
   <p>Con 40 horas a la semana, 52 semanas al año, antes de impuestos. La cifra mensual es el salario dividido entre 12.</p>
 
-  <h2>Preguntas frecuentes</h2>
+  <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
   <dl class="faq">
     <dt>¿Por qué mi nómina muestra otra cantidad por hora?</dt>
     <dd>

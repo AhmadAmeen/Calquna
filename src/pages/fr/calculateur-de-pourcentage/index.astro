@@ -17,9 +17,10 @@ import Base from '../../../layouts/Base.astro';
     « 25 % » tout seul dit rarement de quoi il est les 25 %.
   </p>
     <figure class="fig fig--money"><img src="/img/percent.webp" alt="Des étiquettes de soldes rouges sur fond sombre" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#les-trois-calculs">Les trois calculs</a></li><li><a href="#les-trois-formules">Les trois formules</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
-    <h2 style="margin-top:0;">Les trois calculs</h2>
+    <h2 id="les-trois-calculs" style="margin-top:0;">Les trois calculs</h2>
     <div class="field-grid">
       <div>
         <label for="a1">Quel pourcentage</label>
@@ -55,7 +56,7 @@ import Base from '../../../layouts/Base.astro';
     <p class="result-figure" id="out-c" aria-live="polite"></p>
   </div>
 
-  <h2>Les trois formules</h2>
+  <h2 id="les-trois-formules">Les trois formules</h2>
   <table>
     <thead>
       <tr><th scope="col">Question</th><th scope="col">Formule</th><th scope="col" class="num">Exemple</th></tr>
@@ -74,7 +75,7 @@ import Base from '../../../layouts/Base.astro';
     en dessous.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Quelle est la différence entre pour cent et points de pourcentage ?</dt>
     <dd>

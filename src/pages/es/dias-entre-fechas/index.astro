@@ -16,6 +16,7 @@ import Base from '../../../layouts/Base.astro';
     la casilla, solo los días de lunes a viernes que hay en medio.
   </p>
     <figure class="fig fig--dates"><img src="/img/dates.webp" alt="Una agenda de papel abierta en la vista mensual, con una taza de café" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="En esta página"><p class="onpage-title">En esta página</p><ul><li><a href="#que-cuenta-como-dia-aqui">Qué cuenta como día aquí</a></li><li><a href="#un-ejemplo-resuelto-a-mano">Un ejemplo, resuelto a mano</a></li><li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -39,7 +40,7 @@ import Base from '../../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>Qué cuenta como día aquí</h2>
+  <h2 id="que-cuenta-como-dia-aqui">Qué cuenta como día aquí</h2>
   <p>
     El conteo es el número de días completos que hay que esperar desde la primera fecha para
     llegar a la segunda. No cuenta el propio día inicial. Así, del 1 de enero al 2 de enero
@@ -52,7 +53,7 @@ import Base from '../../../layouts/Base.astro';
     ninguna de las dos formas está mal: son preguntas distintas.
   </p>
 
-  <h2>Un ejemplo, resuelto a mano</h2>
+  <h2 id="un-ejemplo-resuelto-a-mano">Un ejemplo, resuelto a mano</h2>
   <table>
     <thead>
       <tr><th scope="col">Periodo</th><th scope="col">Cálculo</th><th scope="col" class="num">Días</th></tr>
@@ -64,7 +65,7 @@ import Base from '../../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>Preguntas frecuentes</h2>
+  <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
   <dl class="faq">
     <dt>¿Cuenta el primer día?</dt>
     <dd>

@@ -17,6 +17,7 @@ import Base from '../../../layouts/Base.astro';
     calcular la media de cabeza.
   </p>
     <figure class="fig fig--school"><img src="/img/gpa.webp" alt="Libros abiertos y una libreta en una mesa de biblioteca" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="En esta página"><p class="onpage-title">En esta página</p><ul><li><a href="#como-se-calcula-la-nota-media">Cómo se calcula la nota media</a></li><li><a href="#un-ejemplo-calculado-a-mano">Un ejemplo, calculado a mano</a></li><li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li></ul></nav>
 
   <div class="sheet">
     <table>
@@ -34,7 +35,7 @@ import Base from '../../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>Cómo se calcula la nota media</h2>
+  <h2 id="como-se-calcula-la-nota-media">Cómo se calcula la nota media</h2>
   <p>
     Cada nota se multiplica por los créditos o el peso de su asignatura, se suman todos esos
     productos y el resultado se divide entre el total de créditos o peso. Así, una asignatura
@@ -48,7 +49,7 @@ import Base from '../../../layouts/Base.astro';
     escribe esas horas en la tercera columna y el cálculo sigue valiendo.
   </p>
 
-  <h2>Un ejemplo, calculado a mano</h2>
+  <h2 id="un-ejemplo-calculado-a-mano">Un ejemplo, calculado a mano</h2>
   <table>
     <thead>
       <tr><th scope="col">Asignatura</th><th scope="col">Nota</th><th scope="col" class="num">Créditos o peso</th><th scope="col" class="num">Nota × peso</th></tr>
@@ -61,7 +62,7 @@ import Base from '../../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>Preguntas frecuentes</h2>
+  <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
   <dl class="faq">
     <dt>¿Qué se considera un buen promedio?</dt>
     <dd>

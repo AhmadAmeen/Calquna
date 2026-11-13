@@ -12,6 +12,7 @@ import Base from '../../layouts/Base.astro';
     tick the box, only the Monday to Friday days in between.
   </p>
     <figure class="fig fig--dates"><img src="/img/dates.webp" alt="A paper planner open at a month view, with a cup of coffee" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#what-counts-as-a-day-here">What counts as a day here</a></li><li><a href="#one-example-worked-by-hand">One example, worked by hand</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -35,7 +36,7 @@ import Base from '../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>What counts as a day here</h2>
+  <h2 id="what-counts-as-a-day-here">What counts as a day here</h2>
   <p>
     The count is the number of whole days you have to wait from the first date to reach the
     second one. It does not count the starting day itself. So 1 January to 2 January is one
@@ -48,7 +49,7 @@ import Base from '../../layouts/Base.astro';
     is wrong, they are just different questions.
   </p>
 
-  <h2>One example, worked by hand</h2>
+  <h2 id="one-example-worked-by-hand">One example, worked by hand</h2>
   <table>
     <thead>
       <tr><th scope="col">Span</th><th scope="col">Working</th><th scope="col" class="num">Days</th></tr>
@@ -60,7 +61,7 @@ import Base from '../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>Does it count the first day?</dt>
     <dd>

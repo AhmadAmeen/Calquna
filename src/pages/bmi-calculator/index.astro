@@ -13,6 +13,7 @@ import Base from '../../layouts/Base.astro';
     doctor, not a diagnosis, and this page treats it that way.
   </p>
     <figure class="fig fig--health"><img src="/img/bmi.webp" alt="A person lifting a barbell in a gym" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#the-formula-and-the-bands">The formula and the bands</a></li><li><a href="#one-example-worked-by-hand">One example, worked by hand</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -49,7 +50,7 @@ import Base from '../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>The formula and the bands</h2>
+  <h2 id="the-formula-and-the-bands">The formula and the bands</h2>
   <p>
     BMI = weight in kilograms divided by height in metres, squared. With pounds and inches
     the same idea carries a conversion factor: BMI = 703 × pounds ÷ inches². The bands below
@@ -67,7 +68,7 @@ import Base from '../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>One example, worked by hand</h2>
+  <h2 id="one-example-worked-by-hand">One example, worked by hand</h2>
   <p>
     A person who weighs 70 kg and is 175 cm tall. Height in metres is 1.75, and 1.75 squared
     is 3.0625. Divide 70 by 3.0625 and you get 22.86, which rounds to <strong>22.9</strong>,
@@ -77,7 +78,7 @@ import Base from '../../layouts/Base.astro';
     rounding in the conversion, nothing more.
   </p>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>Why does BMI get criticised so much?</dt>
     <dd>

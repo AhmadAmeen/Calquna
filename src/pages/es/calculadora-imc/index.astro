@@ -18,6 +18,7 @@ import Base from '../../../layouts/Base.astro';
     página lo trata como tal.
   </p>
     <figure class="fig fig--health"><img src="/img/bmi.webp" alt="Una persona levantando una barra en un gimnasio" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="En esta página"><p class="onpage-title">En esta página</p><ul><li><a href="#la-formula-y-las-franjas">La fórmula y las franjas</a></li><li><a href="#un-ejemplo-calculado-a-mano">Un ejemplo, calculado a mano</a></li><li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -55,7 +56,7 @@ import Base from '../../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>La fórmula y las franjas</h2>
+  <h2 id="la-formula-y-las-franjas">La fórmula y las franjas</h2>
   <p>
     IMC = peso en kilos dividido entre la altura en metros al cuadrado. Con libras y pulgadas
     la misma idea lleva un factor de conversión: IMC = 703 × libras ÷ pulgadas². Las franjas
@@ -74,7 +75,7 @@ import Base from '../../../layouts/Base.astro';
     </tbody>
   </table>
 
-  <h2>Un ejemplo, calculado a mano</h2>
+  <h2 id="un-ejemplo-calculado-a-mano">Un ejemplo, calculado a mano</h2>
   <p>
     Una persona que pesa 70 kg y mide 175 cm. La altura en metros es 1,75, y 1,75 al cuadrado
     es 3,0625. Al dividir 70 entre 3,0625 se obtiene 22,86, que se redondea a <strong>22,9</strong>,
@@ -84,7 +85,7 @@ import Base from '../../../layouts/Base.astro';
     pequeña diferencia es redondeo en la conversión, nada más.
   </p>
 
-  <h2>Preguntas frecuentes</h2>
+  <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
   <dl class="faq">
     <dt>¿Por qué se critica tanto el IMC?</dt>
     <dd>

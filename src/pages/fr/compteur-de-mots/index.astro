@@ -17,6 +17,7 @@ import Base from '../../../layouts/Base.astro';
     des chapitres, et les orateurs pour vérifier qu’un discours tient dans le temps imparti.
   </p>
     <figure class="fig fig--words"><img src="/img/words.webp" alt="Un stylo-plume écrivant sur du papier ligné" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="Sur cette page"><p class="onpage-title">Sur cette page</p><ul><li><a href="#quest-ce-qui-compte-comme-un-mot">Qu’est-ce qui compte comme un mot</a></li><li><a href="#questions-frequentes">Questions fréquentes</a></li></ul></nav>
 
   <div class="sheet">
     <label for="text">Votre texte</label>
@@ -35,7 +36,7 @@ import Base from '../../../layouts/Base.astro';
     <p class="result-note">Rien de ce que vous collez ici n’est envoyé nulle part. Fermez l’onglet et tout disparaît.</p>
   </div>
 
-  <h2>Qu’est-ce qui compte comme un mot</h2>
+  <h2 id="quest-ce-qui-compte-comme-un-mot">Qu’est-ce qui compte comme un mot</h2>
   <p>
     Un mot est toute suite de caractères séparée par des espaces, la même règle que celle de
     votre traitement de texte. « Bien-connu » compte pour un mot. Un nombre compte pour un mot.
@@ -51,7 +52,7 @@ import Base from '../../../layouts/Base.astro';
     plupart des orateurs débutants.
   </p>
 
-  <h2>Questions fréquentes</h2>
+  <h2 id="questions-frequentes">Questions fréquentes</h2>
   <dl class="faq">
     <dt>Le compte inclut-il le titre et les intertitres ?</dt>
     <dd>Il compte tout ce qui se trouve dans la zone de texte, titres compris. Si votre limite les exclut, comptez le corps du texte séparément.</dd>

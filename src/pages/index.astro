@@ -16,6 +16,11 @@ import Base from '../layouts/Base.astro';
   </p>
     <figure class="fig"><img src="/img/hero.webp" alt="A desk with a calculator, paperwork and a notebook" width="1200" height="514" decoding="async"></figure>
   </div>
+  <div class="toolfilter">
+    <label for="toolfilter">Find a tool</label>
+    <input id="toolfilter" data-toolfilter type="search" placeholder="Type to filter the tools…" autocomplete="off">
+  </div>
+  <p class="nomatch" data-nomatch style="display:none">No tool matches that. Try a shorter word.</p>
   <p>
     <a class="btn btn--primary" href="/age-calculator/" style="display:inline-block;text-decoration:none;">Start with the age calculator</a>
   </p>
@@ -160,4 +165,32 @@ import Base from '../layouts/Base.astro';
     </p>
     <p class="meta">This page was last checked on 13 November 2026.</p>
   </div>
+
+  <script is:inline>
+    (function () {
+      var input = document.querySelector('[data-toolfilter]');
+      var none = document.querySelector('[data-nomatch]');
+      if (!input) return;
+      var norm = function (s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
+      input.addEventListener('input', function () {
+        var q = norm(input.value.trim());
+        var total = 0;
+        document.querySelectorAll('table.catalogue').forEach(function (table) {
+          var visible = 0;
+          table.querySelectorAll('tbody tr').forEach(function (tr) {
+            var show = !q || norm(tr.textContent).indexOf(q) !== -1;
+            tr.style.display = show ? '' : 'none';
+            if (show) visible++;
+          });
+          total += visible;
+          var h2 = table.previousElementSibling;
+          while (h2 && h2.tagName !== 'H2') h2 = h2.previousElementSibling;
+          [table, h2, table.previousElementSibling].forEach(function (el) {
+            if (el) el.style.display = visible ? '' : 'none';
+          });
+        });
+        if (none) none.style.display = total ? 'none' : '';
+      });
+    })();
+  </script>
 </Base>

@@ -14,6 +14,7 @@ import Base from '../../layouts/Base.astro';
     year by year.
   </p>
     <figure class="fig fig--money"><img src="/img/money.webp" alt="Coins on a table with a young plant growing from them" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#the-formula">The formula</a></li><li><a href="#one-example-worked-through">One example, worked through</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
 
   <div class="sheet">
     <div class="field-grid">
@@ -44,7 +45,7 @@ import Base from '../../layouts/Base.astro';
     </p>
   </div>
 
-  <h2>The formula</h2>
+  <h2 id="the-formula">The formula</h2>
   <p>
     For a lump sum: A = P × (1 + r/n)<sup>nt</sup>, where P is the starting amount, r the yearly
     rate as a decimal, n the number of times a year interest is added (12 for monthly), and t
@@ -53,7 +54,7 @@ import Base from '../../layouts/Base.astro';
     This page compounds monthly, the way most savings accounts and investment projections do.
   </p>
 
-  <h2>One example, worked through</h2>
+  <h2 id="one-example-worked-through">One example, worked through</h2>
   <p>
     Start with 10,000 at 7% a year for 10 years, nothing added: 10,000 × (1 + 0.07/12)<sup>120</sup>
     = <strong>20,096.61</strong>. The money roughly doubles, and only half of that second
@@ -63,7 +64,7 @@ import Base from '../../layouts/Base.astro';
     interest being more than half of what you paid in, is the whole point of starting early.
   </p>
 
-  <h2>Questions people ask</h2>
+  <h2 id="questions-people-ask">Questions people ask</h2>
   <dl class="faq">
     <dt>What rate should I put in?</dt>
     <dd>

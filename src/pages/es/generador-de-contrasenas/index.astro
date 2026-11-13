@@ -18,6 +18,7 @@ import Base from '../../../layouts/Base.astro';
     gestor de contraseñas donde la guardes.
   </p>
     <figure class="fig fig--utilities"><img src="/img/password.webp" alt="Líneas de código en una pantalla" width="1200" height="514" decoding="async"></figure>
+    <nav class="onpage" aria-label="En esta página"><p class="onpage-title">En esta página</p><ul><li><a href="#que-longitud-basta">¿Qué longitud basta?</a></li><li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li></ul></nav>
 
   <div class="sheet">
     <p class="result-figure" id="password" style="word-break:break-all;" aria-live="polite"></p>
@@ -52,7 +53,7 @@ import Base from '../../../layouts/Base.astro';
     </div>
   </div>
 
-  <h2>¿Qué longitud basta?</h2>
+  <h2 id="que-longitud-basta">¿Qué longitud basta?</h2>
   <p>
     La solidez de una contraseña depende sobre todo de su longitud y de lo imprevisible que
     sea cada carácter, una cifra llamada entropía, medida en bits. La línea de solidez que
@@ -73,7 +74,7 @@ import Base from '../../../layouts/Base.astro';
     eso las frases de contraseña convienen para las cuentas en las que entras a mano.
   </p>
 
-  <h2>Preguntas frecuentes</h2>
+  <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
   <dl class="faq">
     <dt>¿Es seguro crear una contraseña en una página web?</dt>
     <dd>
