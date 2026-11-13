@@ -22,11 +22,10 @@ import Base from '../../layouts/Base.astro';
   </div>
   <div class="toolfilter">
     <label for="toolfilter">Trouver un outil</label>
-    <input id="toolfilter" data-toolfilter type="search" placeholder="Tapez pour filtrer les outils…" autocomplete="off">
+    <input id="toolfilter" data-toolfilter type="search" placeholder="Tapez pour filtrer les outils…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="toolsuggest" aria-autocomplete="list">
+    <ul class="suggestions" id="toolsuggest" data-suggestions role="listbox" hidden></ul>
   </div>
-  <p class="matchcount" data-matchcount aria-live="polite" style="display:none"></p>
-  <p class="nomatch" data-nomatch style="display:none">Aucun outil ne correspond. Essayez un mot plus court.</p>
-  <p data-startcta>
+  <p>
     <a class="btn btn--primary" href="/fr/calculateur-age/" style="display:inline-block;text-decoration:none;">Commencer par le calculateur d’âge</a>
   </p>
 
@@ -174,46 +173,89 @@ import Base from '../../layouts/Base.astro';
   <script is:inline>
     (function () {
       var input = document.querySelector('[data-toolfilter]');
-      var none = document.querySelector('[data-nomatch]');
-      var count = document.querySelector('[data-matchcount]');
-      var hero = document.querySelector('.hero-band');
-      var cta = document.querySelector('[data-startcta]');
-      var well = document.querySelector('.well');
-      if (!input) return;
+      var list = document.querySelector('[data-suggestions]');
+      if (!input || !list) return;
+      var NO_MATCH = 'Aucun outil ne correspond. Essayez un mot plus court.';
       var norm = function (s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
-      input.addEventListener('input', function () {
+      // The tool list comes from the catalogue tables already on the page, so
+      // it can never drift out of sync with the links below.
+      var tools = [];
+      document.querySelectorAll('table.catalogue tbody tr').forEach(function (tr) {
+        var a = tr.querySelector('a');
+        if (!a) return;
+        var desc = tr.querySelector('td:last-child');
+        tools.push({
+          href: a.getAttribute('href'),
+          name: a.textContent.trim(),
+          desc: desc ? desc.textContent.trim() : '',
+          hay: norm(a.textContent + ' ' + (desc ? desc.textContent : ''))
+        });
+      });
+      var matches = [];
+      var active = -1;
+      function close() {
+        list.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        active = -1;
+      }
+      function paint() {
+        list.querySelectorAll('li').forEach(function (li, i) {
+          li.classList.toggle('active', i === active);
+        });
+      }
+      function render() {
         var q = norm(input.value.trim());
-        var total = 0;
-        document.querySelectorAll('table.catalogue').forEach(function (table) {
-          var visible = 0;
-          table.querySelectorAll('tbody tr').forEach(function (tr) {
-            var show = !q || norm(tr.textContent).indexOf(q) !== -1;
-            tr.style.display = show ? '' : 'none';
-            if (show) visible++;
+        list.innerHTML = '';
+        matches = [];
+        active = -1;
+        if (!q) { close(); return; }
+        matches = tools.filter(function (t) { return t.hay.indexOf(q) !== -1; }).slice(0, 8);
+        if (!matches.length) {
+          var li = document.createElement('li');
+          li.className = 'suggest-none';
+          li.textContent = NO_MATCH;
+          list.appendChild(li);
+        } else {
+          matches.forEach(function (t, i) {
+            var li = document.createElement('li');
+            li.setAttribute('role', 'option');
+            var a = document.createElement('a');
+            a.href = t.href;
+            var name = document.createElement('span');
+            name.className = 'suggest-name';
+            name.textContent = t.name;
+            var desc = document.createElement('span');
+            desc.className = 'suggest-desc';
+            desc.textContent = t.desc;
+            a.appendChild(name);
+            a.appendChild(desc);
+            li.appendChild(a);
+            li.addEventListener('mouseenter', function () { active = i; paint(); });
+            list.appendChild(li);
           });
-          total += visible;
-          var h2 = table.previousElementSibling;
-          while (h2 && h2.tagName !== 'H2') h2 = h2.previousElementSibling;
-          [table, h2, table.previousElementSibling].forEach(function (el) {
-            if (el) el.style.display = visible ? '' : 'none';
-          });
-        });
-        // While searching, clear everything above and below the results off
-        // the page: on a phone the hero alone is taller than the screen, so
-        // the matches used to land far below the fold and the filter looked
-        // broken. The match count sits right under the box as feedback.
-        [hero, cta, well].forEach(function (el) {
-          if (el) el.style.display = q ? 'none' : '';
-        });
-        if (none) none.style.display = total ? 'none' : '';
-        if (count) {
-          if (q && total) {
-            count.textContent = total === 1 ? '1 outil correspond à votre recherche.' : total + ' outils correspondent à votre recherche.';
-            count.style.display = '';
-          } else {
-            count.style.display = 'none';
-          }
         }
+        list.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+      }
+      input.addEventListener('input', render);
+      input.addEventListener('focus', render);
+      input.addEventListener('keydown', function (e) {
+        if (list.hidden || !matches.length) return;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          active = e.key === 'ArrowDown'
+            ? Math.min(active + 1, matches.length - 1)
+            : Math.max(active - 1, 0);
+          paint();
+        } else if (e.key === 'Enter') {
+          var pick = matches[active >= 0 ? active : 0];
+          if (pick) { e.preventDefault(); window.location.href = pick.href; }
+        } else if (e.key === 'Escape') {
+          close();
+        }
+      });
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.toolfilter')) close();
       });
     })();
   </script>

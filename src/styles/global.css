@@ -194,12 +194,18 @@ tr.point td { color: var(--color-accent-2); font-weight: 500; }
 .related li { margin: 0; }
 .related .error-note { color: var(--color-muted); font-size: var(--text-sm); }
 
-/* ————— Homepage tool filter ————— */
-.toolfilter { margin: var(--space-lg) 0 var(--space-md); }
+/* ————— Homepage tool search: dropdown suggestions, tap one to go straight to the tool ————— */
+.toolfilter { margin: var(--space-lg) 0 var(--space-md); position: relative; max-width: 26rem; }
 .toolfilter label { display: block; font: 600 var(--text-sm)/1 var(--font-display); margin-bottom: var(--space-xs); color: var(--color-ink); }
-.toolfilter input { width: 100%; max-width: 26rem; padding: 0.65rem 0.75rem; font: inherit; color: var(--color-ink); background: var(--color-sheet); border: 1px solid var(--color-rule-2); border-radius: var(--radius-pill); }
-.nomatch { color: var(--color-muted); }
-.matchcount { font: 500 var(--text-sm)/1.4 var(--font-body); color: var(--color-ink); }
+.toolfilter input { width: 100%; padding: var(--space-sm); font: inherit; color: var(--color-ink); background: var(--color-sheet); border: 1px solid var(--color-rule-2); border-radius: var(--radius-pill); box-sizing: border-box; }
+.suggestions { position: absolute; top: 100%; left: 0; right: 0; z-index: 30; margin: var(--space-xs) 0 0; padding: 0; list-style: none; background: var(--color-sheet); border: var(--rule-bar) solid var(--color-ink); box-shadow: 4px 4px 0 var(--color-ink); max-height: 60vh; overflow-y: auto; }
+.suggestions li { border-bottom: 1px solid var(--color-rule); }
+.suggestions li:last-child { border-bottom: none; }
+.suggestions li.active { background: var(--color-paper-2); }
+.suggestions a { display: block; padding: var(--space-sm); text-decoration: none; }
+.suggest-name { display: block; font: 600 var(--text-md)/1.25 var(--font-display); color: var(--color-ink); }
+.suggest-desc { display: block; font: 400 var(--text-sm)/1.35 var(--font-body); color: var(--color-muted); margin-top: var(--space-2xs); }
+.suggest-none { padding: var(--space-sm); color: var(--color-muted); font: 400 var(--text-sm)/1.4 var(--font-body); }
 table.catalogue tbody tr:hover { background: var(--color-paper-2); }
 
 /* ————— Homepage section colour bars ————— */

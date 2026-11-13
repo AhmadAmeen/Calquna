@@ -63,50 +63,68 @@ s = await page.evaluate(() => {
 });
 check('mobile: close button hides drawer', s.off && s.expanded === 'false');
 
-// ---------- mobile: search ----------
+// ---------- mobile: search dropdown ----------
 await page.goto('http://localhost:8931/', { waitUntil: 'networkidle0', timeout: 30000 });
 await page.tap('[data-toolfilter]');
 await page.keyboard.type('salary', { delay: 50 });
 await new Promise((r) => setTimeout(r, 400));
 s = await page.evaluate(() => {
+  const list = document.querySelector('[data-suggestions]');
+  const items = [...list.querySelectorAll('a')];
   const rows = [...document.querySelectorAll('table.catalogue tbody tr')];
-  const visible = rows.filter((tr) => tr.style.display !== 'none');
   return {
-    visibleRows: visible.length,
-    countText: document.querySelector('[data-matchcount]').textContent,
-    countVisible: document.querySelector('[data-matchcount]').style.display !== 'none',
-    heroHidden: document.querySelector('.hero-band').style.display === 'none',
-    firstVisibleTop: visible.length ? Math.round(visible[0].getBoundingClientRect().top + window.scrollY) : null,
+    listVisible: !list.hidden,
+    itemCount: items.length,
+    firstName: items.length ? items[0].querySelector('.suggest-name').textContent : '',
+    firstHref: items.length ? items[0].getAttribute('href') : '',
+    rowsStillVisible: rows.filter((tr) => tr.style.display !== 'none').length,
+    heroStillVisible: document.querySelector('.hero-band').style.display !== 'none',
   };
 });
-check('search: "salary" leaves 1 row', s.visibleRows === 1, 'rows=' + s.visibleRows);
-check('search: match count shown under box', s.countVisible && /1 tool matches/.test(s.countText), s.countText);
-check('search: hero hidden while searching', s.heroHidden);
-check('search: match lands near the top now', s.firstVisibleTop !== null && s.firstVisibleTop < 700, 'top=' + s.firstVisibleTop);
-await page.screenshot({ path: 'shots/search-fixed-mobile.png' });
+check('dropdown: opens while typing', s.listVisible);
+check('dropdown: "salary" gives exactly 1 suggestion', s.itemCount === 1, 'n=' + s.itemCount);
+check('dropdown: suggestion is the salary tool', /Salary to hourly/.test(s.firstName) && s.firstHref === '/salary-to-hourly-calculator/', s.firstName + ' -> ' + s.firstHref);
+check('dropdown: page below does NOT filter or hide', s.rowsStillVisible === 15 && s.heroStillVisible, 'rows=' + s.rowsStillVisible);
+await page.screenshot({ path: 'shots/search-dropdown-mobile.png' });
 
-// clearing restores everything
-await page.evaluate(() => {
-  const i = document.querySelector('[data-toolfilter]');
-  i.value = '';
-  i.dispatchEvent(new Event('input', { bubbles: true }));
+// tapping the suggestion goes straight to the tool
+await page.tap('[data-suggestions] a');
+await page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }).catch(() => {});
+check('dropdown: tap takes you straight to the tool page', page.url().endsWith('/salary-to-hourly-calculator/'), page.url());
+
+// keyboard: type bmi, Enter picks the first suggestion
+await page.goto('http://localhost:8931/', { waitUntil: 'networkidle0', timeout: 30000 });
+await page.tap('[data-toolfilter]');
+await page.keyboard.type('bmi', { delay: 50 });
+await new Promise((r) => setTimeout(r, 300));
+await page.keyboard.press('Enter');
+await page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }).catch(() => {});
+check('dropdown: Enter picks the first suggestion', page.url().endsWith('/bmi-calculator/'), page.url());
+
+// Spanish homepage: suggestions are the Spanish tools with Spanish URLs
+await page.goto('http://localhost:8931/es/', { waitUntil: 'networkidle0', timeout: 30000 });
+await page.tap('[data-toolfilter]');
+await page.keyboard.type('salario', { delay: 50 });
+await new Promise((r) => setTimeout(r, 300));
+s = await page.evaluate(() => {
+  const a = document.querySelector('[data-suggestions] a');
+  return { href: a ? a.getAttribute('href') : '', name: a ? a.querySelector('.suggest-name').textContent : '' };
 });
-await new Promise((r) => setTimeout(r, 200));
-s = await page.evaluate(() => ({
-  rows: [...document.querySelectorAll('table.catalogue tbody tr')].filter((tr) => tr.style.display !== 'none').length,
-  heroBack: document.querySelector('.hero-band').style.display !== 'none',
-}));
-check('search: clearing restores all 15 rows and the hero', s.rows === 15 && s.heroBack);
+check('dropdown: ES suggestions link to ES tools', s.href === '/es/salario-por-hora/', s.name + ' -> ' + s.href);
 
-// no-match state
+// no-match state: one plain row inside the dropdown, page untouched
 await page.evaluate(() => {
   const i = document.querySelector('[data-toolfilter]');
   i.value = 'zzzz';
   i.dispatchEvent(new Event('input', { bubbles: true }));
 });
 await new Promise((r) => setTimeout(r, 200));
-s = await page.evaluate(() => ({ nomatch: document.querySelector('[data-nomatch]').style.display !== 'none' }));
-check('search: no-match message shows for nonsense', s.nomatch);
+s = await page.evaluate(() => ({
+  noneRow: !!document.querySelector('.suggest-none'),
+  links: document.querySelectorAll('[data-suggestions] a').length,
+  rows: [...document.querySelectorAll('table.catalogue tbody tr')].filter((tr) => tr.style.display !== 'none').length,
+}));
+check('dropdown: nonsense shows a no-match row and no links', s.noneRow && s.links === 0 && s.rows === 15);
 
 // ---------- desktop 1280px ----------
 const d = await browser.newPage();
