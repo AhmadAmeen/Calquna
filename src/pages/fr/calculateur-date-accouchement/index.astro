@@ -1,0 +1,155 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/due-date-calculator/"
+  altEs="/es/calculadora-de-embarazo/"
+  altFr="/fr/calculateur-date-accouchement/"
+  title="Calculateur de date d’accouchement : date prévue d’accouchement et où vous en êtes"
+  description="Estimez votre date prévue d’accouchement (DPA) à partir du premier jour de vos dernières règles, et voyez où vous en êtes aujourd’hui, en semaines de grossesse et en semaines d’aménorrhée. La règle de Naegele, imprimée sur la page."
+>
+  <h1>Calculateur de date d’accouchement</h1>
+  <p class="lede">
+    Indiquez le premier jour de vos dernières règles. Vous obtenez la date prévue
+    d’accouchement, où vous en êtes aujourd’hui, et la date à laquelle chaque trimestre
+    bascule. Toutes les dates ici sont des estimations, et la page explique pourquoi plus bas.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="lmp">Premier jour de vos dernières règles (DDR)</label>
+        <input type="date" id="lmp" />
+      </div>
+      <div>
+        <label for="cycle">Durée du cycle en jours (28 si vous ne savez pas)</label>
+        <input type="number" id="cycle" inputmode="numeric" min="20" max="45" step="1" value="28" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Calculer la date prévue</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Indiquez la date et l’estimation s’affiche ici.</p>
+    </div>
+    <p class="result-note">
+      Une date prévue d’accouchement est une date de planification, pas une promesse ni un
+      avis médical. Environ 1 bébé sur 20 arrive le jour exact. L’échographie de datation,
+      réalisée en général entre 8 et 14 semaines par votre sage-femme ou votre médecin, prime
+      sur tout ce qu’un calculateur peut dire.
+    </p>
+  </div>
+
+  <h2>Comment l’estimation est faite</h2>
+  <p>
+    La méthode standard est la règle de Naegele, qui remonte au XIXe siècle et reste le
+    premier calcul fait dans la plupart des cabinets : prenez le premier jour des dernières
+    règles, ajoutez sept jours, retirez trois mois, ajoutez un an. Cela revient à ajouter 280
+    jours, soit 40 semaines. La règle suppose un cycle de 28 jours avec une ovulation au jour
+    14. Si votre cycle est plus long ou plus court, cette page décale la date de la
+    différence, parce que l’ovulation suit en général le cycle.
+  </p>
+  <p>
+    Les semaines sont comptées à partir des dernières règles, pas à partir de la conception.
+    C’est pour cela qu’on parle de deux semaines de grossesse au moment de la conception et de
+    quatre semaines le jour où les règles n’arrivent pas. En France, les professionnels
+    datent le plus souvent la grossesse en semaines d’aménorrhée (SA), ce qui revient au même
+    point de départ mais ajoute deux semaines au compte en semaines de grossesse : le terme
+    est alors fixé à 41 SA, et il tombe sur la même date. Sur cette page, le compte principal
+    est donné en semaines de grossesse, avec l’équivalent en SA à côté. L’arithmétique est la
+    même, seule l’étiquette change.
+  </p>
+
+  <h2>Un exemple, calculé à la main</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Étape</th><th scope="col">Calcul</th><th scope="col">Date</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Début des dernières règles</td><td>La date que vous saisissez</td><td class="num">1er février 2026</td></tr>
+      <tr><td>Règle de Naegele</td><td>Plus 7 jours, moins 3 mois, plus 1 an</td><td class="num">8 novembre 2026</td></tr>
+      <tr class="point"><td>Date prévue d’accouchement</td><td>Ce qui revient à ajouter 280 jours</td><td class="num">8 novembre 2026</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Deuxième exemple : avec des dernières règles commencées le 20 septembre 2026, le 13
+    novembre 2026 la grossesse en est à 54 jours, comptés comme 7 semaines et 5 jours de
+    grossesse, soit 9 semaines et 5 jours d’aménorrhée, et la date prévue d’accouchement est
+    le 27 juin 2027.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Quelle est la précision d’une date prévue calculée à partir des dernières règles ?</dt>
+    <dd>
+      À environ une semaine près pour la plupart des personnes aux cycles réguliers, moins
+      bien si votre cycle varie de plus de quelques jours ou si vous avez récemment arrêté une
+      contraception hormonale. L’échographie de datation est plus précise, et c’est pourquoi
+      les soignants retiennent la date de l’échographie quand les deux diffèrent de plus de
+      quelques jours.
+    </dd>
+    <dt>Et si je connais plutôt la date de conception ?</dt>
+    <dd>
+      Ajoutez 266 jours. C’est 280 moins les 14 jours que la règle de Naegele suppose entre
+      les règles et l’ovulation. Pour une FIV, les cliniques comptent à partir de la date du
+      transfert et de l’âge de l’embryon, et c’est leur date qu’il faut utiliser.
+    </dd>
+    <dt>À quoi correspondent les dates des trimestres ?</dt>
+    <dd>
+      Le deuxième trimestre commence à 14 semaines et le troisième à 28 semaines, comptés à
+      partir des dernières règles. Les ouvrages varient d’un jour ou deux selon les cas. Ce
+      sont des repères, pas des interrupteurs : rien dans la grossesse ne change du jour au
+      lendemain à la semaine 14.
+    </dd>
+  </dl>
+
+  <p class="meta">Sources : la règle de Naegele telle que la présente l’ACOG dans ses recommandations sur l’estimation de la date d’accouchement. Page vérifiée le 13 novembre 2026.</p>
+
+  <script>
+    const lmpEl = document.getElementById('lmp');
+    const cycEl = document.getElementById('cycle');
+    const out = document.getElementById('out');
+
+    function fmtDate(t) {
+      return new Date(t).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    }
+
+    function compute() {
+      const lmp = lmpEl.valueAsDate;
+      if (!lmp) {
+        out.innerHTML = '<p class="result-note">Indiquez le premier jour de vos dernières règles et l’estimation s’affiche ici.</p>';
+        return;
+      }
+      const cycle = Math.min(45, Math.max(20, parseInt(cycEl.value, 10) || 28));
+      const start = Date.UTC(lmp.getFullYear(), lmp.getMonth(), lmp.getDate());
+      const adjust = (cycle - 28) * 86400000;
+      const edd = start + 280 * 86400000 + adjust;
+      const now = new Date();
+      const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const days = Math.round((today - start) / 86400000);
+      const weeks = Math.floor(days / 7);
+      const rem = days % 7;
+      const tri2 = start + 98 * 86400000 + adjust;
+      const tri3 = start + 196 * 86400000 + adjust;
+      let gaText;
+      if (days < 0) {
+        gaText = 'Cette date est encore dans le futur, il n’y a donc pas encore de compte de semaines.';
+      } else if (days > 300) {
+        gaText = 'Cette date remonte à plus de 43 semaines. Si la grossesse est toujours en cours, les dates doivent être examinées par un soignant.';
+      } else {
+        gaText = 'Comptées à partir de cette date, vous en êtes aujourd’hui à ' + weeks + ' semaines et ' + rem + ' jours de grossesse, soit ' + (weeks + 2) + ' semaines et ' + rem + ' jours d’aménorrhée (' + days + ' jours écoulés).';
+      }
+      out.innerHTML =
+        '<p class="result-figure">Accouchement prévu autour du ' + fmtDate(edd) + '</p>' +
+        '<p>' + gaText + '</p>' +
+        '<table><tbody>' +
+        '<tr><td>Début du deuxième trimestre</td><td class="num">' + fmtDate(tri2) + '</td></tr>' +
+        '<tr><td>Début du troisième trimestre</td><td class="num">' + fmtDate(tri3) + '</td></tr>' +
+        '</tbody></table>' +
+        '<p class="result-note">Environ 1 bébé sur 20 seulement arrive à la date prévue exacte. La plupart arrivent dans les deux semaines qui l’entourent.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    lmpEl.addEventListener('change', compute);
+  </script>
+</Base>

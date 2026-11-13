@@ -1,0 +1,128 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Calculadora de porcentajes: porcentaje de, qué porcentaje es y variación"
+  description="Tres cálculos de porcentaje en una página: cuánto es el X % de Y, qué porcentaje es X de Y, y el aumento o la disminución porcentual entre dos números. Cada uno con su procedimiento a la vista."
+  lang="es"
+  altEn="/percentage-calculator/"
+  altEs="/es/calculadora-de-porcentajes/"
+  altFr="/fr/calculateur-de-pourcentage/"
+>
+  <h1>Calculadora de porcentajes</h1>
+  <p class="lede">
+    Casi todas las preguntas sobre porcentajes son uno de estos tres cálculos. Esta página
+    reúne los tres, con la respuesta escrita en una frase completa, porque un «25 %» suelto
+    rara vez dice de qué cosa es ese 25 %.
+  </p>
+
+  <div class="sheet">
+    <h2 style="margin-top:0;">Los tres cálculos</h2>
+    <div class="field-grid">
+      <div>
+        <label for="a1">Este porcentaje</label>
+        <input type="number" id="a1" inputmode="decimal" step="any" value="15" />
+      </div>
+      <div>
+        <label for="a2">¿de este número?</label>
+        <input type="number" id="a2" inputmode="decimal" step="any" value="240" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-a" aria-live="polite"></p>
+    <div class="field-grid">
+      <div>
+        <label for="b1">Este número</label>
+        <input type="number" id="b1" inputmode="decimal" step="any" value="45" />
+      </div>
+      <div>
+        <label for="b2">¿qué porcentaje es de este?</label>
+        <input type="number" id="b2" inputmode="decimal" step="any" value="180" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-b" aria-live="polite"></p>
+    <div class="field-grid">
+      <div>
+        <label for="c1">Desde este número</label>
+        <input type="number" id="c1" inputmode="decimal" step="any" value="80" />
+      </div>
+      <div>
+        <label for="c2">¿hasta este número, qué cambio hay?</label>
+        <input type="number" id="c2" inputmode="decimal" step="any" value="100" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-c" aria-live="polite"></p>
+  </div>
+
+  <h2>Las tres fórmulas</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Pregunta</th><th scope="col">Fórmula</th><th scope="col" class="num">Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>¿Cuánto es el 15 % de 240?</td><td>porcentaje ÷ 100 × número</td><td class="num">36</td></tr>
+      <tr><td>¿Qué porcentaje es 45 de 180?</td><td>parte ÷ total × 100</td><td class="num">25 %</td></tr>
+      <tr class="point"><td>¿Qué cambio hay de 80 a 100?</td><td>(nuevo − antiguo) ÷ antiguo × 100</td><td class="num">+25 %</td></tr>
+    </tbody>
+  </table>
+  <p>
+    El tercer cálculo es donde la gente se equivoca. El cambio siempre se mide contra el punto
+    de partida, nunca contra el de llegada. Pasar de 80 a 100 es un aumento del 25 %, y volver
+    de 100 a 80 es una bajada de solo el 20 %. Por eso un precio que baja un 50 % y luego sube
+    un 50 % no vuelve a donde estaba: termina un 25 % por debajo.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Cuál es la diferencia entre porcentaje y puntos porcentuales?</dt>
+    <dd>
+      Si un tipo de interés pasa del 4 % al 5 %, subió un punto porcentual, lo que supone un
+      aumento del 25 % del propio tipo. Las noticias mezclan las dos cosas constantemente.
+      Cuando la diferencia importa, usa puntos para la distancia entre dos porcentajes y
+      porcentaje para el cambio.
+    </dd>
+    <dt>¿Cómo añado un porcentaje a un número, como una propina o un impuesto?</dt>
+    <dd>
+      Multiplica por uno más el porcentaje expresado en decimal. Una cuenta de 84 con un 15 %
+      añadido es 84 × 1,15 = 96,60. Para quitar un 20 %, multiplica por 0,80. O usa el primer
+      cálculo de esta página para hallar la parte del porcentaje y súmala después.
+    </dd>
+    <dt>¿Por qué una bajada no puede superar el 100 %?</dt>
+    <dd>
+      Porque una bajada del 100 % significa que todo ha desaparecido. Si alguna calculadora te
+      dice que algo bajó un 150 %, midió contra el extremo equivocado. Las subidas no tienen
+      ese límite: pasar de 10 a 35 es un aumento del 250 %.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: las tres fórmulas estándar de porcentaje, con el cambio medido siempre desde el valor inicial. Página revisada el 13 de noviembre de 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const num = (n) => n.toLocaleString('es-ES', { maximumFractionDigits: 4 });
+
+    function compute() {
+      const a1 = parseFloat($('a1').value);
+      const a2 = parseFloat($('a2').value);
+      $('out-a').textContent = Number.isFinite(a1) && Number.isFinite(a2)
+        ? 'El ' + num(a1) + ' % de ' + num(a2) + ' es ' + num(a1 / 100 * a2)
+        : '';
+      const b1 = parseFloat($('b1').value);
+      const b2 = parseFloat($('b2').value);
+      $('out-b').textContent = Number.isFinite(b1) && Number.isFinite(b2) && b2 !== 0
+        ? num(b1) + ' es el ' + num(b1 / b2 * 100) + ' % de ' + num(b2)
+        : '';
+      const c1 = parseFloat($('c1').value);
+      const c2 = parseFloat($('c2').value);
+      if (Number.isFinite(c1) && Number.isFinite(c2) && c1 !== 0) {
+        const ch = (c2 - c1) / c1 * 100;
+        $('out-c').textContent = 'Pasar de ' + num(c1) + ' a ' + num(c2) + ' es ' + (ch >= 0 ? 'un aumento' : 'una disminución') + ' del ' + num(Math.abs(ch)) + ' %';
+      } else {
+        $('out-c').textContent = '';
+      }
+    }
+
+    for (const id of ['a1', 'a2', 'b1', 'b2', 'c1', 'c2']) $(id).addEventListener('input', compute);
+    compute();
+  </script>
+</Base>

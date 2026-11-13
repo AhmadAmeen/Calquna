@@ -1,0 +1,163 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How is exact age calculated?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Count full years first, then full months, then the remaining days, borrowing days from the month before when the day of the month has not been reached yet. It is the same method a passport office uses.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What happens if I was born on 29 February?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'In a year without a 29 February, most countries treat 1 March as the legal birthday, some use 28 February. This calculator counts you a year older on 1 March in non-leap years.',
+      },
+    },
+  ],
+};
+---
+
+<Base
+  title="Age calculator: exact age in years, months and days"
+  description="Work out your exact age in years, months and days, and the same span in weeks, days and hours. The method is printed on the page so you can check it."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <h1>Age calculator</h1>
+  <p class="lede">
+    Put in a birth date and a second date, today if you leave it as it is. You get the exact
+    age the way a person would count it on paper: full years, then full months, then the days
+    left over.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="dob">Date of birth</label>
+        <input type="date" id="dob" />
+      </div>
+      <div>
+        <label for="ondate">Age on this date</label>
+        <input type="date" id="ondate" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Work it out</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Pick a birth date and the answer appears here.</p>
+    </div>
+  </div>
+
+  <h2>How the counting works</h2>
+  <p>
+    There is no single formula for age, because months have different lengths. The method used
+    here is the one used on paper. Start with the years: subtract the birth year from the
+    current year. If the birthday has not happened yet this year, take one off. Then count the
+    full months since the last birthday. If the day of the month today is smaller than the
+    birth day, the last month is not complete, so borrow the length of the month that just
+    ended and count the remaining days from there.
+  </p>
+  <p>
+    Leap years are handled by the calendar itself. A year counts as a leap year when it divides
+    by 4, except century years, which must divide by 400. So 2000 was a leap year and 1900 was
+    not.
+  </p>
+
+  <h2>One example, worked by hand</h2>
+  <p>Born on 14 March 1990, age on 13 November 2026:</p>
+  <table>
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Working</th><th scope="col" class="num">Running total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Full years</td><td>14 March 1990 to 14 March 2026</td><td class="num">36 years</td></tr>
+      <tr><td>Full months</td><td>14 March to 14 October 2026</td><td class="num">7 months</td></tr>
+      <tr><td>Days left</td><td>14 October to 13 November 2026</td><td class="num">30 days</td></tr>
+      <tr class="point"><td>Age</td><td>36 years, 7 months, 30 days</td><td class="num">13,393 days</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The same span is 1,913 weeks and 2 days, or 321,432 hours. Small differences of a day
+    between calculators usually come from whether the starting day itself is counted. This one
+    counts whole days lived, so the day you were born is day zero.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>How is exact age calculated?</dt>
+    <dd>
+      Count full years first, then full months, then the remaining days, borrowing days from
+      the month before when the day of the month has not been reached yet. It is the same
+      method a passport office uses.
+    </dd>
+    <dt>What happens if I was born on 29 February?</dt>
+    <dd>
+      In a year without a 29 February, most countries treat 1 March as the legal birthday,
+      though some use 28 February. This calculator counts you a year older on 1 March in
+      non-leap years.
+    </dd>
+    <dt>Does the time of day matter?</dt>
+    <dd>
+      For the years, months and days answer, no. For the hours figure, this page counts from
+      the start of the birth date, so treat the hours as close, not exact to the minute.
+    </dd>
+    <dt>Is my birth date stored anywhere?</dt>
+    <dd>No. The arithmetic happens in your browser and the date is gone when you close the tab.</dd>
+  </dl>
+
+  <p class="meta">Method: calendar counting with borrowing, as used for legal age. Page last checked 13 November 2026.</p>
+
+  <script>
+    const dobEl = document.getElementById('dob');
+    const onEl = document.getElementById('ondate');
+    const out = document.getElementById('out');
+    onEl.valueAsDate = new Date();
+
+    function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+
+    function compute() {
+      const dob = dobEl.valueAsDate;
+      const on = onEl.valueAsDate;
+      if (!dob || !on) {
+        out.innerHTML = '<p class="result-note">Pick both dates and the answer appears here.</p>';
+        return;
+      }
+      if (on < dob) {
+        out.innerHTML = '<p class="result-note">The second date is before the birth date. Swap them around and try again.</p>';
+        return;
+      }
+      let y = on.getFullYear() - dob.getFullYear();
+      let m = on.getMonth() - dob.getMonth();
+      let d = on.getDate() - dob.getDate();
+      if (d < 0) {
+        m -= 1;
+        const prev = new Date(on.getFullYear(), on.getMonth(), 0);
+        d += prev.getDate();
+      }
+      if (m < 0) { y -= 1; m += 12; }
+      const totalDays = Math.round((Date.UTC(on.getFullYear(), on.getMonth(), on.getDate()) - Date.UTC(dob.getFullYear(), dob.getMonth(), dob.getDate())) / 86400000);
+      const weeks = Math.floor(totalDays / 7);
+      const remDays = totalDays % 7;
+      const hours = totalDays * 24;
+      const fmt = (n) => n.toLocaleString('en-GB');
+      out.innerHTML =
+        '<p class="result-figure">' + y + ' years, ' + m + ' months, ' + d + ' days</p>' +
+        '<p>That is <span class="num">' + fmt(totalDays) + '</span> days in total, or ' +
+        '<span class="num">' + fmt(weeks) + '</span> weeks and ' + remDays + ' days, or about ' +
+        '<span class="num">' + fmt(hours) + '</span> hours.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    dobEl.addEventListener('change', compute);
+    onEl.addEventListener('change', compute);
+  </script>
+</Base>

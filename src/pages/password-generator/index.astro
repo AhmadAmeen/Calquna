@@ -1,0 +1,160 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Password generator: strong random passwords and passphrases, made on this page"
+  description="Make strong random passwords with your choice of length and characters, or a memorable passphrase. Generated in your browser with proper randomness, never sent anywhere."
+>
+  <h1>Password generator</h1>
+  <p class="lede">
+    Press the button and the page makes a password out of genuine randomness, the cryptographic
+    kind built into your browser, not a shuffled word list. Nothing is sent to a server, so the
+    password exists only on your screen and in whatever password manager you put it in.
+  </p>
+
+  <div class="sheet">
+    <p class="result-figure" id="password" style="word-break:break-all;" aria-live="polite"></p>
+    <p>
+      <button class="btn btn--primary" id="gen" type="button">Make a new one</button>
+      <button class="btn" id="copy" type="button" style="margin-left:0.5rem;">Copy it</button>
+      <span class="result-note" id="copied" style="margin-left:0.5rem;"></span>
+    </p>
+    <div class="field-grid">
+      <div>
+        <label for="length">Length (characters)</label>
+        <input type="number" id="length" inputmode="numeric" min="8" max="64" step="1" value="16" />
+      </div>
+      <div>
+        <label>Characters to use</label>
+        <p style="margin:0;">
+          <label style="display:block;color:var(--color-ink-2);"><input type="checkbox" id="c-lower" checked /> Lowercase abc</label>
+          <label style="display:block;color:var(--color-ink-2);"><input type="checkbox" id="c-upper" checked /> Uppercase ABC</label>
+          <label style="display:block;color:var(--color-ink-2);"><input type="checkbox" id="c-digits" checked /> Digits 123</label>
+          <label style="display:block;color:var(--color-ink-2);"><input type="checkbox" id="c-symbols" checked /> Symbols !@#</label>
+          <label style="display:block;color:var(--color-ink-2);"><input type="checkbox" id="c-plain" /> Leave out lookalikes (0 O 1 l I)</label>
+        </p>
+      </div>
+      <div>
+        <label for="mode">Style</label>
+        <select id="mode">
+          <option value="random">Random characters</option>
+          <option value="phrase">Passphrase (words)</option>
+        </select>
+        <p class="result-note" id="strength"></p>
+      </div>
+    </div>
+  </div>
+
+  <h2>How long is long enough</h2>
+  <p>
+    A password’s strength is mostly its length and how unpredictable each character is, a
+    figure called entropy, measured in bits. The strength line under the options does that sum
+    for your settings: length × log₂ of the number of possible characters. Sixteen characters
+    drawn from letters, digits and symbols gives about 100 bits, which is beyond any guessing
+    attack that exists. Twelve characters from the same set, about 77 bits, is fine for most
+    accounts. What actually gets accounts stolen is reuse: one site leaks, and the same
+    password opens your email. A different long password for each account, kept in a password
+    manager, is the whole game.
+  </p>
+  <p>
+    The passphrase style joins five ordinary words with dashes. Five words picked from a list
+    of about 1,700 comes to roughly 54 bits, and it is far easier to type on a phone or a TV
+    remote than random characters, which is why passphrases suit the accounts you log into by
+    hand.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>Is it safe to make a password on a web page?</dt>
+    <dd>
+      On this page, yes, and you do not have to take that on trust: the generator runs entirely
+      in your browser using crypto.getRandomValues, the same source your browser uses for
+      secure connections. Disconnect from the internet and it still works. No password is ever
+      transmitted or stored, here or anywhere.
+    </dd>
+    <dt>Why not just use my pet’s name and a number?</dt>
+    <dd>
+      Because attackers’ word lists start with names, teams, and dictionary words with the
+      number 1 or the year tacked on. A name plus digits is usually under 30 bits of real
+      unpredictability, whatever it looks like. Length and randomness are what hold up.
+    </dd>
+    <dt>What does NIST actually recommend now?</dt>
+    <dd>
+      The US standards body, in SP 800-63B, tells services to allow at least 64 characters,
+      accept spaces, stop forcing regular password changes, and check new passwords against
+      lists of known leaked ones. For you the practical version is: long, unique per site, in
+      a manager, with two factor authentication on the accounts that matter.
+    </dd>
+  </dl>
+
+  <p class="meta">Method: crypto.getRandomValues with rejection sampling, no Math.random, nothing transmitted. Sources: NIST SP 800-63B. Page last checked 13 November 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const WORDS = ('anchor apple arrow autumn baker basket beacon berry birch blanket breeze bridge brook butter button cactus camera candle canyon captain carpet castle cedar cellar chalk chapel cherry chestnut cider circle citizen clay cliff cloud clover coach coast copper coral corner cotton couch cradle creek cricket crown crystal cushion cypress dagger dairy daisy dance dawn deer delta desert desk diamond diary dice dinner doctor dolphin door dove dragon dream dress drift drill duck dune dusk eagle earth easel east echo edge eel eight elbow elder elm ember emerald empire empty engine english enjoy entry equal era error essay evening event ever every exact exit expert export extra fabric face fact factor factory fade faint fair faith fall false family famous farm fast father fault favor fear feather feature february federal fee feed feel fellow fence festival fetch fever few field fierce fifth fifty fight figure file film final find fine finger finish fire firm first fish five fix flag flame flash flat flavor flee fleet flesh flight float flock floor flour flow flower fluent fluid fly foam focus fog foil fold folk follow food fool foot force forest forget fork form formal former fort fortune forward fossil foster found fox frame frank free freedom freeze french fresh friend frog front frost fruit fuel full fun fund funny fur future gain galaxy gallery game gap garden garlic gas gate gather gauge gear gem general gentle gesture ghost giant gift girl give glad glass glide glory glove glow glue goal goat god gold golf good goose gorilla grace grade grain grand grant grape graph grasp grass grateful gray great green greet grid grief grin grind grip grit grocery ground group grove grow guard guess guest guide guilt guitar gun habit hair half hall hammer hand handle hang happy harbor hard harm harvest hat hate have hawk hazard head health hear heart heat heaven heavy hedge heel height hello helmet help hen her here hero hidden high hill hint hip hire history hobby hockey hold hole holiday holy home honest honor hook hope horn horse host hotel hour house hover hub huge human humor hundred hungry hunt hurry hurt husband hybrid ice icon idea ideal idle idol ignore ill image immense impact import impress improve inch incident include income indeed index indian indoor infant infection inflation influence inform injury inner innocent input insect inside insight insist install instant instrument insult insurance intake integer intend intense interact interest interim internal internet interpret interrupt interval interview into invent invest invite involve iron island issue item ivory jacket january jazz jealous jeans jelly jewel job join joke journal journey joy judge juice jump junior jury just justice keen keep key kick kid kill kind king kiss kit kitchen knee kneel knife knock know label labor lack ladder lady lake lamp land landscape lane language lap large laser last late later laugh laundry law lawn lawyer layer lazy lead leaf league lean learn leather leave lecture left leg legal legend leisure lemon lend length lens lesson let letter level liberty library licence lichen light like limb limit line link lion liquid list listen little live load loaf loan lobby local locate lock lodge logic logical lonely long look loose lord lose loss lost lot loud lounge love lower loyal luck luggage lunar lunch lung luxury machine mad magazine magic magnet maiden mail main major make mammal manage manner many map maple marble march margin marine mark market marriage marry mask mass master match material math matter maximum may meadow meal mean measure meat mechanism media medical medium meet member memory mental mention menu mercy merge merit mess metal meter method metro middle might mild mile milk mill mind mine mineral mini minor minute miracle mirror miss mission mistake mix mobile mode model modest moisture moment money monitor month mood moon moral more morning mosquito most mother motion motor mount mouse mouth move movie much mud mug mule multiply mundane mural muscle museum mushroom music must mutual nail name nap narrow nation native nature navy near neat neck need negative neglect negotiate neighbor neither nerve nest net network neutral never new next nice niche night noble node noise none noon nor normal north nose note nothing notice notion novel now number nurse nut oak obey object oblige obtain obvious occupy occur ocean october odd odor offer officer official often ohm oil okay old olive olympic omit once one onion online only onto open opera opinion oppose optic option orange orbit order organ origin other otter our out outcome outer outfit outline output outside oval oven over owl own owner oxide oxygen pace pack paddle page paid pain pair palace pale palm panda panel panic paper parent park parking part partner party pass past paste patch path patio patrol pattern pause paw pay peace peak peanut pearl peasant pen penalty pencil pension people pepper perfect period permanent permit person pest pet phase phone phantom phrase piano pick picture piece pier pigeon pill pilot pin pink pioneer pipe pit pitch place plaid plain plan plane planet plant plastic plate play plaza plea pleasant please pleasure plot plug plus pocket poem poet point poker polar pole police polish polite pond pony pool poor popular portion pose position possible post potato potential pound pour powder power practical praise prance precise practice prepare present press pressure pretty prevent price pride prince principal print prior prison private prize problem produce profit program project promise prompt prone proof property propose proud prove provide public pudding puff pull pulse pump pupil purchase pure purple pursue push put puzzle quaint quake quality queen question quick quiet quilt quit quite quota quote race rack radar radio rail rain raise rally ramp ranch random range rank rare rash rate rather ratio raven raw reach react read ready realm rear reason rebel recall recent recess recipe reckless reckon record redact reed reef reel refer refine reform refuse region register regular regulate reinforce reject relax release reliable relief religion rely remain remark remedy remember remind remote remove render rent repair repeat replace reply report request rescue resent reserve reside resist resolve resort resource respect response rest result resume retain retire return reveal revenue review revise reward ribbon rice rich rid ride rifle right rigid rim ring rinse ripe risk rival river road roam roast robe robust rock rocket role roll roof rookie room rose rough round route row royal rub rude rug rule rumor run rural rush rust rye sable sack sacred sad saddle sage sail saint salad salary sale salon salt sample sanction sand sapphire sash satin sauce saute save savor say scale scan scenario scene schedule scheme scholar school science scoop score scout scrap scratch screen script sea search season seat secret section secure seed seek seem segment seize select sell semester send sense sensitive sentence separate september series serious serve session set settle seven shape share shed sheep sheet shelf shell sheriff shield shift ship shock shoe shoot shop short shoulder show shower shut shy sick side sigh sight sigma sign signal silent silk silly silver similar simple single sink sir sister site six size ski skill skin skirt skull sky slab slant slap slave sleek sleep slender slice slide slight slim slip slope slow small smart smell smile smoke smooth snake snap snare snatch sneak snow soap soccer social socket soda sofa soft soil solar soldier solid solo some song soon sort soul sound soup sour source south space spare speak spear special speed spell spend sphere spice spill spin spine spiral spirit spiritual split spoke spoon sport spot spread springs square squash stable stadium stage stain stair stake stale stamp stand star stare start state station stay steady steak steal steel steep steer stem step stick still stir stock stomach stone stop store storm story stove straight strain stray stream street stress stretch strict strike string strip strong struggle study stuff stump style subject submit suburb succeed such sudden sugar suggest suit summer sun sunday super supply supreme sure surface surname surprise survey sustain swab swallow swamp swap swarm swear sweat sweep sweet swell swept swim swing switch sword symbol sympathetic symptom system table tackle tag tail take tale talent talk tall tame tank tap target task taste tax taxi tea teach team tear tech temple tempo tend tennis tense tent term text thank theater theme theory therapy therefore thick thief thin thing think third thirty thorn thorough those thread threat three thrill thrive throat throne through throw thrust thumb tide tie tiger tight tile timber time tin tiny tip tire tissue title toast today toddler toe together toilet tomato tomorrow tonal tone tongue tonight too tool tooth topic tornado total touch tough tour tow towel tower town toy track trade trail train trait trance transfer trap travel tray tread treat tree tremble trend trial tribe trick trigger trim trio trip triumph trivial troop topic topple torch tornado torrent toss total tote touch tough tour trunk trust truth try tube tuition tumble tuna tunnel turn turtle twice twin twist two type typical ugly umbrella uncle under undo unemployed unicorn uniform union unique unit universal unknown unless until unusual update upgrade upper urban urge us use used useful user usual utility utter vacant vacuum valid valley value valve vanish variety various vary vast vault vegetable vehicle vendor venture verb venue verbal verdict verify vermilion verse version vessel veteran via vibrant vice victim victory view villa village vintage violet violin virtual virus visible vision visit visual vital vivid vocal voice volcano volume vote vow voyage vulnerable wage wagon waist wait wake walk wall wander want ward warm warn warp warranty warrior wash waste watch water wave way wealth weapon wear weasel weather weave web wedding weed week weigh welcome west wet whale wheat wheel when where which while whirl whisper white who whole whose why width wife wild wilderness wildlife will win wind window wine wing wink winner winter wipe wisdom wise wish with withdraw witness wool word work world worry worth wrap wrist write wrong yard year yeast yellow yet yoga yogurt young youth zebra zero zone zoom').split(' ');
+
+    function randomBelow(max) {
+      const limit = Math.floor(4294967296 / max) * max;
+      const buf = new Uint32Array(1);
+      let x;
+      do {
+        crypto.getRandomValues(buf);
+        x = buf[0];
+      } while (x >= limit);
+      return x % max;
+    }
+
+    function buildSet() {
+      let set = '';
+      if ($('c-lower').checked) set += 'abcdefghijklmnopqrstuvwxyz';
+      if ($('c-upper').checked) set += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if ($('c-digits').checked) set += '0123456789';
+      if ($('c-symbols').checked) set += '!@#$%^&*()-_=+[]{}<>?';
+      if ($('c-plain').checked) set = set.replace(/[0O1lI|]/g, '');
+      return set;
+    }
+
+    function generate() {
+      const mode = $('mode').value;
+      let pw;
+      let bits;
+      if (mode === 'phrase') {
+        const count = 5;
+        const words = [];
+        for (let i = 0; i < count; i++) words.push(WORDS[randomBelow(WORDS.length)]);
+        pw = words.join('-');
+        bits = Math.round(count * Math.log2(WORDS.length));
+      } else {
+        const set = buildSet();
+        if (!set) {
+          $('password').textContent = 'Tick at least one kind of character.';
+          $('strength').textContent = '';
+          return;
+        }
+        const len = Math.min(64, Math.max(8, parseInt($('length').value, 10) || 16));
+        pw = '';
+        for (let i = 0; i < len; i++) pw += set[randomBelow(set.length)];
+        bits = Math.round(len * Math.log2(set.length));
+      }
+      $('password').textContent = pw;
+      const label = bits < 50 ? 'Light. Fine for low stakes accounts only.' : bits < 75 ? 'Decent. Good for most accounts.' : bits < 100 ? 'Strong. Well past guessing range.' : 'Very strong. Beyond any guessing attack going.';
+      $('strength').textContent = 'About ' + bits + ' bits of entropy. ' + label;
+      $('copied').textContent = '';
+    }
+
+    $('gen').addEventListener('click', generate);
+    for (const id of ['length', 'c-lower', 'c-upper', 'c-digits', 'c-symbols', 'c-plain', 'mode']) {
+      $(id).addEventListener('change', generate);
+    }
+    $('copy').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText($('password').textContent);
+        $('copied').textContent = 'Copied.';
+      } catch {
+        $('copied').textContent = 'Copy did not work here, select the text and copy it by hand.';
+      }
+    });
+    generate();
+  </script>
+</Base>

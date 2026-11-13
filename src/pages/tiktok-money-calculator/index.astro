@@ -1,0 +1,125 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="TikTok money calculator: Creator Rewards and brand deal estimates"
+  description="Estimate TikTok earnings two ways: Creator Rewards per thousand qualified views, and what a brand might pay per post at your view level. Plus your engagement rate."
+>
+  <h1>TikTok money calculator</h1>
+  <p class="lede">
+    TikTok money comes in two very different streams: the platform’s own Creator Rewards,
+    which pay per qualified view, and brands paying for posts, which is where most of the
+    money actually is. This page estimates both, separately, so the small number does not hide
+    behind the big one.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="views">Views per video (typical)</label>
+        <input type="number" id="views" inputmode="numeric" min="0" step="any" value="100000" />
+      </div>
+      <div>
+        <label for="videos">Videos per month</label>
+        <input type="number" id="videos" inputmode="numeric" min="0" max="200" step="1" value="12" />
+      </div>
+      <div>
+        <label for="followers">Followers</label>
+        <input type="number" id="followers" inputmode="numeric" min="0" step="any" value="50000" />
+      </div>
+      <div>
+        <label for="likes">Likes + comments + shares on a typical video</label>
+        <input type="number" id="eng" inputmode="numeric" min="0" step="any" value="6000" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Estimate the earnings</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Estimates only. Creator Rewards rates are not published by TikTok and move with the
+      fund, the country and the content. Brand rates depend on your niche and your nerve in
+      negotiation more than on any formula.
+    </p>
+  </div>
+
+  <h2>The two streams, honestly</h2>
+  <p>
+    Creator Rewards pays for qualified views: views of at least five seconds, on original
+    videos over a minute long, from eligible countries. Creators consistently report $0.40 to
+    $1.00 per thousand qualified views, far above the old Creator Fund’s few cents. To qualify
+    you need 10,000 followers and 100,000 views in the last 30 days, and the programme runs in
+    only a handful of countries, including the US, UK, Germany, France, Spain, Italy, Brazil
+    and Japan. If you are outside those, this stream is zero, whatever the views.
+  </p>
+  <p>
+    Brand deals are negotiated per post. As a rough market anchor, creators with real
+    engagement often land between $10 and $25 per thousand views on a sponsored post, with
+    finance and business niches above that and entertainment below. One sponsored post a month
+    at 100,000 views is commonly worth more than a whole month of Creator Rewards. That is not
+    a flaw in the arithmetic, it is the shape of the platform’s money.
+  </p>
+
+  <h2>One example, worked by hand</h2>
+  <p>
+    100,000 views a video, 12 videos a month, all of them qualified: 1.2 million views ×
+    $0.70 (the middle of the reported range) ÷ 1,000 = <strong>$840 a month</strong> from
+    Creator Rewards. One brand post at the same view count, at $15 per thousand, is $1,500
+    for the single post. And with 6,000 likes, comments and shares against 50,000 followers,
+    the engagement rate is 6,000 ÷ 50,000 × 100 = <strong>12%</strong>, which is strong, and is
+    the number brands actually ask about.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>Why is my per view pay lower than the range here?</dt>
+    <dd>
+      Usually because not all views are qualified: views under five seconds, views on videos
+      under a minute, and views from ineligible countries do not count. A video can show a
+      million views and have a third of them qualified.
+    </dd>
+    <dt>What engagement rate is good?</dt>
+    <dd>
+      Measured the way this page does, interactions divided by followers: under 2% is weak,
+      3% to 6% is ordinary healthy, and above that is strong. Smaller accounts usually score
+      higher, because the followers actually know them.
+    </dd>
+    <dt>Does TikTok pay for likes or followers directly?</dt>
+    <dd>
+      No. Followers decide whether you qualify for the programmes and set your brand rate. The platform pays for
+      qualified views, and brands pay for posts. Anyone selling you a per follower payout is
+      describing a programme that does not exist.
+    </dd>
+  </dl>
+
+  <p class="meta">Method: Creator Rewards at $0.40 to $1.00 per thousand qualified views, four published creator sources agreeing; brand anchor $10 to $25 per thousand views per post. Page last checked 13 November 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => '$' + n.toLocaleString('en-GB', { maximumFractionDigits: 0 });
+
+    function compute() {
+      const views = parseFloat($('views').value) || 0;
+      const videos = parseFloat($('videos').value) || 0;
+      const followers = parseFloat($('followers').value) || 0;
+      const eng = parseFloat($('eng').value) || 0;
+      const monthlyViews = views * videos;
+      const low = monthlyViews / 1000 * 0.40;
+      const mid = monthlyViews / 1000 * 0.70;
+      const high = monthlyViews / 1000 * 1.00;
+      const brandLow = views / 1000 * 10;
+      const brandHigh = views / 1000 * 25;
+      const rate = followers ? (eng / followers * 100) : 0;
+      out.innerHTML =
+        '<p class="result-figure">About ' + money(mid) + ' a month from Creator Rewards</p>' +
+        '<p>That is ' + (monthlyViews / 1000).toLocaleString('en-GB') + ' thousand views a month at the reported $0.40 to $1.00 per thousand: the range runs ' + money(low) + ' to ' + money(high) + ', if every view qualifies and you are in an eligible country.</p>' +
+        '<table><tbody>' +
+        '<tr><td>One sponsored post at your view level</td><td class="num">' + money(brandLow) + ' to ' + money(brandHigh) + '</td></tr>' +
+        '<tr><td>Your engagement rate</td><td class="num">' + rate.toFixed(1) + '%</td></tr>' +
+        '</tbody></table>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

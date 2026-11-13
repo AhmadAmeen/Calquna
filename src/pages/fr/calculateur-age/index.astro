@@ -1,0 +1,169 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Comment l’âge exact est-il calculé ?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Comptez d’abord les années entières, puis les mois entiers, puis les jours restants, en empruntant des jours au mois précédent quand le jour du mois n’est pas encore atteint. C’est la même méthode qu’utilise un bureau des passeports.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Que se passe-t-il si je suis né un 29 février ?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Dans une année sans 29 février, la plupart des pays considèrent le 1er mars comme l’anniversaire légal, certains utilisent le 28 février. Ce calculateur vous donne un an de plus le 1er mars les années non bissextiles.',
+      },
+    },
+  ],
+};
+---
+
+<Base
+  title="Calculateur d’âge : l’âge exact en années, mois et jours"
+  description="Calculez votre âge exact en années, mois et jours, et la même durée en semaines, en jours et en heures. La méthode est affichée sur la page pour que vous puissiez la vérifier."
+  lang="fr"
+  altEn="/age-calculator/"
+  altEs="/es/calculadora-de-edad/"
+  altFr="/fr/calculateur-age/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <h1>Calculateur d’âge</h1>
+  <p class="lede">
+    Indiquez une date de naissance et une deuxième date, celle d’aujourd’hui si vous la laissez
+    telle quelle. Vous obtenez l’âge exact, compté comme on le ferait sur papier : les années
+    entières, puis les mois entiers, puis les jours restants.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="dob">Date de naissance</label>
+        <input type="date" id="dob" />
+      </div>
+      <div>
+        <label for="ondate">Âge à cette date</label>
+        <input type="date" id="ondate" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Calculer</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Choisissez une date de naissance et la réponse apparaîtra ici.</p>
+    </div>
+  </div>
+
+  <h2>Comment le calcul fonctionne</h2>
+  <p>
+    Il n’existe pas de formule unique pour l’âge, parce que les mois n’ont pas la même longueur.
+    La méthode utilisée ici est celle du papier. Commencez par les années : soustrayez l’année
+    de naissance de l’année en cours. Si l’anniversaire n’a pas encore eu lieu cette année,
+    retirez un an. Comptez ensuite les mois entiers écoulés depuis le dernier anniversaire. Si
+    le jour du mois d’aujourd’hui est plus petit que le jour de naissance, le dernier mois n’est
+    pas terminé : empruntez la longueur du mois qui vient de se terminer et comptez les jours
+    restants à partir de là.
+  </p>
+  <p>
+    Les années bissextiles sont gérées par le calendrier lui-même. Une année est bissextile
+    quand elle est divisible par 4, sauf les années de siècle, qui doivent être divisibles par
+    400. Ainsi, 2000 a été bissextile et 1900 ne l’a pas été.
+  </p>
+
+  <h2>Un exemple, entièrement calculé</h2>
+  <p>Né le 14 mars 1990, âge au 13 novembre 2026 :</p>
+  <table>
+    <thead>
+      <tr><th scope="col">Étape</th><th scope="col">Calcul</th><th scope="col" class="num">Total cumulé</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Années entières</td><td>Du 14 mars 1990 au 14 mars 2026</td><td class="num">36 ans</td></tr>
+      <tr><td>Mois entiers</td><td>Du 14 mars au 14 octobre 2026</td><td class="num">7 mois</td></tr>
+      <tr><td>Jours restants</td><td>Du 14 octobre au 13 novembre 2026</td><td class="num">30 jours</td></tr>
+      <tr class="point"><td>Âge</td><td>36 ans, 7 mois, 30 jours</td><td class="num">13 393 jours</td></tr>
+    </tbody>
+  </table>
+  <p>
+    La même durée vaut 1 913 semaines et 2 jours, ou 321 432 heures. Les petits écarts d’un
+    jour entre calculateurs viennent en général de la façon de compter le jour de départ.
+    Celui-ci compte les journées entières vécues : le jour de votre naissance est le jour zéro.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Comment l’âge exact est-il calculé ?</dt>
+    <dd>
+      Comptez d’abord les années entières, puis les mois entiers, puis les jours restants, en
+      empruntant des jours au mois précédent quand le jour du mois n’est pas encore atteint.
+      C’est la même méthode qu’utilise un bureau des passeports.
+    </dd>
+    <dt>Que se passe-t-il si je suis né un 29 février ?</dt>
+    <dd>
+      Dans une année sans 29 février, la plupart des pays considèrent le 1er mars comme
+      l’anniversaire légal, même si certains utilisent le 28 février. Ce calculateur vous donne
+      un an de plus le 1er mars les années non bissextiles.
+    </dd>
+    <dt>L’heure de naissance compte-t-elle ?</dt>
+    <dd>
+      Pour la réponse en années, mois et jours, non. Pour le nombre d’heures, cette page compte
+      à partir du début de la date de naissance : considérez donc les heures comme une
+      approximation, pas comme un compte à la minute près.
+    </dd>
+    <dt>Ma date de naissance est-elle conservée quelque part ?</dt>
+    <dd>Non. Le calcul se fait dans votre navigateur et la date disparaît quand vous fermez l’onglet.</dd>
+  </dl>
+
+  <p class="meta">Méthode : comptage calendaire avec emprunt, comme pour l’âge légal. Page vérifiée pour la dernière fois le 13 novembre 2026.</p>
+
+  <script>
+    const dobEl = document.getElementById('dob');
+    const onEl = document.getElementById('ondate');
+    const out = document.getElementById('out');
+    onEl.valueAsDate = new Date();
+
+    function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+
+    function compute() {
+      const dob = dobEl.valueAsDate;
+      const on = onEl.valueAsDate;
+      if (!dob || !on) {
+        out.innerHTML = '<p class="result-note">Choisissez les deux dates et la réponse apparaîtra ici.</p>';
+        return;
+      }
+      if (on < dob) {
+        out.innerHTML = '<p class="result-note">La deuxième date est antérieure à la date de naissance. Inversez-les et réessayez.</p>';
+        return;
+      }
+      let y = on.getFullYear() - dob.getFullYear();
+      let m = on.getMonth() - dob.getMonth();
+      let d = on.getDate() - dob.getDate();
+      if (d < 0) {
+        m -= 1;
+        const prev = new Date(on.getFullYear(), on.getMonth(), 0);
+        d += prev.getDate();
+      }
+      if (m < 0) { y -= 1; m += 12; }
+      const totalDays = Math.round((Date.UTC(on.getFullYear(), on.getMonth(), on.getDate()) - Date.UTC(dob.getFullYear(), dob.getMonth(), dob.getDate())) / 86400000);
+      const weeks = Math.floor(totalDays / 7);
+      const remDays = totalDays % 7;
+      const hours = totalDays * 24;
+      const fmt = (n) => n.toLocaleString('fr-FR');
+      out.innerHTML =
+        '<p class="result-figure">' + y + ' ans, ' + m + ' mois, ' + d + ' jours</p>' +
+        '<p>Cela fait <span class="num">' + fmt(totalDays) + '</span> jours au total, ou ' +
+        '<span class="num">' + fmt(weeks) + '</span> semaines et ' + remDays + ' jours, ou environ ' +
+        '<span class="num">' + fmt(hours) + '</span> heures.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    dobEl.addEventListener('change', compute);
+    onEl.addEventListener('change', compute);
+  </script>
+</Base>

@@ -1,0 +1,168 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Cómo se calcula la edad exacta?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Se cuentan primero los años completos, luego los meses completos y por último los días que quedan, tomando días del mes anterior cuando todavía no se ha llegado al día del mes. Es el mismo método que usa una oficina de pasaportes.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Qué pasa si nací un 29 de febrero?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'En un año sin 29 de febrero, la mayoría de los países considera el 1 de marzo como el cumpleaños legal, aunque algunos usan el 28 de febrero. Esta calculadora te suma un año el 1 de marzo en los años no bisiestos.',
+      },
+    },
+  ],
+};
+---
+
+<Base
+  lang="es"
+  altEn="/age-calculator/"
+  altEs="/es/calculadora-de-edad/"
+  altFr="/fr/calculateur-age/"
+  title="Calculadora de edad: edad exacta en años, meses y días"
+  description="Calcula tu edad exacta en años, meses y días, y ese mismo periodo en semanas, días y horas. El método está impreso en la página para que puedas comprobarlo."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <h1>Calculadora de edad</h1>
+  <p class="lede">
+    Introduce una fecha de nacimiento y una segunda fecha; si la dejas como está, es hoy.
+    Obtienes la edad exacta tal como la contaría una persona en papel: los años completos,
+    luego los meses completos y después los días que sobran.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="dob">Fecha de nacimiento</label>
+        <input type="date" id="dob" />
+      </div>
+      <div>
+        <label for="ondate">Edad en esta fecha</label>
+        <input type="date" id="ondate" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Calcular</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Elige una fecha de nacimiento y la respuesta aparecerá aquí.</p>
+    </div>
+  </div>
+
+  <h2>Cómo funciona el conteo</h2>
+  <p>
+    No hay una fórmula única para la edad, porque los meses tienen duraciones distintas. El
+    método usado aquí es el que se usa en papel. Empieza por los años: resta el año de
+    nacimiento del año actual. Si el cumpleaños todavía no ha llegado este año, resta uno.
+    Después cuenta los meses completos desde el último cumpleaños. Si el día del mes de hoy
+    es menor que el día de nacimiento, el último mes no está completo, así que se toma la
+    duración del mes que acaba de terminar y se cuentan desde ahí los días que quedan.
+  </p>
+  <p>
+    Los años bisiestos los resuelve el propio calendario. Un año es bisiesto cuando es
+    divisible entre 4, salvo los años de siglo, que deben ser divisibles entre 400. Por eso
+    2000 fue bisiesto y 1900 no.
+  </p>
+
+  <h2>Un ejemplo, resuelto a mano</h2>
+  <p>Nacido el 14 de marzo de 1990, edad el 13 de noviembre de 2026:</p>
+  <table>
+    <thead>
+      <tr><th scope="col">Paso</th><th scope="col">Cálculo</th><th scope="col" class="num">Total parcial</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Años completos</td><td>Del 14 de marzo de 1990 al 14 de marzo de 2026</td><td class="num">36 años</td></tr>
+      <tr><td>Meses completos</td><td>Del 14 de marzo al 14 de octubre de 2026</td><td class="num">7 meses</td></tr>
+      <tr><td>Días que quedan</td><td>Del 14 de octubre al 13 de noviembre de 2026</td><td class="num">30 días</td></tr>
+      <tr class="point"><td>Edad</td><td>36 años, 7 meses, 30 días</td><td class="num">13.393 días</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Ese mismo periodo son 1.913 semanas y 2 días, o 321.432 horas. Las pequeñas diferencias
+    de un día entre calculadoras suelen venir de si se cuenta o no el propio día inicial.
+    Esta cuenta los días completos vividos, así que el día en que naciste es el día cero.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Cómo se calcula la edad exacta?</dt>
+    <dd>
+      Se cuentan primero los años completos, luego los meses completos y por último los días
+      que quedan, tomando días del mes anterior cuando todavía no se ha llegado al día del
+      mes. Es el mismo método que usa una oficina de pasaportes.
+    </dd>
+    <dt>¿Qué pasa si nací un 29 de febrero?</dt>
+    <dd>
+      En un año sin 29 de febrero, la mayoría de los países considera el 1 de marzo como
+      cumpleaños legal, aunque algunos usan el 28 de febrero. Esta calculadora te suma un año
+      el 1 de marzo en los años no bisiestos.
+    </dd>
+    <dt>¿Influye la hora del día?</dt>
+    <dd>
+      Para la respuesta en años, meses y días, no. Para la cifra de horas, esta página cuenta
+      desde el principio de la fecha de nacimiento, así que trata las horas como aproximadas,
+      no exactas al minuto.
+    </dd>
+    <dt>¿Se guarda mi fecha de nacimiento en algún sitio?</dt>
+    <dd>No. El cálculo ocurre en tu navegador y la fecha desaparece cuando cierras la pestaña.</dd>
+  </dl>
+
+  <p class="meta">Método: conteo de calendario con préstamo de días, como se usa para la edad legal. Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    const dobEl = document.getElementById('dob');
+    const onEl = document.getElementById('ondate');
+    const out = document.getElementById('out');
+    onEl.valueAsDate = new Date();
+
+    function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+
+    function compute() {
+      const dob = dobEl.valueAsDate;
+      const on = onEl.valueAsDate;
+      if (!dob || !on) {
+        out.innerHTML = '<p class="result-note">Elige ambas fechas y la respuesta aparecerá aquí.</p>';
+        return;
+      }
+      if (on < dob) {
+        out.innerHTML = '<p class="result-note">La segunda fecha es anterior a la fecha de nacimiento. Intercámbialas y prueba de nuevo.</p>';
+        return;
+      }
+      let y = on.getFullYear() - dob.getFullYear();
+      let m = on.getMonth() - dob.getMonth();
+      let d = on.getDate() - dob.getDate();
+      if (d < 0) {
+        m -= 1;
+        const prev = new Date(on.getFullYear(), on.getMonth(), 0);
+        d += prev.getDate();
+      }
+      if (m < 0) { y -= 1; m += 12; }
+      const totalDays = Math.round((Date.UTC(on.getFullYear(), on.getMonth(), on.getDate()) - Date.UTC(dob.getFullYear(), dob.getMonth(), dob.getDate())) / 86400000);
+      const weeks = Math.floor(totalDays / 7);
+      const remDays = totalDays % 7;
+      const hours = totalDays * 24;
+      const fmt = (n) => n.toLocaleString('es-ES');
+      out.innerHTML =
+        '<p class="result-figure">' + y + ' años, ' + m + ' meses, ' + d + ' días</p>' +
+        '<p>Son <span class="num">' + fmt(totalDays) + '</span> días en total, o ' +
+        '<span class="num">' + fmt(weeks) + '</span> semanas y ' + remDays + ' días, o unas ' +
+        '<span class="num">' + fmt(hours) + '</span> horas.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    dobEl.addEventListener('change', compute);
+    onEl.addEventListener('change', compute);
+  </script>
+</Base>

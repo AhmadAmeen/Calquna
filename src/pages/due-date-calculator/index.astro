@@ -1,0 +1,143 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Due date calculator: estimated due date and how far along you are"
+  description="Estimate a due date from the first day of your last period, and see how many weeks pregnant you are today. Naegele’s rule, printed on the page."
+>
+  <h1>Due date calculator</h1>
+  <p class="lede">
+    Put in the first day of your last period. You get the estimated due date, how far along
+    you are today, and the date each trimester turns. Every date here is an estimate, and the
+    page explains why below.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="lmp">First day of your last period</label>
+        <input type="date" id="lmp" />
+      </div>
+      <div>
+        <label for="cycle">Cycle length in days (28 if unsure)</label>
+        <input type="number" id="cycle" inputmode="numeric" min="20" max="45" step="1" value="28" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Work out the due date</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Enter the date and the estimate appears here.</p>
+    </div>
+    <p class="result-note">
+      An estimated due date is a planning date, not a promise and not medical advice. About
+      1 baby in 20 arrives on the exact day. Your midwife or doctor’s dating scan, usually at
+      8 to 14 weeks, overrides anything a calculator says.
+    </p>
+  </div>
+
+  <h2>How the estimate is made</h2>
+  <p>
+    The standard method is Naegele’s rule, from the 1800s and still the first calculation in
+    most clinics: take the first day of the last period, add seven days, subtract three
+    months, add a year. That is the same as adding 280 days, which is 40 weeks. It assumes a
+    28 day cycle with ovulation on day 14. If your cycle is longer or shorter, this page
+    shifts the date by the difference, because ovulation usually moves with the cycle.
+  </p>
+  <p>
+    Weeks are counted from the last period, not from conception. That is why you are called
+    two weeks pregnant at conception and four weeks on the day a period is missed. French
+    practice counts the same span as semaines d’aménorrhée, weeks since the last period,
+    sometimes with two weeks added when speaking of weeks of pregnancy. The arithmetic is the
+    same, only the label differs.
+  </p>
+
+  <h2>One example, worked by hand</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Working</th><th scope="col">Date</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Last period starts</td><td>The date you enter</td><td class="num">1 Feb 2026</td></tr>
+      <tr><td>Naegele’s rule</td><td>Plus 7 days, minus 3 months, plus 1 year</td><td class="num">8 Nov 2026</td></tr>
+      <tr class="point"><td>Estimated due date</td><td>Same as adding 280 days</td><td class="num">8 Nov 2026</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Second example: with a last period starting 20 September 2026, on 13 November 2026 the
+    pregnancy is 54 days along, which is counted as 7 weeks and 5 days, and the due date is
+    27 June 2027.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>How accurate is a due date from my last period?</dt>
+    <dd>
+      Within about a week for most people with regular cycles, wider if your cycle varies by
+      more than a few days or you came off hormonal contraception recently. The dating scan is
+      more accurate, which is why clinics use the scan date when the two disagree by more than
+      a few days.
+    </dd>
+    <dt>What if I know the conception date instead?</dt>
+    <dd>
+      Add 266 days to it. That is 280 minus the 14 days Naegele’s rule assumes between the
+      period and ovulation. For IVF, clinics count from the transfer date and the age of the
+      embryo, and their date is the one to use.
+    </dd>
+    <dt>What do the trimester dates mean?</dt>
+    <dd>
+      The second trimester starts at 14 weeks and the third at 28 weeks, counted from the last
+      period. Different books shave a day or two either way. They are signposts, not switches:
+      nothing about the pregnancy changes overnight at week 14.
+    </dd>
+  </dl>
+
+  <p class="meta">Sources: Naegele’s rule as set out by ACOG in its guidance on estimating the due date. Page last checked 13 November 2026.</p>
+
+  <script>
+    const lmpEl = document.getElementById('lmp');
+    const cycEl = document.getElementById('cycle');
+    const out = document.getElementById('out');
+
+    function fmtDate(t) {
+      return new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    }
+
+    function compute() {
+      const lmp = lmpEl.valueAsDate;
+      if (!lmp) {
+        out.innerHTML = '<p class="result-note">Enter the first day of your last period and the estimate appears here.</p>';
+        return;
+      }
+      const cycle = Math.min(45, Math.max(20, parseInt(cycEl.value, 10) || 28));
+      const start = Date.UTC(lmp.getFullYear(), lmp.getMonth(), lmp.getDate());
+      const adjust = (cycle - 28) * 86400000;
+      const edd = start + 280 * 86400000 + adjust;
+      const now = new Date();
+      const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const days = Math.round((today - start) / 86400000);
+      const weeks = Math.floor(days / 7);
+      const rem = days % 7;
+      const tri2 = start + 98 * 86400000 + adjust;
+      const tri3 = start + 196 * 86400000 + adjust;
+      let gaText;
+      if (days < 0) {
+        gaText = 'That date is still in the future, so there is no week count yet.';
+      } else if (days > 300) {
+        gaText = 'That date is more than 43 weeks ago. If the pregnancy is still going, the dates need a clinician to look at them.';
+      } else {
+        gaText = 'Counting from that date, today is week ' + weeks + ', day ' + rem + ' of the pregnancy (' + days + ' days along).';
+      }
+      out.innerHTML =
+        '<p class="result-figure">Due around ' + fmtDate(edd) + '</p>' +
+        '<p>' + gaText + '</p>' +
+        '<table><tbody>' +
+        '<tr><td>Second trimester starts</td><td class="num">' + fmtDate(tri2) + '</td></tr>' +
+        '<tr><td>Third trimester starts</td><td class="num">' + fmtDate(tri3) + '</td></tr>' +
+        '</tbody></table>' +
+        '<p class="result-note">Only about 1 baby in 20 arrives on the exact due date. Most arrive in the two weeks either side of it.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    lmpEl.addEventListener('change', compute);
+  </script>
+</Base>

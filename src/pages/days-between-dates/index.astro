@@ -1,0 +1,124 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Days between dates: count days and working days between two dates"
+  description="Count the days between any two dates, and the working days once weekends are taken out. Useful for deadlines, notice periods and countdowns."
+>
+  <h1>Days between dates</h1>
+  <p class="lede">
+    Two dates, one subtraction. This page counts the calendar days between them, and, if you
+    tick the box, only the Monday to Friday days in between.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="start">First date</label>
+        <input type="date" id="start" />
+      </div>
+      <div>
+        <label for="end">Second date</label>
+        <input type="date" id="end" />
+      </div>
+    </div>
+    <p>
+      <label style="display:inline-flex;gap:0.5rem;align-items:center;color:var(--color-ink-2);">
+        <input type="checkbox" id="workdays" /> Count working days only (Monday to Friday)
+      </label>
+    </p>
+    <button class="btn btn--primary" id="calc" type="button">Count the days</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Choose two dates and the count appears here.</p>
+    </div>
+  </div>
+
+  <h2>What counts as a day here</h2>
+  <p>
+    The count is the number of whole days you have to wait from the first date to reach the
+    second one. It does not count the starting day itself. So 1 January to 2 January is one
+    day, not two. That is the way notice periods, rental agreements and most deadlines are
+    written, which is why this page counts that way.
+  </p>
+  <p>
+    If you need the count to include both the first and the last day, add one to the answer.
+    Plenty of people need it that way for hotel nights and holiday bookings, and neither way
+    is wrong, they are just different questions.
+  </p>
+
+  <h2>One example, worked by hand</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Span</th><th scope="col">Working</th><th scope="col" class="num">Days</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1 January 2026 to 13 November 2026</td><td>Day 1 of the year to day 317</td><td class="num">316</td></tr>
+      <tr><td>Same span, weekends removed</td><td>45 full weeks, plus the extra days</td><td class="num">226</td></tr>
+      <tr class="point"><td>1 January 2026 to 1 January 2027</td><td>A plain non-leap year</td><td class="num">365</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>Does it count the first day?</dt>
+    <dd>
+      No. It counts the days between the two dates, so the first day is day zero. Add one to
+      the answer if your form or booking counts both ends.
+    </dd>
+    <dt>What about public holidays?</dt>
+    <dd>
+      The working-days count removes Saturdays and Sundays only. Holidays differ too much by
+      country and state to bake into one page, so check your local calendar for those.
+    </dd>
+    <dt>Can the second date be earlier than the first?</dt>
+    <dd>Yes. The page just swaps them and counts the same span. The answer is always positive.</dd>
+  </dl>
+
+  <p class="meta">Method: whole calendar days between the two dates, counted on the UTC calendar so daylight saving never adds or loses a day. Page last checked 13 November 2026.</p>
+
+  <script>
+    const sEl = document.getElementById('start');
+    const eEl = document.getElementById('end');
+    const wEl = document.getElementById('workdays');
+    const out = document.getElementById('out');
+
+    function compute() {
+      const s = sEl.valueAsDate;
+      const e = eEl.valueAsDate;
+      if (!s || !e) {
+        out.innerHTML = '<p class="result-note">Choose two dates and the count appears here.</p>';
+        return;
+      }
+      const a = Date.UTC(s.getFullYear(), s.getMonth(), s.getDate());
+      const b = Date.UTC(e.getFullYear(), e.getMonth(), e.getDate());
+      const lo = Math.min(a, b);
+      const hi = Math.max(a, b);
+      const days = Math.round((hi - lo) / 86400000);
+      const fmt = (n) => n.toLocaleString('en-GB');
+      if (!wEl.checked) {
+        const weeks = Math.floor(days / 7);
+        const rem = days % 7;
+        out.innerHTML =
+          '<p class="result-figure">' + fmt(days) + ' days</p>' +
+          '<p>That is ' + fmt(weeks) + ' full week' + (weeks === 1 ? '' : 's') + ' and ' + rem + ' extra day' + (rem === 1 ? '' : 's') + ', or ' +
+          fmt(days * 24) + ' hours if you are counting down to something.</p>';
+        return;
+      }
+      let work = 0;
+      for (let t = lo + 86400000; t <= hi; t += 86400000) {
+        const dow = new Date(t).getUTCDay();
+        if (dow >= 1 && dow <= 5) work += 1;
+      }
+      out.innerHTML =
+        '<p class="result-figure">' + fmt(work) + ' working days</p>' +
+        '<p>The full span is ' + fmt(days) + ' calendar days, of which ' + fmt(work) +
+        ' fall on a Monday to Friday. Public holidays are not taken out, check your local calendar for those.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    sEl.addEventListener('change', compute);
+    eEl.addEventListener('change', compute);
+    wEl.addEventListener('change', compute);
+  </script>
+</Base>

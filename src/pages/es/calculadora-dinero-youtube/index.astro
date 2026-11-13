@@ -1,0 +1,130 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Calculadora de dinero de YouTube: cuánto valen tus visitas en ingresos publicitarios"
+  description="Estima los ingresos publicitarios de YouTube a partir de tus visitas mensuales y tu temática. Usa cifras de RPM publicadas por creadores según la temática y explica con claridad por qué toda estimación así es un intervalo."
+  lang="es"
+  altEn="/youtube-money-calculator/"
+  altEs="/es/calculadora-dinero-youtube/"
+  altFr="/fr/calculateur-revenus-youtube/"
+>
+  <h1>Calculadora de dinero de YouTube</h1>
+  <p class="lede">
+    YouTube paga a los creadores una parte del dinero de la publicidad, calculada por cada
+    mil visitas. Introduce tus visitas mensuales, elige el tipo de canal, y esta página te da
+    un intervalo honesto, no una sola cifra halagadora.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="views">Visitas al mes</label>
+        <input type="number" id="views" inputmode="numeric" min="0" step="any" value="100000" />
+      </div>
+      <div>
+        <label for="niche">Tipo de canal</label>
+        <select id="niche">
+          <option value="10.96">Finanzas e inversión</option>
+          <option value="8.44">Negocios y marketing</option>
+          <option value="5.50" selected>Tecnología y reseñas</option>
+          <option value="4.45">Estilo de vida y vlogs</option>
+          <option value="3.50">Videojuegos</option>
+          <option value="4.00">Educación y tutoriales</option>
+        </select>
+      </div>
+      <div>
+        <label for="kind">Tipo de vídeo</label>
+        <select id="kind">
+          <option value="long" selected>Vídeos largos</option>
+          <option value="shorts">Shorts</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Estimar los ingresos</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Una estimación, no una promesa. Dos canales con las mismas visitas pueden ganar el
+      triple uno que otro según dónde viva su público, cuánto tiempo mire y el mes del año.
+      La publicidad de diciembre paga mucho más que la de enero.
+    </p>
+  </div>
+
+  <h2>Cómo paga YouTube</h2>
+  <p>
+    Los anunciantes pagan por aparecer alrededor de los vídeos. YouTube se queda el 45 % de
+    ese dinero y el creador recibe el 55 %. Lo que un creador recibe de verdad por cada mil
+    visitas se llama RPM, ingresos por mil, y es la única cifra que importa aquí: ingresos =
+    visitas ÷ 1.000 × RPM. El RPM ya lleva descontada la parte de YouTube, por eso esta página
+    no vuelve a descontar nada encima.
+  </p>
+  <p>
+    Las cifras de temática del menú desplegable son medianas que los creadores han hecho
+    públicas, recogidas y publicadas como datos abiertos: los canales de finanzas arriba del
+    todo, porque los anunciantes pagan bien por llegar a gente que está pensando en dinero, y
+    los de videojuegos y entretenimiento más abajo, porque su público es joven y está
+    repartido por países que pagan poco. Los Shorts son otro mundo: el fondo de ingresos se
+    reparte entre todas las visitas de Shorts, y los creadores suelen ver entre $0,03 y $0,07
+    por mil, por eso el ajuste de Shorts ignora la temática.
+  </p>
+
+  <h2>Un ejemplo, hecho a mano</h2>
+  <p>
+    Un canal de tecnología con 100.000 visitas al mes y el RPM mediano de la tecnología,
+    $5,50: 100.000 ÷ 1.000 × 5,50 = <strong>$550 al mes</strong>, $6.600 al año si se
+    mantuviera, cosa que no pasará. Las mismas visitas en un canal de finanzas, con $10,96,
+    serían $1.096. En Shorts, a $0,05, serían $5. Las visitas no son dinero hasta que sabes
+    qué visitas son.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Cuántas visitas necesito para ganar $1.000 al mes?</dt>
+    <dd>
+      Con la mediana de tecnología, unas 180.000 visitas al mes. Con la de finanzas, unas
+      90.000. Con la de estilo de vida, unas 225.000. Haz la cuenta al revés para tu propio
+      canal con la fórmula de arriba: visitas necesarias = 1.000 × objetivo ÷ tu RPM.
+    </dd>
+    <dt>¿Cuándo empieza YouTube a pagar?</dt>
+    <dd>
+      Después de que te acepten en el Programa de socios y superes un umbral de pago de $100.
+      Atención al cambio anunciado: desde el 1 de febrero de 2027, los nuevos solicitantes
+      necesitarán 8.000 horas de visualización válidas en un año, o 20 millones de visitas
+      válidas a Shorts en 90 días, el doble de las cifras anteriores a esa fecha. Consulta las
+      páginas de ayuda del propio YouTube para ver la norma vigente, porque es su cifra y
+      pueden cambiarla.
+    </dd>
+    <dt>¿Los ingresos publicitarios son todo el ingreso?</dt>
+    <dd>
+      Para la mayoría de los creadores que viven de esto, no. Los patrocinios, los enlaces de
+      afiliado, las membresías y sus propios productos suelen pesar más que la publicidad.
+      Esta calculadora solo cuenta la parte publicitaria, porque es la única que las visitas
+      por sí solas permiten estimar.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: visitas ÷ 1.000 × RPM; medianas por temática a partir de cifras hechas públicas por creadores y publicadas como datos abiertos (CC BY 4.0). Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => '$' + n.toLocaleString('es-ES', { maximumFractionDigits: 0 });
+
+    function compute() {
+      const views = parseFloat($('views').value) || 0;
+      const shorts = $('kind').value === 'shorts';
+      const rpm = shorts ? 0.05 : parseFloat($('niche').value);
+      const monthly = views / 1000 * rpm;
+      const low = monthly * 0.6;
+      const high = monthly * 1.6;
+      out.innerHTML =
+        '<p class="result-figure">Unos ' + money(monthly) + ' al mes</p>' +
+        '<p>Siendo realistas, entre ' + money(low) + ' y ' + money(high) + ' al mes, según dónde viva tu público y la época del año. Eso son unos ' + money(monthly * 12) + ' al año con la cifra intermedia.</p>' +
+        (shorts ? '<p class="result-note">Los Shorts usan una tarifa plana de $0,05 por mil visitas, el punto medio del intervalo de $0,03 a $0,07 que cuentan los creadores.</p>' : '');
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

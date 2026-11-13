@@ -1,0 +1,130 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Salary to hourly calculator: what a yearly salary pays per hour"
+  description="Turn a yearly salary into an hourly, weekly and monthly rate, or turn an hourly wage back into a yearly salary. Based on the hours you actually work."
+>
+  <h1>Salary to hourly calculator</h1>
+  <p class="lede">
+    A salary of 60,000 a year sounds precise until someone asks what it pays an hour. This
+    page does that division honestly: by the hours you actually work, not by a made up round
+    number.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="mode">I know my</label>
+        <select id="mode">
+          <option value="salary">Yearly salary</option>
+          <option value="hourly">Hourly wage</option>
+        </select>
+      </div>
+      <div>
+        <label for="amount" id="amount-label">Yearly salary</label>
+        <input type="number" id="amount" inputmode="decimal" min="0" step="any" value="60000" />
+      </div>
+      <div>
+        <label for="hours">Hours worked per week</label>
+        <input type="number" id="hours" inputmode="decimal" min="1" max="112" step="any" value="40" />
+      </div>
+      <div>
+        <label for="weeks">Weeks worked per year</label>
+        <input type="number" id="weeks" inputmode="decimal" min="1" max="52" step="any" value="52" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Convert it</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      All figures are before tax. Weeks worked per year is 52 if you are paid through your
+      holidays, which most salaried staff are. If you are unpaid for time off, put the weeks
+      you actually work, often 48 or 49, and the hourly figure will come out higher, because
+      it is the honest one.
+    </p>
+  </div>
+
+  <h2>The working</h2>
+  <p>
+    Hourly pay = yearly salary ÷ (hours per week × weeks per year). The standard full time
+    assumption, 40 hours for 52 weeks, is 2,080 hours, and most quoted conversions use it.
+    US federal staff use 2,087 hours, the average accounting for leap years, which is why
+    government tables differ by a few cents. This page uses your numbers, so part time and
+    term time work come out right too.
+  </p>
+
+  <h2>Common salaries, converted</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Yearly salary</th><th scope="col" class="num">Per hour</th><th scope="col" class="num">Per week</th><th scope="col" class="num">Per month</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>30,000</td><td class="num">14.42</td><td class="num">576.92</td><td class="num">2,500.00</td></tr>
+      <tr><td>45,000</td><td class="num">21.63</td><td class="num">865.38</td><td class="num">3,750.00</td></tr>
+      <tr class="point"><td>60,000</td><td class="num">28.85</td><td class="num">1,153.85</td><td class="num">5,000.00</td></tr>
+      <tr><td>75,000</td><td class="num">36.06</td><td class="num">1,442.31</td><td class="num">6,250.00</td></tr>
+      <tr><td>100,000</td><td class="num">48.08</td><td class="num">1,923.08</td><td class="num">8,333.33</td></tr>
+    </tbody>
+  </table>
+  <p>At 40 hours a week, 52 weeks a year, before tax. Monthly is the salary divided by 12.</p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>Why does my payslip show a different hourly rate?</dt>
+    <dd>
+      Employers often divide by contracted hours only, or by 52.14 weeks, or they build
+      overtime and allowances into the rate. If your contract states an hourly rate, that one
+      governs. This page is for comparing offers and checking your own arithmetic.
+    </dd>
+    <dt>How do I compare a salary with a freelance day rate?</dt>
+    <dd>
+      Convert the salary to a day rate first (weekly ÷ days worked per week), then remember
+      the freelancer gets no paid holiday, pension contribution, sick pay or employer tax
+      paid for them. A common rule of thumb is that a day rate needs to be roughly double
+      the salaried day rate to come out even.
+    </dd>
+    <dt>What about overtime at time and a half?</dt>
+    <dd>
+      Multiply your hourly figure by 1.5 for those hours. Ten extra hours a week at 28.85 is
+      432.75 before tax. Check your contract, though: many salaried contracts pay no overtime
+      at all, which quietly lowers the real hourly rate, and this calculator will show it if
+      you put the true hours in.
+    </dd>
+  </dl>
+
+  <p class="meta">Method: salary divided by hours per week times weeks per year; 2,080 hours is the standard full time year. Page last checked 13 November 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    $('mode').addEventListener('change', () => {
+      $('amount-label').textContent = $('mode').value === 'salary' ? 'Yearly salary' : 'Hourly wage';
+      compute();
+    });
+
+    function compute() {
+      const amount = parseFloat($('amount').value) || 0;
+      const hours = parseFloat($('hours').value) || 40;
+      const weeks = parseFloat($('weeks').value) || 52;
+      const yearHours = hours * weeks;
+      const yearly = $('mode').value === 'salary' ? amount : amount * yearHours;
+      const hourly = yearHours ? yearly / yearHours : 0;
+      out.innerHTML =
+        '<p class="result-figure">' + money(hourly) + ' an hour</p>' +
+        '<table><tbody>' +
+        '<tr><td>Per hour</td><td class="num">' + money(hourly) + '</td></tr>' +
+        '<tr><td>Per day (' + hours / 5 + ' hours)</td><td class="num">' + money(hourly * hours / 5) + '</td></tr>' +
+        '<tr><td>Per week</td><td class="num">' + money(hourly * hours) + '</td></tr>' +
+        '<tr><td>Per month</td><td class="num">' + money(yearly / 12) + '</td></tr>' +
+        '<tr><td>Per year</td><td class="num">' + money(yearly) + '</td></tr>' +
+        '</tbody></table>' +
+        '<p class="result-note">Based on ' + hours + ' hours a week for ' + weeks + ' weeks, ' + yearHours.toLocaleString('en-GB') + ' hours a year, before tax.</p>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

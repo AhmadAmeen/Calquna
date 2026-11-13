@@ -1,0 +1,130 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/gpa-calculator/"
+  altEs="/es/calculadora-de-promedio/"
+  altFr="/fr/calculateur-de-moyenne/"
+  title="Calculateur de moyenne : moyenne pondérée sur 20, avec coefficients"
+  description="Calculez votre moyenne générale sur 20 à partir de vos notes et de leurs coefficients, matière par matière. La pondération est expliquée, avec un exemple calculé à la main."
+>
+  <h1>Calculateur de moyenne</h1>
+  <p class="lede">
+    Ajoutez une ligne par matière : la note sur 20 et son coefficient. Le calculateur
+    pondère chaque note par son coefficient, ce qui est exactement la partie que l’on se
+    trompe à faire de tête.
+  </p>
+
+  <div class="sheet">
+    <table>
+      <thead>
+        <tr><th scope="col">Matière (facultatif)</th><th scope="col" class="num">Note / 20</th><th scope="col" class="num">Coefficient</th><th scope="col"></th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p>
+      <button class="btn" id="add" type="button">Ajouter une matière</button>
+      <button class="btn btn--primary" id="calc" type="button" style="margin-left:0.5rem;">Calculer ma moyenne</button>
+    </p>
+    <div id="out" aria-live="polite" style="margin-top:1rem;">
+      <p class="result-note">Votre moyenne apparaît ici.</p>
+    </div>
+  </div>
+
+  <h2>Comment la moyenne est calculée</h2>
+  <p>
+    Chaque note est multipliée par son coefficient, on additionne tous ces produits, puis on
+    divise par la somme des coefficients. Une note de 11 avec un coefficient 4 (44 points)
+    pèse donc plus lourd qu’un 16 avec un coefficient 1 (16 points). C’est cette pondération
+    que la formule sert à faire, et c’est aussi celle qu’appliquent les bulletins scolaires
+    et la plupart des universités.
+  </p>
+
+  <h2>Un exemple, calculé à la main</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Matière</th><th scope="col" class="num">Note / 20</th><th scope="col" class="num">Coefficient</th><th scope="col" class="num">Note × coefficient</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Histoire</td><td class="num">14</td><td class="num">3</td><td class="num">42</td></tr>
+      <tr><td>Mathématiques</td><td class="num">11</td><td class="num">4</td><td class="num">44</td></tr>
+      <tr><td>Français</td><td class="num">16,5</td><td class="num">3</td><td class="num">49,5</td></tr>
+      <tr class="point"><td>Total</td><td>135,5 ÷ 10 de coefficients</td><td class="num">10</td><td class="num">Moyenne 13,55</td></tr>
+    </tbody>
+  </table>
+  <p>Les trois lignes pré-remplies ci-dessus sont cet exemple : appuyez sur le bouton et vous retrouvez 13,55.</p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Quelles sont les mentions au baccalauréat ?</dt>
+    <dd>
+      La moyenne générale du bac se lit ainsi : à partir de 10, l’examen est obtenu ; à
+      partir de 12, mention assez bien ; à partir de 14, mention bien ; à partir de 16,
+      mention très bien. Ce sont les seuils nationaux, ils ne dépendent pas de
+      l’établissement.
+    </dd>
+    <dt>Comment remonter une moyenne ?</dt>
+    <dd>
+      En travaillant là où le coefficient est le plus fort, pas là où la note est la plus
+      basse. Pour savoir ce qu’il vous faut sur ce qui reste : (objectif × total des
+      coefficients à la fin − points déjà obtenus) ÷ coefficients restants. Si le résultat
+      dépasse 20, l’objectif est hors d’atteinte ce trimestre, et le savoir tôt vaut mieux
+      qu’espérer.
+    </dd>
+    <dt>Les coefficients sont-ils les mêmes partout ?</dt>
+    <dd>
+      Non. Ils varient selon l’établissement, le niveau et les options ou spécialités
+      choisies : une matière peut être coefficient 2 dans un lycée et coefficient 4 dans un
+      autre, et à l’université chaque unité d’enseignement a ses propres crédits. Prenez les
+      coefficients de votre bulletin ou de votre maquette de formation, pas ceux d’un autre
+      établissement.
+    </dd>
+  </dl>
+
+  <p class="meta">Méthode : notes pondérées par leurs coefficients, moyenne sur 20. Dernière vérification de la page : 13 novembre 2026.</p>
+
+  <script>
+    const rowsEl = document.getElementById('rows');
+    const out = document.getElementById('out');
+    const fmt = (n, d) => n.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+    function addRow(name, note, coef) {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><input type="text" class="g-name" value="' + (name || '') + '" aria-label="Nom de la matière" /></td>' +
+        '<td><input type="number" class="g-note" value="' + (note === undefined ? '' : note) + '" min="0" max="20" step="0.25" aria-label="Note sur 20" /></td>' +
+        '<td><input type="number" class="g-coef" value="' + (coef || 1) + '" min="0" step="0.5" aria-label="Coefficient" /></td>' +
+        '<td><button type="button" class="btn g-del">Retirer</button></td>';
+      tr.querySelector('.g-del').addEventListener('click', () => { tr.remove(); });
+      rowsEl.appendChild(tr);
+    }
+
+    addRow('Histoire', 14, 3);
+    addRow('Mathématiques', 11, 4);
+    addRow('Français', 16.5, 3);
+
+    document.getElementById('add').addEventListener('click', () => addRow('', '', 1));
+
+    document.getElementById('calc').addEventListener('click', () => {
+      let pts = 0;
+      let coefs = 0;
+      rowsEl.querySelectorAll('tr').forEach((tr) => {
+        const n = parseFloat(tr.querySelector('.g-note').value);
+        const c = parseFloat(tr.querySelector('.g-coef').value) || 0;
+        if (Number.isFinite(n) && c > 0) {
+          pts += n * c;
+          coefs += c;
+        }
+      });
+      if (!coefs) {
+        out.innerHTML = '<p class="result-note">Ajoutez au moins une matière avec une note et un coefficient, et votre moyenne apparaît ici.</p>';
+        return;
+      }
+      out.innerHTML =
+        '<p class="result-figure">Moyenne ' + fmt(pts / coefs, 2) + ' / 20</p>' +
+        '<p>Cela fait ' + fmt(pts, 1) + ' points pour un total de coefficients de ' + fmt(coefs, 1) + '. Chaque point gagné dans une matière à fort coefficient déplace la moyenne davantage, c’est donc là que l’effort paie le plus.</p>';
+    });
+  </script>
+</Base>

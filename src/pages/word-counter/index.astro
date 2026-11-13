@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Word counter: words, characters, sentences and reading time"
+  description="Paste any text and get the word count, character count, sentences, paragraphs and how long it takes to read. The text stays on the page, nothing is uploaded."
+>
+  <h1>Word counter</h1>
+  <p class="lede">
+    Paste your text below. The counts update as you type. Teachers use it for essay limits,
+    writers for chapter lengths, and speakers to check whether a talk fits its slot.
+  </p>
+
+  <div class="sheet">
+    <label for="text">Your text</label>
+    <textarea id="text" placeholder="Start typing, or paste something in."></textarea>
+    <table>
+      <tbody>
+        <tr><td>Words</td><td class="num" id="words">0</td></tr>
+        <tr><td>Characters</td><td class="num" id="chars">0</td></tr>
+        <tr><td>Characters without spaces</td><td class="num" id="charsns">0</td></tr>
+        <tr><td>Sentences</td><td class="num" id="sentences">0</td></tr>
+        <tr><td>Paragraphs</td><td class="num" id="paras">0</td></tr>
+        <tr><td>Reading time</td><td class="num" id="reading">0 min</td></tr>
+        <tr><td>Speaking time</td><td class="num" id="speaking">0 min</td></tr>
+      </tbody>
+    </table>
+    <p class="result-note">Nothing you paste here is sent anywhere. Close the tab and it is gone.</p>
+  </div>
+
+  <h2>What counts as a word</h2>
+  <p>
+    A word is any run of characters separated by spaces, the same rule your word processor
+    uses. “Well-known” counts as one word. A number counts as a word. A line of dashes with
+    no letters in it does not. If your school or publisher counts differently, their number
+    wins, but this is the rule almost every editor works to.
+  </p>
+  <p>
+    Reading time uses 200 words a minute, the middle of the range measured for adults reading
+    ordinary prose silently. Speaking time uses 130 words a minute, a comfortable pace for
+    reading aloud that leaves room to breathe. A 10 minute talk, on that measure, is about
+    1,300 words, which surprises most first-time speakers.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>Does the count include the title and headings?</dt>
+    <dd>It counts everything in the box, titles included. If your limit excludes them, count the body on its own.</dd>
+    <dt>Why does my word processor give a different number?</dt>
+    <dd>
+      Usually because of hyphenated words, numbers, or text in tables and footnotes. Differences
+      of a few words are normal. Differences of hundreds mean one of the two is counting
+      something extra, often the bibliography.
+    </dd>
+    <dt>Is my text private?</dt>
+    <dd>Yes. The counting is done by a small script on this page. There is no upload and nothing is stored.</dd>
+  </dl>
+
+  <p class="meta">Method: whitespace tokenising, Unicode aware. Reading speed 200 words a minute, speaking 130. Page last checked 13 November 2026.</p>
+
+  <script>
+    const ta = document.getElementById('text');
+    const set = (id, v) => { document.getElementById(id).textContent = v; };
+    const fmt = (n) => n.toLocaleString('en-GB');
+
+    function timeText(words, perMin) {
+      if (!words) return '0 min';
+      const mins = words / perMin;
+      if (mins < 1) return 'under 1 min';
+      return Math.round(mins) + ' min';
+    }
+
+    function update() {
+      const text = ta.value;
+      const words = (text.match(/\S+/g) || []).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+      const chars = [...text].length;
+      const charsNs = [...text.replace(/\s/g, '')].length;
+      const sentences = (text.match(/[.!?]+(?=\s|$)/g) || []).length;
+      const paras = text.trim() ? text.trim().split(/\n\s*\n/).length : 0;
+      set('words', fmt(words));
+      set('chars', fmt(chars));
+      set('charsns', fmt(charsNs));
+      set('sentences', fmt(sentences));
+      set('paras', fmt(paras));
+      set('reading', timeText(words, 200));
+      set('speaking', timeText(words, 130));
+    }
+
+    ta.addEventListener('input', update);
+    update();
+  </script>
+</Base>

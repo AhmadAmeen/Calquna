@@ -1,0 +1,169 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/bmi-calculator/"
+  altEs="/es/calculadora-imc/"
+  altFr="/fr/calculateur-imc/"
+  title="Calculateur d’IMC : indice de masse corporelle et fourchette de poids saine pour votre taille"
+  description="Calculez votre indice de masse corporelle à partir de votre taille et de votre poids, voyez dans quelle catégorie il se situe et quelle fourchette de poids l’OMS considère comme saine pour votre taille."
+>
+  <h1>Calculateur d’IMC</h1>
+  <p class="lede">
+    L’indice de masse corporelle est un outil de tri approximatif : votre poids divisé par
+    votre taille au carré. Il place la plupart des adultes dans l’une de quatre catégories.
+    C’est un point de départ pour une conversation avec un médecin, pas un diagnostic, et
+    cette page le traite comme tel.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="unit">Unités</label>
+        <select id="unit">
+          <option value="metric">Kilogrammes et centimètres</option>
+          <option value="imperial">Livres, pieds et pouces</option>
+        </select>
+      </div>
+      <div id="metric-fields">
+        <label for="kg">Poids (kg)</label>
+        <input type="number" id="kg" inputmode="decimal" min="20" max="500" step="0.1" placeholder="70" />
+        <label for="cm" style="margin-top:0.75rem;">Taille (cm)</label>
+        <input type="number" id="cm" inputmode="decimal" min="80" max="250" step="0.5" placeholder="175" />
+      </div>
+      <div id="imperial-fields" hidden>
+        <label for="lb">Poids (lb)</label>
+        <input type="number" id="lb" inputmode="decimal" min="45" max="1100" step="0.5" placeholder="154" />
+        <label for="ft" style="margin-top:0.75rem;">Taille (pieds)</label>
+        <input type="number" id="ft" inputmode="numeric" min="2" max="8" step="1" placeholder="5" />
+        <label for="inch" style="margin-top:0.75rem;">Taille (pouces)</label>
+        <input type="number" id="inch" inputmode="decimal" min="0" max="11.9" step="0.5" placeholder="9" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Calculer mon IMC</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Indiquez votre taille et votre poids, la réponse s’affiche ici.</p>
+    </div>
+    <p class="result-note">
+      Il s’agit d’informations générales, pas d’un avis médical. L’IMC ne mesure ni la masse
+      grasse, ni le muscle, ni l’endroit où se loge la graisse, et il trompe chez les sportifs,
+      les personnes âgées, les enfants et pendant la grossesse. Si le résultat vous inquiète,
+      parlez-en à un médecin, pas à un régime trouvé en ligne.
+    </p>
+  </div>
+
+  <h2>La formule et les catégories</h2>
+  <p>
+    IMC = poids en kilogrammes divisé par la taille en mètres, au carré. Avec les livres et
+    les pouces, la même idée s’accompagne d’un facteur de conversion : IMC = 703 × livres ÷
+    pouces². Les catégories ci-dessous sont celles de l’Organisation mondiale de la santé pour
+    les adultes, utilisées par le NHS britannique et les CDC américains.
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Catégorie</th><th scope="col">Ce que cela signifie en général</th><th scope="col" class="num">IMC</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Insuffisance pondérale</td><td>En dessous de la fourchette associée au risque de santé le plus faible</td><td class="num">moins de 18,5</td></tr>
+      <tr><td>Poids de forme</td><td>La fourchette de référence pour la plupart des adultes</td><td class="num">18,5 à 24,9</td></tr>
+      <tr><td>Surpoids</td><td>Le risque de maladies liées au poids commence à augmenter</td><td class="num">25,0 à 29,9</td></tr>
+      <tr><td>Obésité</td><td>Le risque est nettement plus élevé, à discuter avec un médecin</td><td class="num">30,0 et plus</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Un exemple, calculé à la main</h2>
+  <p>
+    Une personne qui pèse 70 kg et mesure 175 cm. La taille en mètres est 1,75, et 1,75 au
+    carré donne 3,0625. Divisez 70 par 3,0625 et vous obtenez 22,86, arrondi à
+    <strong>22,9</strong>, dans la catégorie du poids de forme. Pour cette taille, la
+    fourchette saine commence à 18,5 × 3,0625 = 56,7 kg et se termine à 24,9 × 3,0625 =
+    76,3 kg. En unités impériales, la même personne, 154 lb et 5 pieds 9 pouces (69 pouces),
+    donne 703 × 154 ÷ 4 761 = 22,7. La petite différence vient de l’arrondi de la conversion,
+    rien de plus.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Pourquoi l’IMC est-il autant critiqué ?</dt>
+    <dd>
+      Parce qu’il ne distingue pas le muscle de la graisse et ne dit rien du tour de taille, de
+      la condition physique ou de la tension artérielle. Un joueur de rugby et un employé de
+      bureau sédentaire peuvent afficher le même IMC de 27 avec une santé très différente. Les
+      médecins continuent de l’utiliser parce qu’il est gratuit, immédiat, et à peu près juste
+      à l’échelle de populations entières.
+    </dd>
+    <dt>La fourchette saine est-elle la même pour tout le monde ?</dt>
+    <dd>
+      Non. Les seuils de l’OMS sont définis pour des adultes d’origine européenne. Plusieurs
+      organismes de santé utilisent des seuils d’action plus bas, 23 et 27,5, pour les personnes
+      d’origine sud-asiatique, chinoise et quelques autres, parce que le risque augmente plus
+      tôt. Les enfants utilisent des percentiles selon l’âge et le sexe, et ce calculateur n’est
+      pas conçu pour eux.
+    </dd>
+    <dt>Quel poids devrais-je faire pour ma taille ?</dt>
+    <dd>
+      Le calculateur affiche la fourchette de poids saine pour votre taille sous votre
+      résultat. Prenez le milieu de cette fourchette comme un repère approximatif, pas comme
+      un objectif que vous devriez à qui que ce soit.
+    </dd>
+  </dl>
+
+  <p class="meta">Sources : classification de l’IMC de l’Organisation mondiale de la santé ; catégories d’IMC adulte des CDC. Page vérifiée le 13 novembre 2026.</p>
+
+  <script>
+    const unit = document.getElementById('unit');
+    const mf = document.getElementById('metric-fields');
+    const imf = document.getElementById('imperial-fields');
+    const out = document.getElementById('out');
+
+    unit.addEventListener('change', () => {
+      const imp = unit.value === 'imperial';
+      mf.hidden = imp;
+      imf.hidden = !imp;
+    });
+
+    function band(bmi) {
+      if (bmi < 18.5) return 'en insuffisance pondérale';
+      if (bmi < 25) return 'dans la catégorie du poids de forme';
+      if (bmi < 30) return 'dans la catégorie du surpoids';
+      return 'dans la catégorie de l’obésité';
+    }
+
+    function compute() {
+      let kg, m;
+      if (unit.value === 'metric') {
+        kg = parseFloat(document.getElementById('kg').value);
+        const cm = parseFloat(document.getElementById('cm').value);
+        m = cm / 100;
+      } else {
+        const lb = parseFloat(document.getElementById('lb').value);
+        const ft = parseFloat(document.getElementById('ft').value) || 0;
+        const inch = parseFloat(document.getElementById('inch').value) || 0;
+        kg = lb * 0.45359237;
+        m = (ft * 12 + inch) * 0.0254;
+      }
+      if (!kg || !m || kg <= 0 || m <= 0) {
+        out.innerHTML = '<p class="result-note">Indiquez à la fois votre taille et votre poids, la réponse s’affiche ici.</p>';
+        return;
+      }
+      const bmi = kg / (m * m);
+      const lo = 18.5 * m * m;
+      const hi = 24.9 * m * m;
+      const fmt = (n, d) => n.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
+      let rangeText;
+      if (unit.value === 'metric') {
+        rangeText = 'Pour votre taille, la fourchette de poids saine va d’environ ' + fmt(lo, 1) + ' kg à ' + fmt(hi, 1) + ' kg.';
+      } else {
+        rangeText = 'Pour votre taille, la fourchette de poids saine va d’environ ' + fmt(lo / 0.45359237, 0) + ' lb à ' + fmt(hi / 0.45359237, 0) + ' lb.';
+      }
+      out.innerHTML =
+        '<p class="result-figure">IMC ' + fmt(bmi, 1) + '</p>' +
+        '<p>Cela vous place ' + band(bmi) + ' sur l’échelle de l’OMS pour les adultes. ' + rangeText + '</p>' +
+        '<p class="result-note">Un chiffre unique est un tri approximatif, pas un verdict sur votre santé. Le muscle, le tour de taille, l’âge et l’origine changent ce qu’il signifie.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+  </script>
+</Base>

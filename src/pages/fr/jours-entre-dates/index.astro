@@ -1,0 +1,132 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Jours entre deux dates : compter les jours et les jours ouvrés entre deux dates"
+  description="Comptez les jours entre deux dates, et les jours ouvrés une fois les week-ends retirés. Utile pour les échéances, les préavis et les comptes à rebours."
+  lang="fr"
+  altEn="/days-between-dates/"
+  altEs="/es/dias-entre-fechas/"
+  altFr="/fr/jours-entre-dates/"
+>
+  <h1>Jours entre deux dates</h1>
+  <p class="lede">
+    Deux dates, une soustraction. Cette page compte les jours calendaires qui les séparent et,
+    si vous cochez la case, seulement les jours du lundi au vendredi compris entre les deux.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="start">Première date</label>
+        <input type="date" id="start" />
+      </div>
+      <div>
+        <label for="end">Deuxième date</label>
+        <input type="date" id="end" />
+      </div>
+    </div>
+    <p>
+      <label style="display:inline-flex;gap:0.5rem;align-items:center;color:var(--color-ink-2);">
+        <input type="checkbox" id="workdays" /> Compter seulement les jours ouvrés (du lundi au vendredi)
+      </label>
+    </p>
+    <button class="btn btn--primary" id="calc" type="button">Compter les jours</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Choisissez deux dates et le compte apparaîtra ici.</p>
+    </div>
+  </div>
+
+  <h2>Ce qui compte comme un jour ici</h2>
+  <p>
+    Le compte est le nombre de journées entières à attendre à partir de la première date pour
+    atteindre la deuxième. Il ne compte pas le jour de départ lui-même. Ainsi, du 1er janvier
+    au 2 janvier, il y a un jour, pas deux. C’est ainsi que sont rédigés les délais de préavis,
+    les contrats de location et la plupart des échéances, et c’est donc ainsi que cette page
+    compte.
+  </p>
+  <p>
+    Si vous avez besoin d’un compte qui inclut le premier et le dernier jour, ajoutez un au
+    résultat. Beaucoup de gens comptent ainsi pour les nuits d’hôtel et les réservations de
+    vacances, et aucune des deux façons n’est fausse : ce sont simplement deux questions
+    différentes.
+  </p>
+
+  <h2>Un exemple, entièrement calculé</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Période</th><th scope="col">Calcul</th><th scope="col" class="num">Jours</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Du 1er janvier 2026 au 13 novembre 2026</td><td>Du jour 1 de l’année au jour 317</td><td class="num">316</td></tr>
+      <tr><td>Même période, week-ends retirés</td><td>45 semaines complètes, plus les jours supplémentaires</td><td class="num">226</td></tr>
+      <tr class="point"><td>Du 1er janvier 2026 au 1er janvier 2027</td><td>Une année ordinaire, non bissextile</td><td class="num">365</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Le premier jour est-il compté ?</dt>
+    <dd>
+      Non. La page compte les jours entre les deux dates : le premier jour est le jour zéro.
+      Ajoutez un au résultat si votre formulaire ou votre réservation compte les deux
+      extrémités.
+    </dd>
+    <dt>Et les jours fériés ?</dt>
+    <dd>
+      Le compte des jours ouvrés retire uniquement les samedis et les dimanches. Les jours
+      fériés varient trop d’un pays et d’une région à l’autre pour figurer sur une seule page :
+      vérifiez votre calendrier local.
+    </dd>
+    <dt>La deuxième date peut-elle être antérieure à la première ?</dt>
+    <dd>Oui. La page les inverse simplement et compte la même période. Le résultat est toujours positif.</dd>
+  </dl>
+
+  <p class="meta">Méthode : journées calendaires entières entre les deux dates, comptées sur le calendrier UTC pour que le changement d’heure n’ajoute ni ne retire jamais un jour. Page vérifiée pour la dernière fois le 13 novembre 2026.</p>
+
+  <script>
+    const sEl = document.getElementById('start');
+    const eEl = document.getElementById('end');
+    const wEl = document.getElementById('workdays');
+    const out = document.getElementById('out');
+
+    function compute() {
+      const s = sEl.valueAsDate;
+      const e = eEl.valueAsDate;
+      if (!s || !e) {
+        out.innerHTML = '<p class="result-note">Choisissez deux dates et le compte apparaîtra ici.</p>';
+        return;
+      }
+      const a = Date.UTC(s.getFullYear(), s.getMonth(), s.getDate());
+      const b = Date.UTC(e.getFullYear(), e.getMonth(), e.getDate());
+      const lo = Math.min(a, b);
+      const hi = Math.max(a, b);
+      const days = Math.round((hi - lo) / 86400000);
+      const fmt = (n) => n.toLocaleString('fr-FR');
+      if (!wEl.checked) {
+        const weeks = Math.floor(days / 7);
+        const rem = days % 7;
+        out.innerHTML =
+          '<p class="result-figure">' + fmt(days) + ' jours</p>' +
+          '<p>Cela fait ' + fmt(weeks) + ' semaine' + (weeks === 1 ? '' : 's') + ' complète' + (weeks === 1 ? '' : 's') + ' et ' + rem + ' jour' + (rem === 1 ? '' : 's') + ' supplémentaire' + (rem === 1 ? '' : 's') + ', ou ' +
+          fmt(days * 24) + ' heures, si vous préférez compter en heures.</p>';
+        return;
+      }
+      let work = 0;
+      for (let t = lo + 86400000; t <= hi; t += 86400000) {
+        const dow = new Date(t).getUTCDay();
+        if (dow >= 1 && dow <= 5) work += 1;
+      }
+      out.innerHTML =
+        '<p class="result-figure">' + fmt(work) + ' jours ouvrés</p>' +
+        '<p>La période complète compte ' + fmt(days) + ' jours calendaires, dont ' + fmt(work) +
+        ' tombent du lundi au vendredi. Les jours fériés ne sont pas retirés : vérifiez votre calendrier local.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    sEl.addEventListener('change', compute);
+    eEl.addEventListener('change', compute);
+    wEl.addEventListener('change', compute);
+  </script>
+</Base>

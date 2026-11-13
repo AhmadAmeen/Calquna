@@ -1,0 +1,142 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Sleep calculator: bedtimes that land on a full sleep cycle"
+  description="Pick the time you have to wake up and get bedtimes that give you complete 90 minute sleep cycles, so you surface at the end of one instead of in the middle."
+>
+  <h1>Sleep calculator</h1>
+  <p class="lede">
+    Sleep runs in cycles of about 90 minutes. Waking at the end of a cycle usually feels
+    easier than waking in the middle of one, even with the same total hours. Put in your wake
+    up time and this page counts backwards in cycles, adding 15 minutes to fall asleep.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="wake">I have to wake up at</label>
+        <input type="text" id="wake" inputmode="numeric" placeholder="06:30" value="06:30" />
+        <p class="result-note">24 hour clock, hours and minutes.</p>
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Count back the cycles</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Your bedtimes appear here.</p>
+    </div>
+  </div>
+
+  <h2>How the counting works</h2>
+  <p>
+    One full cycle of light sleep, deep sleep and dreaming takes about 90 minutes in most
+    adults, and a night holds four to six of them. The calculator subtracts whole cycles from
+    your wake time, then subtracts 15 more minutes, the average time people take to fall
+    asleep. Six cycles is 9 hours in bed by the clock. Five is 7 hours 45. The suggestion most
+    people land on is five or six cycles; three or four will get you through a short night but
+    you will feel it by afternoon.
+  </p>
+  <p>
+    Cycles are averages, not railway timetables. Yours may run 80 or 100 minutes, and stress,
+    alcohol, a new baby or a late coffee move them around. Treat the times here as a good
+    first guess, try one for a week, and shift it 15 minutes either way to find what suits
+    your own head.
+  </p>
+
+  <h2>One example, worked by hand</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Cycles</th><th scope="col">Sleep</th><th scope="col" class="num">In bed by</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>6 cycles</td><td>9 hours, plus 15 minutes to fall asleep</td><td class="num">21:15</td></tr>
+      <tr class="point"><td>5 cycles</td><td>7 hours 30, plus 15 minutes to fall asleep</td><td class="num">22:45</td></tr>
+      <tr><td>4 cycles</td><td>6 hours, plus 15 minutes to fall asleep</td><td class="num">00:15</td></tr>
+    </tbody>
+  </table>
+  <p>That is for a 06:30 alarm. The marked row, five cycles, is where most adults settle.</p>
+
+  <h2>How much sleep, by age</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Age</th><th scope="col" class="num">Recommended</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Teenagers, 13 to 17</td><td class="num">8 to 10 hours</td></tr>
+      <tr><td>Adults, 18 to 64</td><td class="num">7 to 9 hours</td></tr>
+      <tr><td>Adults, 65 and over</td><td class="num">7 to 8 hours</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Those ranges are the CDC’s, summarising the American Academy of Sleep Medicine and the
+    Sleep Research Society. Needing an alarm to wake, and falling asleep within minutes of
+    sitting down in the evening, are both signs the night is too short, whatever the table says.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>Is 6 hours enough if it is four full cycles?</dt>
+    <dd>
+      For one night, you will function. As a habit, no: the recommendation for adults starts
+      at 7 hours, and the last cycles of a longer night hold most of the dreaming sleep. Four
+      cycles is a short-night tactic, not a routine.
+    </dd>
+    <dt>Why do I still feel rough after 8 hours?</dt>
+    <dd>
+      Timing is only one part of it. Light in the room, a hot bedroom, alcohol in the evening,
+      and sleep apnoea all break sleep up from inside. If loud snoring or gasping is part of
+      your nights, that is a doctor question, not a calculator question.
+    </dd>
+    <dt>Should I count from when I get into bed or when I fall asleep?</dt>
+    <dd>
+      From falling asleep, which is why the page takes 15 minutes off the top. If you know you
+      take longer, get into bed that much earlier than the time printed here.
+    </dd>
+  </dl>
+
+  <p class="meta">Sources: CDC sleep recommendations; sleep cycle length as described by the American Academy of Sleep Medicine. Page last checked 13 November 2026.</p>
+
+  <script>
+    const wakeEl = document.getElementById('wake');
+    const out = document.getElementById('out');
+
+    function parseTime(v) {
+      const m = /^(\d{1,2})[:.](\d{2})$/.exec(v.trim());
+      if (!m) return null;
+      const h = parseInt(m[1], 10);
+      const min = parseInt(m[2], 10);
+      if (h > 23 || min > 59) return null;
+      return h * 60 + min;
+    }
+
+    function fmt(mins) {
+      const t = ((mins % 1440) + 1440) % 1440;
+      const h = Math.floor(t / 60);
+      const m = t % 60;
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+
+    function compute() {
+      const wake = parseTime(wakeEl.value);
+      if (wake === null) {
+        out.innerHTML = '<p class="result-note">Type the wake up time like 06:30 and the bedtimes appear here.</p>';
+        return;
+      }
+      const rows = [6, 5, 4, 3].map((cycles) => {
+        const sleep = cycles * 90;
+        const bed = wake - sleep - 15;
+        const hh = Math.floor(sleep / 60);
+        const mm = sleep % 60;
+        const cls = cycles === 5 ? ' class="point"' : '';
+        return '<tr' + cls + '><td>' + cycles + ' cycles</td><td>' + hh + ' hours' + (mm ? ' ' + mm + ' minutes' : '') + ' of sleep</td><td class="num">' + fmt(bed) + '</td></tr>';
+      }).join('');
+      out.innerHTML =
+        '<p class="result-figure">In bed by ' + fmt(wake - 5 * 90 - 15) + '</p>' +
+        '<p>That is five full cycles before a ' + fmt(wake) + ' alarm, counting 15 minutes to fall asleep. The other options:</p>' +
+        '<table><thead><tr><th scope="col">Cycles</th><th scope="col">Sleep</th><th scope="col" class="num">In bed by</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

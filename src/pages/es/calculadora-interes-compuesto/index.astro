@@ -1,0 +1,130 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Calculadora de interés compuesto: hasta cuánto crece el ahorro y la inversión"
+  description="Calcula hasta cuánto crece una cantidad inicial y las aportaciones mensuales con un tipo de interés dado, año a año, con lo aportado y los intereses por separado."
+  lang="es"
+  altEn="/compound-interest-calculator/"
+  altEs="/es/calculadora-interes-compuesto/"
+  altFr="/fr/calculateur-interets-composes/"
+>
+  <h1>Calculadora de interés compuesto</h1>
+  <p class="lede">
+    El dinero que se deja quieto gana intereses sobre sus intereses. Esa segunda parte, el
+    interés sobre el interés, es lo que cuenta esta página. Escribe una cantidad inicial, una
+    aportación mensual si la haces, un tipo de interés y un número de años, y obtendrás la
+    cifra final con el crecimiento mostrado año a año.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="principal">Cantidad inicial</label>
+        <input type="number" id="principal" inputmode="decimal" min="0" step="any" value="10000" />
+      </div>
+      <div>
+        <label for="monthly">Aportación mensual</label>
+        <input type="number" id="monthly" inputmode="decimal" min="0" step="any" value="200" />
+      </div>
+      <div>
+        <label for="rate">Tipo de interés anual (%)</label>
+        <input type="number" id="rate" inputmode="decimal" min="0" max="100" step="any" value="7" />
+      </div>
+      <div>
+        <label for="years">Años</label>
+        <input type="number" id="years" inputmode="numeric" min="1" max="60" step="1" value="10" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Calcular el crecimiento</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Esto es aritmética, no una previsión ni asesoramiento financiero. Las inversiones reales
+      suben y bajan, cobran comisiones y pagan impuestos. Las cuentas de ahorro pagan lo que
+      pagan, y el tipo cambia. Toma el resultado como lo que harían los números si el tipo se
+      mantuviera fijo, cosa que no ocurrirá.
+    </p>
+  </div>
+
+  <h2>La fórmula</h2>
+  <p>
+    Para una cantidad inicial: A = P × (1 + r/n)<sup>nt</sup>, donde P es la cantidad inicial,
+    r el tipo anual expresado en decimal, n el número de veces al año que se añaden los
+    intereses (12 si es mensual) y t los años. Las aportaciones mensuales tienen la misma forma
+    sumadas: cada aportación genera intereses durante los meses que permanece, lo que equivale
+    a aportación × [((1 + r/n)<sup>nt</sup> − 1) ÷ (r/n)]. Esta página capitaliza cada mes, como
+    hacen la mayoría de las cuentas de ahorro y las proyecciones de inversión.
+  </p>
+
+  <h2>Un ejemplo, calculado paso a paso</h2>
+  <p>
+    Empieza con 10.000 al 7 % anual durante 10 años, sin añadir nada: 10.000 × (1 + 0,07/12)<sup>120</sup>
+    = <strong>20.096,61</strong>. El dinero prácticamente se duplica, y solo la mitad de esos
+    segundos 10.000 corresponde a intereses sobre la cantidad inicial, dicho en términos
+    simples. Añade 200 al mes y las aportaciones crecen hasta 34.616,96 por sí solas. En total:
+    aportas 34.000 en la década y terminas con <strong>54.713,58</strong>, de los que 20.713,58
+    son intereses. Esa diferencia, que los intereses sean más de la mitad de lo que pusiste, es
+    la razón de empezar pronto.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Qué tipo de interés debo poner?</dt>
+    <dd>
+      Para una cuenta de ahorro, el tipo de la cuenta. Para invertir en bolsa a largo plazo,
+      mucha gente prueba con un 5 % a un 8 % anual antes de la inflación, porque ese intervalo
+      recoge la media histórica a largo plazo de muchos mercados, pero llega a trompicones,
+      nunca como una línea recta. Quien te prometa un tipo alto y fijo está vendiendo algo.
+    </dd>
+    <dt>¿Por qué los intereses de los últimos años son mucho mayores?</dt>
+    <dd>
+      Porque la cantidad sobre la que se calculan no deja de crecer. El primer año, el 7 % de
+      10.000 son 700. En el año diez del ejemplo anterior la cantidad ronda los 50.000, así que
+      un año de crecimiento supera los 3.000. El tipo nunca cambió. La base, sí.
+    </dd>
+    <dt>¿Incluye la inflación o los impuestos?</dt>
+    <dd>
+      No. Para pensarlo en términos reales, un método aproximado es usar un tipo de 2 a 3
+      puntos menos, que hace las veces de inflación. Los impuestos dependen de la cuenta y del
+      país, y ninguna calculadora puede conocer los tuyos.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: fórmula estándar del interés compuesto, capitalización mensual, aportaciones a fin de mes. Página revisada el 13 de noviembre de 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    function compute() {
+      const P = parseFloat($('principal').value) || 0;
+      const pmt = parseFloat($('monthly').value) || 0;
+      const rate = (parseFloat($('rate').value) || 0) / 100;
+      const years = Math.min(60, Math.max(1, parseInt($('years').value, 10) || 1));
+      const r = rate / 12;
+      let rows = '';
+      for (let y = 1; y <= years; y++) {
+        const n = y * 12;
+        const lump = P * Math.pow(1 + r, n);
+        const deps = r === 0 ? pmt * n : pmt * ((Math.pow(1 + r, n) - 1) / r);
+        const total = lump + deps;
+        const paid = P + pmt * n;
+        rows += '<tr' + (y === years ? ' class="point"' : '') + '><td>Año ' + y + '</td><td class="num">' + money(paid) + '</td><td class="num">' + money(total - paid) + '</td><td class="num">' + money(total) + '</td></tr>';
+      }
+      const n = years * 12;
+      const lump = P * Math.pow(1 + r, n);
+      const deps = r === 0 ? pmt * n : pmt * ((Math.pow(1 + r, n) - 1) / r);
+      const total = lump + deps;
+      const paid = P + pmt * n;
+      out.innerHTML =
+        '<p class="result-figure">' + money(total) + '</p>' +
+        '<p>Has aportado ' + money(paid) + '. Los intereses suman ' + money(total - paid) + '. Así va la cantidad al final de cada año:</p>' +
+        '<table><thead><tr><th scope="col">Año</th><th scope="col" class="num">Aportado</th><th scope="col" class="num">Intereses hasta ahora</th><th scope="col" class="num">Total</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

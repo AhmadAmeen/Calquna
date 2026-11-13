@@ -1,0 +1,100 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="es"
+  altEn="/word-counter/"
+  altEs="/es/contador-de-palabras/"
+  altFr="/fr/compteur-de-mots/"
+  title="Contador de palabras: palabras, caracteres, frases y tiempo de lectura"
+  description="Pega cualquier texto y obtén el número de palabras, los caracteres, las frases, los párrafos y cuánto se tarda en leerlo. El texto no sale de la página, no se sube a ningún sitio."
+>
+  <h1>Contador de palabras</h1>
+  <p class="lede">
+    Pega tu texto aquí abajo. Los conteos se actualizan mientras escribes. Sirve para
+    comprobar el límite de un trabajo escolar, la extensión de un capítulo o si una charla
+    cabe en el tiempo que le han asignado.
+  </p>
+
+  <div class="sheet">
+    <label for="text">Tu texto</label>
+    <textarea id="text" placeholder="Empieza a escribir, o pega un texto."></textarea>
+    <table>
+      <tbody>
+        <tr><td>Palabras</td><td class="num" id="words">0</td></tr>
+        <tr><td>Caracteres</td><td class="num" id="chars">0</td></tr>
+        <tr><td>Caracteres sin espacios</td><td class="num" id="charsns">0</td></tr>
+        <tr><td>Frases</td><td class="num" id="sentences">0</td></tr>
+        <tr><td>Párrafos</td><td class="num" id="paras">0</td></tr>
+        <tr><td>Tiempo de lectura</td><td class="num" id="reading">0 min</td></tr>
+        <tr><td>Tiempo al hablar</td><td class="num" id="speaking">0 min</td></tr>
+      </tbody>
+    </table>
+    <p class="result-note">Nada de lo que pegas aquí se envía a ningún sitio. Cierras la pestaña y desaparece.</p>
+  </div>
+
+  <h2>Qué cuenta como palabra</h2>
+  <p>
+    Una palabra es cualquier cadena de caracteres separada por espacios, la misma regla que
+    usa tu procesador de textos. «Físico-químico» cuenta como una sola palabra, porque no
+    lleva espacios. Un número cuenta como palabra. Una fila de guiones sin ninguna letra no cuenta.
+    Si tu centro o tu editorial cuenta de otra manera, manda su número, pero esta es la regla
+    con la que trabaja casi todo el mundo.
+  </p>
+  <p>
+    El tiempo de lectura usa 200 palabras por minuto, el centro del intervalo medido en
+    adultos que leen prosa normal en silencio. El tiempo al hablar usa 130 palabras por
+    minuto, un ritmo cómodo para leer en voz alta que deja margen para respirar. Una charla
+    de 10 minutos, con esa medida, son unas 1.300 palabras, algo que suele sorprender a quien
+    habla en público por primera vez.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿El conteo incluye el título y los encabezados?</dt>
+    <dd>Cuenta todo lo que hay en el cuadro, títulos incluidos. Si tu límite los deja fuera, cuenta el cuerpo por separado.</dd>
+    <dt>¿Por qué mi procesador de textos da otro número?</dt>
+    <dd>
+      Casi siempre por las palabras con guion, los números o el texto de tablas y notas al pie.
+      Diferencias de unas pocas palabras son normales. Diferencias de cientos significan que
+      uno de los dos está contando algo de más, a menudo la bibliografía.
+    </dd>
+    <dt>¿Mi texto es privado?</dt>
+    <dd>Sí. El conteo lo hace un pequeño script en esta misma página. No hay subida ni se guarda nada.</dd>
+  </dl>
+
+  <p class="meta">Método: división por espacios en blanco, compatible con Unicode. Velocidad de lectura, 200 palabras por minuto; al hablar, 130. Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    const ta = document.getElementById('text');
+    const set = (id, v) => { document.getElementById(id).textContent = v; };
+    const fmt = (n) => n.toLocaleString('es-ES');
+
+    function timeText(words, perMin) {
+      if (!words) return '0 min';
+      const mins = words / perMin;
+      if (mins < 1) return 'menos de 1 min';
+      return Math.round(mins) + ' min';
+    }
+
+    function update() {
+      const text = ta.value;
+      const words = (text.match(/\S+/g) || []).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+      const chars = [...text].length;
+      const charsNs = [...text.replace(/\s/g, '')].length;
+      const sentences = (text.match(/[.!?]+(?=\s|$)/g) || []).length;
+      const paras = text.trim() ? text.trim().split(/\n\s*\n/).length : 0;
+      set('words', fmt(words));
+      set('chars', fmt(chars));
+      set('charsns', fmt(charsNs));
+      set('sentences', fmt(sentences));
+      set('paras', fmt(paras));
+      set('reading', timeText(words, 200));
+      set('speaking', timeText(words, 130));
+    }
+
+    ta.addEventListener('input', update);
+    update();
+  </script>
+</Base>

@@ -1,0 +1,129 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="es"
+  altEn="/days-between-dates/"
+  altEs="/es/dias-entre-fechas/"
+  altFr="/fr/jours-entre-dates/"
+  title="Días entre fechas: cuenta días y días laborables entre dos fechas"
+  description="Cuenta los días entre dos fechas cualesquiera, y los días laborables una vez descontados los fines de semana. Útil para plazos, preavisos y cuentas atrás."
+>
+  <h1>Días entre fechas</h1>
+  <p class="lede">
+    Dos fechas, una resta. Esta página cuenta los días de calendario entre ambas y, si marcas
+    la casilla, solo los días de lunes a viernes que hay en medio.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="start">Primera fecha</label>
+        <input type="date" id="start" />
+      </div>
+      <div>
+        <label for="end">Segunda fecha</label>
+        <input type="date" id="end" />
+      </div>
+    </div>
+    <p>
+      <label style="display:inline-flex;gap:0.5rem;align-items:center;color:var(--color-ink-2);">
+        <input type="checkbox" id="workdays" /> Contar solo los días laborables (de lunes a viernes)
+      </label>
+    </p>
+    <button class="btn btn--primary" id="calc" type="button">Contar los días</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Elige dos fechas y el conteo aparecerá aquí.</p>
+    </div>
+  </div>
+
+  <h2>Qué cuenta como día aquí</h2>
+  <p>
+    El conteo es el número de días completos que hay que esperar desde la primera fecha para
+    llegar a la segunda. No cuenta el propio día inicial. Así, del 1 de enero al 2 de enero
+    hay un día, no dos. Es la forma en que se escriben los plazos de preaviso, los contratos
+    de alquiler y la mayoría de las fechas límite, y por eso esta página cuenta así.
+  </p>
+  <p>
+    Si necesitas que el conteo incluya el primer y el último día, suma uno al resultado.
+    Mucha gente lo necesita así para las noches de hotel y las reservas de vacaciones, y
+    ninguna de las dos formas está mal: son preguntas distintas.
+  </p>
+
+  <h2>Un ejemplo, resuelto a mano</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Periodo</th><th scope="col">Cálculo</th><th scope="col" class="num">Días</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Del 1 de enero de 2026 al 13 de noviembre de 2026</td><td>Del día 1 del año al día 317</td><td class="num">316</td></tr>
+      <tr><td>El mismo periodo, sin fines de semana</td><td>45 semanas completas, más los días extra</td><td class="num">226</td></tr>
+      <tr class="point"><td>Del 1 de enero de 2026 al 1 de enero de 2027</td><td>Un año normal, no bisiesto</td><td class="num">365</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Cuenta el primer día?</dt>
+    <dd>
+      No. Cuenta los días entre las dos fechas, así que el primer día es el día cero. Suma
+      uno al resultado si tu formulario o tu reserva cuentan ambos extremos.
+    </dd>
+    <dt>¿Y los días festivos?</dt>
+    <dd>
+      El conteo de días laborables quita solo los sábados y los domingos. Los festivos varían
+      demasiado de un país y una región a otro para meterlos en una sola página, así que
+      consulta tu calendario local para eso.
+    </dd>
+    <dt>¿Puede la segunda fecha ser anterior a la primera?</dt>
+    <dd>Sí. La página las intercambia y cuenta el mismo periodo. El resultado siempre es positivo.</dd>
+  </dl>
+
+  <p class="meta">Método: días completos de calendario entre las dos fechas, contados en el calendario UTC para que el horario de verano nunca añada ni quite un día. Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    const sEl = document.getElementById('start');
+    const eEl = document.getElementById('end');
+    const wEl = document.getElementById('workdays');
+    const out = document.getElementById('out');
+
+    function compute() {
+      const s = sEl.valueAsDate;
+      const e = eEl.valueAsDate;
+      if (!s || !e) {
+        out.innerHTML = '<p class="result-note">Elige dos fechas y el conteo aparecerá aquí.</p>';
+        return;
+      }
+      const a = Date.UTC(s.getFullYear(), s.getMonth(), s.getDate());
+      const b = Date.UTC(e.getFullYear(), e.getMonth(), e.getDate());
+      const lo = Math.min(a, b);
+      const hi = Math.max(a, b);
+      const days = Math.round((hi - lo) / 86400000);
+      const fmt = (n) => n.toLocaleString('es-ES');
+      if (!wEl.checked) {
+        const weeks = Math.floor(days / 7);
+        const rem = days % 7;
+        out.innerHTML =
+          '<p class="result-figure">' + fmt(days) + ' días</p>' +
+          '<p>Eso equivale a ' + fmt(weeks) + ' semana' + (weeks === 1 ? '' : 's') + ' completa' + (weeks === 1 ? '' : 's') + ' y ' + rem + ' día' + (rem === 1 ? '' : 's') + ' extra, o ' +
+          fmt(days * 24) + ' horas si estás en cuenta atrás para algo.</p>';
+        return;
+      }
+      let work = 0;
+      for (let t = lo + 86400000; t <= hi; t += 86400000) {
+        const dow = new Date(t).getUTCDay();
+        if (dow >= 1 && dow <= 5) work += 1;
+      }
+      out.innerHTML =
+        '<p class="result-figure">' + fmt(work) + ' días laborables</p>' +
+        '<p>El periodo completo es de ' + fmt(days) + ' días de calendario, de los cuales ' + fmt(work) +
+        ' caen entre lunes y viernes. Los días festivos no se descuentan; consulta tu calendario local para eso.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    sEl.addEventListener('change', compute);
+    eEl.addEventListener('change', compute);
+    wEl.addEventListener('change', compute);
+  </script>
+</Base>

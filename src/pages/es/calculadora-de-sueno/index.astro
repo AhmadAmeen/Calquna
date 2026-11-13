@@ -1,0 +1,149 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="es"
+  altEn="/sleep-calculator/"
+  altEs="/es/calculadora-de-sueno/"
+  altFr="/fr/calculateur-de-sommeil/"
+  title="Calculadora de sueño: horas de acostarse que caen en un ciclo completo"
+  description="Indica a qué hora tienes que levantarte y obtén las horas de acostarte que te dan ciclos de sueño completos de 90 minutos, para despertar al final de uno y no en mitad de otro."
+>
+  <h1>Calculadora de sueño</h1>
+  <p class="lede">
+    El sueño avanza en ciclos de unos 90 minutos. Despertar al final de un ciclo suele costar
+    menos que despertar en mitad de uno, aunque el total de horas sea el mismo. Introduce la
+    hora a la que tienes que levantarte y esta página cuenta hacia atrás en ciclos, sumando
+    15 minutos para conciliar el sueño.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="wake">Tengo que levantarme a las</label>
+        <input type="text" id="wake" inputmode="numeric" placeholder="06:30" value="06:30" />
+        <p class="result-note">Reloj de 24 horas, horas y minutos.</p>
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Contar los ciclos hacia atrás</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Tus horas de acostarte aparecen aquí.</p>
+    </div>
+  </div>
+
+  <h2>Cómo funciona el cálculo</h2>
+  <p>
+    Un ciclo completo de sueño ligero, sueño profundo y fase de sueños dura unos 90 minutos
+    en la mayoría de los adultos, y una noche contiene entre cuatro y seis. La calculadora
+    resta ciclos enteros de tu hora de despertar y después resta 15 minutos más, el tiempo
+    medio que se tarda en conciliar el sueño. Seis ciclos son 9 horas en la cama según el
+    reloj. Cinco son 7 horas 45. La opción que más se usa es la de cinco o seis ciclos; tres
+    o cuatro te sacan de una noche corta, pero lo notas por la tarde.
+  </p>
+  <p>
+    Los ciclos son medias, no horarios de tren. Los tuyos pueden durar 80 o 100 minutos, y el
+    estrés, el alcohol, un bebé recién nacido o un café tardío los alteran. Toma estas horas
+    como una buena primera aproximación, prueba una durante una semana y muévela 15 minutos
+    en un sentido u otro hasta dar con la que te funciona.
+  </p>
+
+  <h2>Un ejemplo, calculado a mano</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Ciclos</th><th scope="col">Sueño</th><th scope="col" class="num">A la cama a las</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>6 ciclos</td><td>9 horas, más 15 minutos para conciliar el sueño</td><td class="num">21:15</td></tr>
+      <tr class="point"><td>5 ciclos</td><td>7 horas 30, más 15 minutos para conciliar el sueño</td><td class="num">22:45</td></tr>
+      <tr><td>4 ciclos</td><td>6 horas, más 15 minutos para conciliar el sueño</td><td class="num">00:15</td></tr>
+    </tbody>
+  </table>
+  <p>Esto es para un despertador a las 06:30. La fila marcada, cinco ciclos, es donde se queda la mayoría de los adultos.</p>
+
+  <h2>Cuánto dormir, según la edad</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Edad</th><th scope="col" class="num">Recomendado</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Adolescentes, 13 a 17</td><td class="num">8 a 10 horas</td></tr>
+      <tr><td>Adultos, 18 a 64</td><td class="num">7 a 9 horas</td></tr>
+      <tr><td>Adultos, 65 o más</td><td class="num">7 a 8 horas</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Esos intervalos son los de los CDC, que resumen los de la Academia Estadounidense de
+    Medicina del Sueño y la Sociedad de Investigación del Sueño. Necesitar un despertador
+    para despertar, y quedarte dormido a los pocos minutos de sentarte por la noche, son dos
+    señales de que la noche se queda corta, diga lo que diga la tabla.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Bastan 6 horas si son cuatro ciclos completos?</dt>
+    <dd>
+      Para una noche, funcionas. Como costumbre, no: la recomendación para adultos empieza en
+      7 horas, y los últimos ciclos de una noche más larga concentran la mayor parte de la
+      fase de sueños. Cuatro ciclos es una táctica para noches cortas, no una rutina.
+    </dd>
+    <dt>¿Por qué sigo levantándome mal después de 8 horas?</dt>
+    <dd>
+      El horario es solo una parte. La luz en la habitación, un dormitorio caluroso, el
+      alcohol por la noche y la apnea del sueño rompen el sueño desde dentro. Si tus noches
+      incluyen ronquidos fuertes o pausas al respirar, eso es una pregunta para el médico, no
+      para una calculadora.
+    </dd>
+    <dt>¿Cuento desde que me meto en la cama o desde que me duermo?</dt>
+    <dd>
+      Desde que te duermes, y por eso la página quita 15 minutos desde el principio. Si sabes
+      que tardas más, métete en la cama ese rato antes de la hora que aparece aquí.
+    </dd>
+  </dl>
+
+  <p class="meta">Fuentes: recomendaciones de sueño de los CDC; duración del ciclo de sueño según la Academia Estadounidense de Medicina del Sueño. Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    const wakeEl = document.getElementById('wake');
+    const out = document.getElementById('out');
+
+    function parseTime(v) {
+      const m = /^(\d{1,2})[:.](\d{2})$/.exec(v.trim());
+      if (!m) return null;
+      const h = parseInt(m[1], 10);
+      const min = parseInt(m[2], 10);
+      if (h > 23 || min > 59) return null;
+      return h * 60 + min;
+    }
+
+    function fmt(mins) {
+      const t = ((mins % 1440) + 1440) % 1440;
+      const h = Math.floor(t / 60);
+      const m = t % 60;
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+
+    function compute() {
+      const wake = parseTime(wakeEl.value);
+      if (wake === null) {
+        out.innerHTML = '<p class="result-note">Escribe la hora de levantarte, por ejemplo 06:30, y las horas de acostarte aparecen aquí.</p>';
+        return;
+      }
+      const rows = [6, 5, 4, 3].map((cycles) => {
+        const sleep = cycles * 90;
+        const bed = wake - sleep - 15;
+        const hh = Math.floor(sleep / 60);
+        const mm = sleep % 60;
+        const cls = cycles === 5 ? ' class="point"' : '';
+        return '<tr' + cls + '><td>' + cycles + ' ciclos</td><td>' + hh + ' horas' + (mm ? ' ' + mm + ' minutos' : '') + ' de sueño</td><td class="num">' + fmt(bed) + '</td></tr>';
+      }).join('');
+      out.innerHTML =
+        '<p class="result-figure">A la cama a las ' + fmt(wake - 5 * 90 - 15) + '</p>' +
+        '<p>Son cinco ciclos completos antes de un despertador a las ' + fmt(wake) + ', contando 15 minutos para conciliar el sueño. Las demás opciones:</p>' +
+        '<table><thead><tr><th scope="col">Ciclos</th><th scope="col">Sueño</th><th scope="col" class="num">A la cama a las</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

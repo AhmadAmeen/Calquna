@@ -1,0 +1,201 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Quién no me sigue en Instagram: comprueba quién no te sigue de vuelta, en privado"
+  description="Descubre a quién sigues que no te sigue de vuelta usando tu propia exportación de datos de Instagram. El archivo se lee dentro de tu navegador y nunca se sube: sin iniciar sesión y sin contraseña."
+  lang="es"
+  altEn="/instagram-unfollowers-checker/"
+  altEs="/es/quien-no-me-sigue-en-instagram/"
+  altFr="/fr/qui-ne-me-suit-pas-sur-instagram/"
+>
+  <h1>Quién no me sigue en Instagram</h1>
+  <p class="lede">
+    Todos los demás comprobadores quieren tu contraseña de Instagram. Este no. Lee la
+    exportación de datos que el propio Instagram te da, dentro de tu navegador, y compara las
+    dos listas. El archivo nunca sale de tu dispositivo. Aquí no hay nada en lo que iniciar
+    sesión.
+  </p>
+
+  <div class="sheet">
+    <h2 style="margin-top:0;">Los tres pasos</h2>
+    <p>
+      <strong>1.</strong> En Instagram, ve a Configuración, luego a Centro de cuentas, luego
+      a «Tu información y permisos» y luego a «Descargar tu información». Pide las listas de
+      seguidores y seguidos, en formato <strong>JSON</strong>, con el intervalo de fechas más
+      corto que cubra el presente. Llega como un archivo ZIP, normalmente en menos de un día.
+    </p>
+    <p>
+      <strong>2.</strong> Elige ese ZIP aquí. <strong>3.</strong> Lee las listas. Eso es
+      todo. Si en una página como esta aparecen alguna vez las palabras «sube tu archivo a
+      nuestro servidor», ciérrala. En esta página la lectura ocurre abajo, en tu navegador.
+    </p>
+    <label for="zip">Tu exportación de Instagram (archivo ZIP)</label>
+    <input type="file" id="zip" accept=".zip,application/zip" />
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Todavía no has elegido ningún archivo. No se ha enviado nada a ningún sitio, ni se enviará.</p>
+    </div>
+  </div>
+
+  <h2>Lo que una exportación puede decirte y lo que no</h2>
+  <p>
+    Conviene ser precisos en esto, porque la mayoría de las páginas de este rincón de
+    internet no lo son. Una exportación muestra quién te sigue hoy y a quién sigues hoy. Al
+    compararlas sabes quién <strong>no te sigue de vuelta</strong>. No puede decirte quién te
+    dejó de seguir el martes pasado, porque en el archivo no queda registrado cuándo se fue
+    nadie.
+  </p>
+  <p>
+    Para pillar a los que de verdad te dejan de seguir necesitas dos exportaciones en dos
+    momentos. Esta página guarda una referencia, la lista de seguidores de tu última visita,
+    almacenada solo en tu propio navegador. Trae una exportación nueva el mes que viene y
+    nombrará las cuentas que te seguían entonces y ya no. Esa es la versión honesta de esta
+    función, y aquí es gratis, porque hacerla bien no cuesta nada.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Puede Instagram bloquearme por usar esto?</dt>
+    <dd>
+      No hay nada que bloquear. Estás leyendo tu propio archivo de datos en tu propio
+      dispositivo. Las herramientas por las que sí caen cuentas son las que reciben tu
+      contraseña, entran como si fueras tú y raspan datos. No des nunca tu contraseña de
+      Instagram a ninguna web ni aplicación a cambio de una lista de seguidores. Y activa la
+      verificación en dos pasos ahora que estás pensando en ello.
+    </dd>
+    <dt>¿Por qué otros sitios dicen que muestran quién te dejó de seguir con un solo archivo?</dt>
+    <dd>
+      Porque «unfollowers» es la palabra que busca la gente. Lo que muestran es la lista de
+      quién no te sigue de vuelta, con otro nombre. Algunos además dicen que el análisis se
+      hace en local mientras suben tu archivo a su servidor sin hacer ruido. Puedes comprobar
+      cualquier página, también esta: apaga el wifi después de que cargue y sigue funcionando.
+    </dd>
+    <dt>¿Y si mi exportación está en HTML, no en JSON?</dt>
+    <dd>
+      Esta página también lee los archivos HTML, pero el JSON es lo que conviene pedir: pesa
+      menos y las listas salen más limpias. Si Instagram te dio carpetas de páginas HTML, los
+      resultados de aquí pueden perder cuentas que el JSON sí habría capturado.
+    </dd>
+    <dt>¿Qué se guarda, exactamente?</dt>
+    <dd>
+      Solo la referencia: una lista de nombres de usuario que te seguían, más la fecha,
+      guardada en el almacenamiento local de tu navegador en este dispositivo, para poder
+      comparar la siguiente exportación con ella. Nunca se transmite. Borra los datos de tu
+      navegador y desaparece, y la comparación simplemente vuelve a empezar con la siguiente
+      exportación.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: exportación de datos de Instagram analizada localmente con JSZip; seguidores comparados con seguidos como conjuntos. Página revisada por última vez el 13 de noviembre de 2026. Sin relación con Instagram ni con Meta.</p>
+
+  <script>
+    import JSZip from 'jszip';
+
+    const out = document.getElementById('out');
+    const BASE_KEY = 'calquna_ig_baseline';
+
+    function esc(s) {
+      return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function namesFromJson(data, into) {
+      const walk = (node) => {
+        if (!node || typeof node !== 'object') return;
+        if (Array.isArray(node)) { node.forEach(walk); return; }
+        if (Array.isArray(node.string_list_data)) {
+          for (const item of node.string_list_data) {
+            let name = item && item.value;
+            if (!name && item && item.href) name = item.href.split('/').filter(Boolean).pop();
+            if (name) into.add(String(name).toLowerCase());
+          }
+        }
+        Object.values(node).forEach(walk);
+      };
+      walk(data);
+    }
+
+    function namesFromHtml(text, into) {
+      const re = /instagram\.com\/([A-Za-z0-9._]+)/g;
+      let m;
+      while ((m = re.exec(text))) {
+        const name = m[1].toLowerCase();
+        if (!['p', 'reel', 'reels', 'stories', 'explore', 'accounts', 'direct'].includes(name)) into.add(name);
+      }
+    }
+
+    function listHtml(title, names, note) {
+      if (!names.length) return '<h3>' + title + '</h3><p>' + note + '</p>';
+      const items = names.map((n) => '<tr><td><a href="https://www.instagram.com/' + esc(n) + '/" target="_blank" rel="noopener">@' + esc(n) + '</a></td></tr>').join('');
+      return '<h3>' + title + ' (' + names.length + ')</h3><table><tbody>' + items + '</tbody></table>';
+    }
+
+    document.getElementById('zip').addEventListener('change', async (ev) => {
+      const file = ev.target.files[0];
+      if (!file) return;
+      out.innerHTML = '<p class="result-note">Leyendo el archivo aquí, en tu navegador…</p>';
+      try {
+        const zip = await JSZip.loadAsync(file);
+        const followers = new Set();
+        const following = new Set();
+        const pending = new Set();
+        let found = 0;
+        for (const path of Object.keys(zip.files)) {
+          if (zip.files[path].dir) continue;
+          const base = path.split('/').pop().toLowerCase();
+          let target = null;
+          if (base.includes('pending')) target = pending;
+          else if (base.startsWith('following')) target = following;
+          else if (base.startsWith('followers')) target = followers;
+          else continue;
+          found++;
+          const text = await zip.files[path].async('string');
+          if (base.endsWith('.json')) {
+            try { namesFromJson(JSON.parse(text), target); } catch { /* se omite un archivo que no sea JSON limpio */ }
+          } else if (base.endsWith('.html') || base.endsWith('.htm')) {
+            namesFromHtml(text, target);
+          }
+        }
+        if (!found || (!followers.size && !following.size)) {
+          out.innerHTML = '<p class="result-note">Ese ZIP no parece una exportación de seguidores de Instagram. Comprueba que la descarga incluía «Seguidores y seguidos» y, si puedes elegir, pídela otra vez en formato JSON.</p>';
+          return;
+        }
+        const notBack = [...following].filter((n) => !followers.has(n)).sort();
+        const fans = [...followers].filter((n) => !following.has(n)).sort();
+        const mutuals = [...followers].filter((n) => following.has(n)).length;
+
+        let html =
+          '<p class="result-figure">' + notBack.length + ' no te siguen de vuelta</p>' +
+          '<p>Sigues a ' + following.size + ' cuentas. ' + followers.size + ' cuentas te siguen. ' + mutuals + ' de ellas son mutuas.</p>';
+
+        let baselineNote = '';
+        try {
+          const saved = JSON.parse(localStorage.getItem(BASE_KEY) || 'null');
+          if (saved && Array.isArray(saved.followers) && saved.followers.length) {
+            const before = new Set(saved.followers);
+            const gone = [...before].filter((n) => !followers.has(n)).sort();
+            const gained = [...followers].filter((n) => !before.has(n)).length;
+            html += '<h3>Desde tu última exportación (' + esc(saved.date || '') + ')</h3>' +
+              '<p>' + gone.length + ' cuentas que te seguían entonces no están en esta exportación' + (gained ? ', y llegaron ' + gained + ' seguidores nuevos' : '') + '.</p>';
+            if (gone.length) {
+              html += '<table><tbody>' + gone.map((n) => '<tr><td>@' + esc(n) + '</td></tr>').join('') + '</tbody></table>';
+            }
+            baselineNote = 'Tu referencia se ha actualizado a esta exportación, así que la siguiente se comparará con hoy.';
+          } else {
+            baselineNote = 'Esta exportación ha quedado guardada como tu referencia en este navegador. Trae la siguiente exportación y esta página nombrará las cuentas que se fueron entre una y otra.';
+          }
+          localStorage.setItem(BASE_KEY, JSON.stringify({ date: new Date().toLocaleDateString('es-ES'), followers: [...followers] }));
+        } catch {
+          baselineNote = 'Tu navegador no quiso guardar la referencia, así que la comparación con la vez anterior está desactivada por ahora. Todo lo demás de arriba sigue en pie.';
+        }
+        html += '<p class="result-note">' + baselineNote + '</p>';
+        html += listHtml('No te sigue de vuelta', notBack, 'Todos los que sigues te siguen de vuelta.');
+        html += listHtml('Fans: te siguen y tú no los sigues', fans, 'Ningún fan de un solo lado. Sigues de vuelta a todos los que te siguen.');
+        if (pending.size) html += listHtml('Solicitudes de seguimiento que enviaste y siguen pendientes', [...pending].sort(), '');
+        out.innerHTML = html;
+      } catch {
+        out.innerHTML = '<p class="result-note">Ese archivo no se pudo leer como ZIP. Si Instagram te envió una carpeta en su lugar, comprímela primero en un ZIP y vuelve a intentarlo.</p>';
+      }
+    });
+  </script>
+</Base>

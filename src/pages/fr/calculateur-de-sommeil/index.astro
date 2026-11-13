@@ -1,0 +1,153 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/sleep-calculator/"
+  altEs="/es/calculadora-de-sueno/"
+  altFr="/fr/calculateur-de-sommeil/"
+  title="Calculateur de sommeil : des heures de coucher qui tombent sur un cycle complet"
+  description="Choisissez l’heure à laquelle vous devez vous lever et obtenez des heures de coucher qui vous donnent des cycles de sommeil complets de 90 minutes, pour émerger à la fin d’un cycle plutôt qu’en plein milieu."
+>
+  <h1>Calculateur de sommeil</h1>
+  <p class="lede">
+    Le sommeil fonctionne par cycles d’environ 90 minutes. Se réveiller à la fin d’un cycle
+    est en général plus facile qu’en plein milieu, même avec le même nombre total d’heures.
+    Indiquez votre heure de réveil et cette page compte à rebours en cycles, en ajoutant 15
+    minutes pour vous endormir.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="wake">Je dois me lever à</label>
+        <input type="text" id="wake" inputmode="numeric" placeholder="06:30" value="06:30" />
+        <p class="result-note">Horloge de 24 heures, heures et minutes.</p>
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Compter les cycles à rebours</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Vos heures de coucher s’affichent ici.</p>
+    </div>
+  </div>
+
+  <h2>Comment le calcul fonctionne</h2>
+  <p>
+    Un cycle complet de sommeil léger, de sommeil profond et de rêves dure environ 90 minutes
+    chez la plupart des adultes, et une nuit en compte quatre à six. Le calculateur retire des
+    cycles entiers de votre heure de réveil, puis retire encore 15 minutes, le temps moyen que
+    les gens mettent à s’endormir. Six cycles font 9 heures au lit à l’horloge. Cinq cycles
+    font 7 heures 45. Le choix sur lequel la plupart des gens finissent par s’arrêter est cinq
+    ou six cycles ; trois ou quatre vous feront tenir le coup après une courte nuit, mais vous
+    le sentirez dès l’après-midi.
+  </p>
+  <p>
+    Les cycles sont des moyennes, pas des horaires de train. Les vôtres peuvent durer 80 ou
+    100 minutes, et le stress, l’alcool, un nouveau-né ou un café tardif les déplacent. Prenez
+    les heures ici comme une bonne première estimation, essayez-en une pendant une semaine, et
+    décalez-la de 15 minutes dans un sens ou dans l’autre pour trouver ce qui convient à votre
+    propre tête.
+  </p>
+
+  <h2>Un exemple, calculé à la main</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Cycles</th><th scope="col">Sommeil</th><th scope="col" class="num">Au lit pour</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>6 cycles</td><td>9 heures, plus 15 minutes pour s’endormir</td><td class="num">21:15</td></tr>
+      <tr class="point"><td>5 cycles</td><td>7 heures 30, plus 15 minutes pour s’endormir</td><td class="num">22:45</td></tr>
+      <tr><td>4 cycles</td><td>6 heures, plus 15 minutes pour s’endormir</td><td class="num">00:15</td></tr>
+    </tbody>
+  </table>
+  <p>C’est pour un réveil à 06:30. La ligne marquée, cinq cycles, est celle où la plupart des adultes finissent par s’arrêter.</p>
+
+  <h2>Combien de sommeil, selon l’âge</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Âge</th><th scope="col" class="num">Recommandé</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Adolescents, 13 à 17 ans</td><td class="num">8 à 10 heures</td></tr>
+      <tr><td>Adultes, 18 à 64 ans</td><td class="num">7 à 9 heures</td></tr>
+      <tr><td>Adultes, 65 ans et plus</td><td class="num">7 à 8 heures</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Ces fourchettes sont celles des CDC, qui résument l’American Academy of Sleep Medicine et
+    la Sleep Research Society. Avoir besoin d’un réveil pour émerger, et s’endormir en
+    quelques minutes dès qu’on s’assoit le soir, sont deux signes que la nuit est trop courte,
+    quoi que dise le tableau.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>6 heures suffisent-elles si ce sont quatre cycles complets ?</dt>
+    <dd>
+      Pour une nuit, vous fonctionnerez. Comme habitude, non : la recommandation pour les
+      adultes commence à 7 heures, et les derniers cycles d’une nuit plus longue contiennent
+      la majeure partie du sommeil des rêves. Quatre cycles sont une tactique de courte nuit,
+      pas une routine.
+    </dd>
+    <dt>Pourquoi suis-je encore épuisé après 8 heures ?</dt>
+    <dd>
+      L’horaire n’en est qu’une partie. La lumière dans la chambre, une pièce trop chaude,
+      l’alcool le soir et l’apnée du sommeil fragmentent le sommeil de l’intérieur. Si des
+      ronflements sonores ou des reprises de souffle font partie de vos nuits, c’est une
+      question pour un médecin, pas pour un calculateur.
+    </dd>
+    <dt>Dois-je compter à partir du moment où je me couche ou où je m’endors ?</dt>
+    <dd>
+      À partir de l’endormissement, c’est pourquoi la page retire 15 minutes dès le départ. Si
+      vous savez qu’il vous faut plus de temps, couchez-vous d’autant plus tôt que l’heure
+      affichée ici.
+    </dd>
+  </dl>
+
+  <p class="meta">Sources : recommandations de sommeil des CDC ; durée du cycle de sommeil telle que décrite par l’American Academy of Sleep Medicine. Page vérifiée le 13 novembre 2026.</p>
+
+  <script>
+    const wakeEl = document.getElementById('wake');
+    const out = document.getElementById('out');
+
+    function parseTime(v) {
+      const m = /^(\d{1,2})[:.](\d{2})$/.exec(v.trim());
+      if (!m) return null;
+      const h = parseInt(m[1], 10);
+      const min = parseInt(m[2], 10);
+      if (h > 23 || min > 59) return null;
+      return h * 60 + min;
+    }
+
+    function fmt(mins) {
+      const t = ((mins % 1440) + 1440) % 1440;
+      const h = Math.floor(t / 60);
+      const m = t % 60;
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+
+    function compute() {
+      const wake = parseTime(wakeEl.value);
+      if (wake === null) {
+        out.innerHTML = '<p class="result-note">Saisissez l’heure de réveil, par exemple 06:30, et les heures de coucher s’affichent ici.</p>';
+        return;
+      }
+      const rows = [6, 5, 4, 3].map((cycles) => {
+        const sleep = cycles * 90;
+        const bed = wake - sleep - 15;
+        const hh = Math.floor(sleep / 60);
+        const mm = sleep % 60;
+        const cls = cycles === 5 ? ' class="point"' : '';
+        return '<tr' + cls + '><td>' + cycles + ' cycles</td><td>' + hh + ' heures' + (mm ? ' ' + mm + ' minutes' : '') + ' de sommeil</td><td class="num">' + fmt(bed) + '</td></tr>';
+      }).join('');
+      out.innerHTML =
+        '<p class="result-figure">Au lit pour ' + fmt(wake - 5 * 90 - 15) + '</p>' +
+        '<p>Cela fait cinq cycles complets avant un réveil à ' + fmt(wake) + ', en comptant 15 minutes pour s’endormir. Les autres possibilités :</p>' +
+        '<table><thead><tr><th scope="col">Cycles</th><th scope="col">Sommeil</th><th scope="col" class="num">Au lit pour</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

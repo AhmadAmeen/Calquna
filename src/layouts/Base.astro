@@ -1,0 +1,119 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: string;
+  altEn?: string;
+  altEs?: string;
+  altFr?: string;
+}
+
+const { title, description, lang = 'en', altEn, altEs, altFr } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const site = Astro.site;
+
+const L = {
+  en: {
+    home: '/',
+    dates: 'Dates',
+    health: 'Health',
+    money: 'Money',
+    words: 'Words',
+    about: 'About',
+    privacy: 'Privacy',
+    contact: 'Contact',
+    foot: 'Every tool on this site runs in your browser. Nothing you type is sent anywhere.',
+    navLabel: 'Main',
+    anchors: { dates: 'dates', health: 'health', money: 'money', words: 'words' },
+  },
+  es: {
+    home: '/es/',
+    dates: 'Fechas',
+    health: 'Salud',
+    money: 'Dinero',
+    words: 'Palabras',
+    about: 'Acerca de',
+    privacy: 'Privacidad',
+    contact: 'Contacto',
+    foot: 'Cada herramienta de este sitio funciona en tu navegador. Nada de lo que escribes se envía a ningún sitio.',
+    navLabel: 'Principal',
+    anchors: { dates: 'fechas', health: 'salud', money: 'dinero', words: 'palabras' },
+  },
+  fr: {
+    home: '/fr/',
+    dates: 'Dates',
+    health: 'Santé',
+    money: 'Argent',
+    words: 'Mots',
+    about: 'À propos',
+    privacy: 'Confidentialité',
+    contact: 'Contact',
+    foot: 'Chaque outil de ce site fonctionne dans votre navigateur. Rien de ce que vous saisissez n’est envoyé nulle part.',
+    navLabel: 'Principal',
+    anchors: { dates: 'dates', health: 'sante', money: 'argent', words: 'mots' },
+  },
+}[lang] ?? {
+  home: '/',
+  dates: 'Dates',
+  health: 'Health',
+  money: 'Money',
+  words: 'Words',
+  about: 'About',
+  privacy: 'Privacy',
+  contact: 'Contact',
+  foot: 'Every tool on this site runs in your browser. Nothing you type is sent anywhere.',
+  navLabel: 'Main',
+  anchors: { dates: 'dates', health: 'health', money: 'money', words: 'words' },
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {altEn && <link rel="alternate" hreflang="en" href={new URL(altEn, site)} />}
+    {altEs && <link rel="alternate" hreflang="es" href={new URL(altEs, site)} />}
+    {altFr && <link rel="alternate" hreflang="fr" href={new URL(altFr, site)} />}
+    {altEn && <link rel="alternate" hreflang="x-default" href={new URL(altEn, site)} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <slot name="head" />
+  </head>
+  <body>
+    <header class="site-head">
+      <div class="wrap">
+        <a class="wordmark" href={L.home}>Calquna</a>
+        <nav aria-label={L.navLabel}>
+          <a href={L.home + '#' + L.anchors.dates}>{L.dates}</a>
+          <a href={L.home + '#' + L.anchors.health}>{L.health}</a>
+          <a href={L.home + '#' + L.anchors.money}>{L.money}</a>
+          <a href={L.home + '#' + L.anchors.words}>{L.words}</a>
+          <a href={L.home + (lang === 'en' ? 'about/' : lang === 'es' ? 'acerca-de/' : 'a-propos/')}>{L.about}</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrap">
+        <slot />
+      </div>
+    </main>
+    <footer class="site-foot">
+      <div class="wrap">
+        <a href={L.home + (lang === 'en' ? 'about/' : lang === 'es' ? 'acerca-de/' : 'a-propos/')}>{L.about}</a>
+        <a href={L.home + (lang === 'en' ? 'privacy/' : lang === 'es' ? 'privacidad/' : 'confidentialite/')}>{L.privacy}</a>
+        <a href={L.home + (lang === 'en' ? 'contact/' : lang === 'es' ? 'contacto/' : 'contact/')}>{L.contact}</a>
+        <span class="meta">{L.foot}</span>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="es"
+  altEn="/due-date-calculator/"
+  altEs="/es/calculadora-de-embarazo/"
+  altFr="/fr/calculateur-date-accouchement/"
+  title="Calculadora de embarazo: fecha probable de parto y semanas de embarazo"
+  description="Calcula tu fecha probable de parto a partir del primer día de tu última regla y descubre de cuántas semanas estás hoy. La regla de Naegele, explicada en la página."
+>
+  <h1>Calculadora de embarazo</h1>
+  <p class="lede">
+    Introduce el primer día de tu última regla (tu FUR). Obtienes la fecha probable de parto,
+    de cuántas semanas estás hoy y la fecha en que cambia cada trimestre. Todas las fechas de
+    aquí son estimaciones, y más abajo se explica por qué.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="lmp">Primer día de tu última regla (FUR)</label>
+        <input type="date" id="lmp" />
+      </div>
+      <div>
+        <label for="cycle">Duración del ciclo en días (28 si no lo sabes)</label>
+        <input type="number" id="cycle" inputmode="numeric" min="20" max="45" step="1" value="28" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Calcular la fecha de parto</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">Introduce la fecha y la estimación aparece aquí.</p>
+    </div>
+    <p class="result-note">
+      La fecha probable de parto es una fecha de planificación, no una promesa ni un consejo
+      médico. Solo alrededor de 1 de cada 20 bebés nace el día exacto. La ecografía de datación
+      de tu matrona o tu médico, normalmente entre las semanas 8 y 14, manda sobre cualquier
+      calculadora.
+    </p>
+  </div>
+
+  <h2>Cómo se hace la estimación</h2>
+  <p>
+    El método habitual es la regla de Naegele, del siglo XIX y todavía el primer cálculo en la
+    mayoría de las consultas: se toma el primer día de la última regla, se suman siete días, se
+    restan tres meses y se suma un año. Es lo mismo que sumar 280 días, es decir, 40 semanas.
+    Supone un ciclo de 28 días con la ovulación el día 14. Si tu ciclo es más largo o más
+    corto, esta página desplaza la fecha en esa diferencia, porque la ovulación suele moverse
+    con el ciclo.
+  </p>
+  <p>
+    Las semanas de gestación se cuentan desde la última regla, no desde la concepción. Por eso
+    se dice que estás de dos semanas en el momento de la concepción y de cuatro semanas el día
+    en que falta la regla. En Francia el mismo periodo se cuenta en «semaines d’aménorrhée»,
+    semanas desde la última regla. La aritmética es la misma, solo cambia el nombre.
+  </p>
+
+  <h2>Un ejemplo, calculado a mano</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Paso</th><th scope="col">Cálculo</th><th scope="col">Fecha</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Empieza la última regla</td><td>La fecha que introduces</td><td class="num">1 feb 2026</td></tr>
+      <tr><td>Regla de Naegele</td><td>Más 7 días, menos 3 meses, más 1 año</td><td class="num">8 nov 2026</td></tr>
+      <tr class="point"><td>Fecha probable de parto</td><td>Lo mismo que sumar 280 días</td><td class="num">8 nov 2026</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Segundo ejemplo: con una última regla que empieza el 20 de septiembre de 2026, el 13 de
+    noviembre de 2026 el embarazo lleva 54 días, que se cuentan como 7 semanas y 5 días, y la
+    fecha probable de parto es el 27 de junio de 2027.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Qué precisión tiene una fecha de parto calculada desde la última regla?</dt>
+    <dd>
+      Alrededor de una semana en la mayoría de las personas con ciclos regulares, y menos si
+      tu ciclo varía más de unos pocos días o si acabas de dejar los anticonceptivos
+      hormonales. La ecografía de datación es más precisa, y por eso las consultas usan la
+      fecha de la ecografía cuando ambas difieren en más de unos días.
+    </dd>
+    <dt>¿Y si sé la fecha de concepción?</dt>
+    <dd>
+      Súmale 266 días. Es 280 menos los 14 días que la regla de Naegele supone entre la regla
+      y la ovulación. En la fecundación in vitro, las clínicas cuentan desde la fecha de la
+      transferencia y la edad del embrión, y esa es la fecha que hay que usar.
+    </dd>
+    <dt>¿Qué significan las fechas de los trimestres?</dt>
+    <dd>
+      El segundo trimestre empieza en la semana 14 y el tercero en la semana 28, contados
+      desde la última regla. Cada libro recorta un día o dos por un lado o por otro. Son
+      referencias, no interruptores: nada cambia de un día para otro en la semana 14.
+    </dd>
+  </dl>
+
+  <p class="meta">Fuentes: la regla de Naegele según la recoge el ACOG en su guía para estimar la fecha de parto. Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    const lmpEl = document.getElementById('lmp');
+    const cycEl = document.getElementById('cycle');
+    const out = document.getElementById('out');
+
+    function fmtDate(t) {
+      return new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    }
+
+    function compute() {
+      const lmp = lmpEl.valueAsDate;
+      if (!lmp) {
+        out.innerHTML = '<p class="result-note">Introduce el primer día de tu última regla y la estimación aparece aquí.</p>';
+        return;
+      }
+      const cycle = Math.min(45, Math.max(20, parseInt(cycEl.value, 10) || 28));
+      const start = Date.UTC(lmp.getFullYear(), lmp.getMonth(), lmp.getDate());
+      const adjust = (cycle - 28) * 86400000;
+      const edd = start + 280 * 86400000 + adjust;
+      const now = new Date();
+      const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const days = Math.round((today - start) / 86400000);
+      const weeks = Math.floor(days / 7);
+      const rem = days % 7;
+      const tri2 = start + 98 * 86400000 + adjust;
+      const tri3 = start + 196 * 86400000 + adjust;
+      let gaText;
+      if (days < 0) {
+        gaText = 'Esa fecha todavía está en el futuro, así que aún no hay conteo de semanas.';
+      } else if (days > 300) {
+        gaText = 'Esa fecha fue hace más de 43 semanas. Si el embarazo sigue en curso, las fechas tienen que revisarlas en consulta.';
+      } else {
+        gaText = 'Contando desde esa fecha, hoy estás en la semana ' + weeks + ', día ' + rem + ' del embarazo (' + days + ' días de gestación).';
+      }
+      out.innerHTML =
+        '<p class="result-figure">Parto previsto hacia el ' + fmtDate(edd) + '</p>' +
+        '<p>' + gaText + '</p>' +
+        '<table><tbody>' +
+        '<tr><td>Empieza el segundo trimestre</td><td class="num">' + fmtDate(tri2) + '</td></tr>' +
+        '<tr><td>Empieza el tercer trimestre</td><td class="num">' + fmtDate(tri3) + '</td></tr>' +
+        '</tbody></table>' +
+        '<p class="result-note">Solo alrededor de 1 de cada 20 bebés nace en la fecha exacta prevista. La mayoría llega en las dos semanas anteriores o posteriores.</p>';
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    lmpEl.addEventListener('change', compute);
+  </script>
+</Base>

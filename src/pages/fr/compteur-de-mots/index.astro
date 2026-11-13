@@ -1,0 +1,101 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Compteur de mots : mots, caractères, phrases et temps de lecture"
+  description="Collez n’importe quel texte et obtenez le nombre de mots, de caractères, de phrases et de paragraphes, ainsi que le temps de lecture. Le texte reste sur la page, rien n’est envoyé."
+  lang="fr"
+  altEn="/word-counter/"
+  altEs="/es/contador-de-palabras/"
+  altFr="/fr/compteur-de-mots/"
+>
+  <h1>Compteur de mots</h1>
+  <p class="lede">
+    Collez votre texte ci-dessous. Les comptes se mettent à jour pendant que vous écrivez. Les
+    enseignants l’utilisent pour les limites de dissertations, les écrivains pour la longueur
+    des chapitres, et les orateurs pour vérifier qu’un discours tient dans le temps imparti.
+  </p>
+
+  <div class="sheet">
+    <label for="text">Votre texte</label>
+    <textarea id="text" placeholder="Commencez à écrire, ou collez un texte."></textarea>
+    <table>
+      <tbody>
+        <tr><td>Mots</td><td class="num" id="words">0</td></tr>
+        <tr><td>Caractères</td><td class="num" id="chars">0</td></tr>
+        <tr><td>Caractères sans les espaces</td><td class="num" id="charsns">0</td></tr>
+        <tr><td>Phrases</td><td class="num" id="sentences">0</td></tr>
+        <tr><td>Paragraphes</td><td class="num" id="paras">0</td></tr>
+        <tr><td>Temps de lecture</td><td class="num" id="reading">0 min</td></tr>
+        <tr><td>Temps de parole</td><td class="num" id="speaking">0 min</td></tr>
+      </tbody>
+    </table>
+    <p class="result-note">Rien de ce que vous collez ici n’est envoyé nulle part. Fermez l’onglet et tout disparaît.</p>
+  </div>
+
+  <h2>Qu’est-ce qui compte comme un mot</h2>
+  <p>
+    Un mot est toute suite de caractères séparée par des espaces, la même règle que celle de
+    votre traitement de texte. « Bien-connu » compte pour un mot. Un nombre compte pour un mot.
+    Une ligne de tirets sans aucune lettre ne compte pas. Si votre école ou votre éditeur
+    compte autrement, c’est leur nombre qui fait foi, mais c’est la règle qu’appliquent presque
+    tous les correcteurs.
+  </p>
+  <p>
+    Le temps de lecture utilise 200 mots par minute, le milieu de la fourchette mesurée chez
+    des adultes lisant en silence une prose ordinaire. Le temps de parole utilise 130 mots par
+    minute, un rythme confortable pour lire à voix haute en gardant de quoi respirer. Un
+    discours de 10 minutes représente, à ce compte, environ 1 300 mots, ce qui surprend la
+    plupart des orateurs débutants.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Le compte inclut-il le titre et les intertitres ?</dt>
+    <dd>Il compte tout ce qui se trouve dans la zone de texte, titres compris. Si votre limite les exclut, comptez le corps du texte séparément.</dd>
+    <dt>Pourquoi mon traitement de texte donne-t-il un autre nombre ?</dt>
+    <dd>
+      En général à cause des mots avec trait d’union, des nombres, ou du texte dans les tableaux
+      et les notes de bas de page. Des écarts de quelques mots sont normaux. Des écarts de
+      plusieurs centaines signifient que l’un des deux compte quelque chose en plus, souvent la
+      bibliographie.
+    </dd>
+    <dt>Mon texte est-il privé ?</dt>
+    <dd>Oui. Le comptage est fait par un petit script sur cette page. Il n’y a aucun envoi et rien n’est conservé.</dd>
+  </dl>
+
+  <p class="meta">Méthode : découpage sur les espaces, compatible Unicode. Vitesse de lecture 200 mots par minute, parole 130. Page vérifiée pour la dernière fois le 13 novembre 2026.</p>
+
+  <script>
+    const ta = document.getElementById('text');
+    const set = (id, v) => { document.getElementById(id).textContent = v; };
+    const fmt = (n) => n.toLocaleString('fr-FR');
+
+    function timeText(words, perMin) {
+      if (!words) return '0 min';
+      const mins = words / perMin;
+      if (mins < 1) return 'moins d’1 min';
+      return Math.round(mins) + ' min';
+    }
+
+    function update() {
+      const text = ta.value;
+      const words = (text.match(/\S+/g) || []).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+      const chars = [...text].length;
+      const charsNs = [...text.replace(/\s/g, '')].length;
+      const sentences = (text.match(/[.!?]+(?=\s|$)/g) || []).length;
+      const paras = text.trim() ? text.trim().split(/\n\s*\n/).length : 0;
+      set('words', fmt(words));
+      set('chars', fmt(chars));
+      set('charsns', fmt(charsNs));
+      set('sentences', fmt(sentences));
+      set('paras', fmt(paras));
+      set('reading', timeText(words, 200));
+      set('speaking', timeText(words, 130));
+    }
+
+    ta.addEventListener('input', update);
+    update();
+  </script>
+</Base>

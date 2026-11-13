@@ -1,0 +1,131 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Calculadora de dinero de TikTok: estimaciones de Creator Rewards y de acuerdos con marcas"
+  description="Estima las ganancias de TikTok de dos maneras: Creator Rewards por cada mil visitas cualificadas y lo que una marca podría pagar por publicación a tu nivel de visitas. Más tu tasa de interacción."
+  lang="es"
+  altEn="/tiktok-money-calculator/"
+  altEs="/es/calculadora-dinero-tiktok/"
+  altFr="/fr/calculateur-revenus-tiktok/"
+>
+  <h1>Calculadora de dinero de TikTok</h1>
+  <p class="lede">
+    El dinero de TikTok llega por dos vías muy distintas: el propio programa Creator Rewards
+    de la plataforma, que paga por visita cualificada, y las marcas que pagan por
+    publicaciones, que es donde está la mayor parte del dinero. Esta página estima las dos
+    por separado, para que la cifra pequeña no se esconda detrás de la grande.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="views">Visitas por vídeo (lo habitual)</label>
+        <input type="number" id="views" inputmode="numeric" min="0" step="any" value="100000" />
+      </div>
+      <div>
+        <label for="videos">Vídeos al mes</label>
+        <input type="number" id="videos" inputmode="numeric" min="0" max="200" step="1" value="12" />
+      </div>
+      <div>
+        <label for="followers">Seguidores</label>
+        <input type="number" id="followers" inputmode="numeric" min="0" step="any" value="50000" />
+      </div>
+      <div>
+        <label for="likes">Me gusta + comentarios + compartidos en un vídeo típico</label>
+        <input type="number" id="eng" inputmode="numeric" min="0" step="any" value="6000" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Estimar las ganancias</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Solo estimaciones. TikTok no publica las tarifas de Creator Rewards y se mueven con el
+      fondo, el país y el contenido. Las tarifas de las marcas dependen de tu temática y de tu
+      temple negociando más que de ninguna fórmula.
+    </p>
+  </div>
+
+  <h2>Las dos vías, con honestidad</h2>
+  <p>
+    Creator Rewards paga por visitas cualificadas: visitas de al menos cinco segundos, en
+    vídeos originales de más de un minuto, desde países elegibles. Los creadores cuentan de
+    forma reiterada entre $0,40 y $1,00 por cada mil visitas cualificadas, muy por encima de
+    los pocos céntimos del antiguo Creator Fund. Para entrar necesitas 10.000 seguidores y
+    100.000 visitas en los últimos 30 días, y el programa funciona solo en un puñado de
+    países, entre ellos Estados Unidos, Reino Unido, Alemania, Francia, España, Italia,
+    Brasil y Japón. Si estás fuera de ellos, esta vía es cero, sean las visitas las que sean.
+  </p>
+  <p>
+    Los acuerdos con marcas se negocian por publicación. Como referencia aproximada del
+    mercado, los creadores con interacción real suelen cerrar entre $10 y $25 por cada mil
+    visitas en una publicación patrocinada, con las temáticas de finanzas y negocios por
+    encima y el entretenimiento por debajo. Una sola publicación patrocinada al mes con
+    100.000 visitas suele valer más que un mes entero de Creator Rewards. No es un error de
+    las cuentas: es la forma que tiene el dinero en esta plataforma.
+  </p>
+
+  <h2>Un ejemplo, hecho a mano</h2>
+  <p>
+    100.000 visitas por vídeo, 12 vídeos al mes, todos cualificados: 1,2 millones de visitas
+    × $0,70 (el punto medio del intervalo que se cuenta) ÷ 1.000 = <strong>$840 al mes</strong>
+    de Creator Rewards. Una publicación de marca con las mismas visitas, a $15 por mil, son
+    $1.500 por esa sola publicación. Y con 6.000 me gusta, comentarios y compartidos frente a
+    50.000 seguidores, la tasa de interacción es 6.000 ÷ 50.000 × 100 = <strong>12 %</strong>,
+    que es alta, y es la cifra por la que preguntan las marcas de verdad.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Por qué mi pago por visita es más bajo que el intervalo de aquí?</dt>
+    <dd>
+      Normalmente porque no todas las visitas son cualificadas: no cuentan las de menos de
+      cinco segundos, las de vídeos de menos de un minuto y las de países no elegibles. Un
+      vídeo puede mostrar un millón de visitas y tener solo un tercio cualificadas.
+    </dd>
+    <dt>¿Qué tasa de interacción es buena?</dt>
+    <dd>
+      Medida como en esta página, interacciones divididas por seguidores: por debajo del 2 %
+      es floja, entre el 3 % y el 6 % es lo normal y sano, y por encima es alta. Las cuentas
+      pequeñas suelen puntuar más alto, porque sus seguidores las conocen de verdad.
+    </dd>
+    <dt>¿TikTok paga directamente por me gusta o por seguidores?</dt>
+    <dd>
+      No. Los seguidores deciden si entras en los programas y fijan tu tarifa con las marcas.
+      La plataforma paga por visitas cualificadas, y las marcas pagan por publicaciones.
+      Quien te venda un pago por seguidor está describiendo un programa que no existe.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: Creator Rewards a entre $0,40 y $1,00 por cada mil visitas cualificadas, con cuatro fuentes de creadores publicadas que coinciden; referencia de marcas de $10 a $25 por cada mil visitas y publicación. Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => '$' + n.toLocaleString('es-ES', { maximumFractionDigits: 0 });
+
+    function compute() {
+      const views = parseFloat($('views').value) || 0;
+      const videos = parseFloat($('videos').value) || 0;
+      const followers = parseFloat($('followers').value) || 0;
+      const eng = parseFloat($('eng').value) || 0;
+      const monthlyViews = views * videos;
+      const low = monthlyViews / 1000 * 0.40;
+      const mid = monthlyViews / 1000 * 0.70;
+      const high = monthlyViews / 1000 * 1.00;
+      const brandLow = views / 1000 * 10;
+      const brandHigh = views / 1000 * 25;
+      const rate = followers ? (eng / followers * 100) : 0;
+      out.innerHTML =
+        '<p class="result-figure">Unos ' + money(mid) + ' al mes de Creator Rewards</p>' +
+        '<p>Eso son ' + (monthlyViews / 1000).toLocaleString('es-ES') + ' mil visitas al mes, a los $0,40 a $1,00 por mil que se cuentan: el intervalo va de ' + money(low) + ' a ' + money(high) + ', si cada visita cualifica y estás en un país elegible.</p>' +
+        '<table><tbody>' +
+        '<tr><td>Una publicación patrocinada a tu nivel de visitas</td><td class="num">' + money(brandLow) + ' a ' + money(brandHigh) + '</td></tr>' +
+        '<tr><td>Tu tasa de interacción</td><td class="num">' + rate.toFixed(1).replace('.', ',') + ' %</td></tr>' +
+        '</tbody></table>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

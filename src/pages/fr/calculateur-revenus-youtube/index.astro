@@ -1,0 +1,132 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/youtube-money-calculator/"
+  altEs="/es/calculadora-dinero-youtube/"
+  altFr="/fr/calculateur-revenus-youtube/"
+  title="Calculateur de revenus YouTube : ce que valent vos vues en revenus publicitaires"
+  description="Estimez vos revenus publicitaires YouTube à partir de vos vues mensuelles et de votre niche. Basé sur des chiffres de RPM publiés par des créateurs, avec une fourchette honnête plutôt qu’un seul chiffre flatteur."
+>
+  <h1>Calculateur de revenus YouTube</h1>
+  <p class="lede">
+    YouTube verse aux créateurs une part de l’argent publicitaire, calculée pour mille vues.
+    Saisissez vos vues mensuelles, choisissez le type de chaîne, et cette page vous donne
+    une fourchette honnête, pas un chiffre unique et flatteur.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="views">Vues par mois</label>
+        <input type="number" id="views" inputmode="numeric" min="0" step="any" value="100000" />
+      </div>
+      <div>
+        <label for="niche">Type de chaîne</label>
+        <select id="niche">
+          <option value="10.96">Finance et investissement</option>
+          <option value="8.44">Business et marketing</option>
+          <option value="5.50" selected>Tech et avis</option>
+          <option value="4.45">Lifestyle et vlogs</option>
+          <option value="3.50">Jeux vidéo</option>
+          <option value="4.00">Éducation et tutoriels</option>
+        </select>
+      </div>
+      <div>
+        <label for="kind">Type de vidéo</label>
+        <select id="kind">
+          <option value="long" selected>Vidéos longues</option>
+          <option value="shorts">Shorts</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Estimer les revenus</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Une estimation, pas une promesse. Deux chaînes avec le même nombre de vues peuvent
+      gagner du simple au triple selon le pays des spectateurs, la durée de visionnage et le
+      mois de l’année. La publicité de décembre paie bien plus que celle de janvier.
+    </p>
+  </div>
+
+  <h2>Comment fonctionne la rémunération YouTube</h2>
+  <p>
+    Les annonceurs paient pour apparaître autour des vidéos. YouTube conserve 45 % de cette
+    somme et le créateur en reçoit 55 %. Ce qu’un créateur touche réellement pour mille vues
+    s’appelle le RPM, revenu pour mille, et c’est le seul chiffre qui compte ici :
+    revenus = vues ÷ 1 000 × RPM. Le RPM est déjà net de la part de YouTube, raison pour
+    laquelle cette page ne prélève pas une seconde part par-dessus.
+  </p>
+  <p>
+    Les chiffres par niche du menu déroulant sont des médianes que des créateurs ont rendues
+    publiques, rassemblées et publiées en données ouvertes : les chaînes finance en tête,
+    parce que les annonceurs paient cher pour toucher des personnes qui réfléchissent à leur
+    argent ; le jeu vidéo et le divertissement plus bas, parce que le public est jeune et
+    réparti dans des pays où la publicité paie peu. Les Shorts sont un autre monde : le
+    revenu est partagé entre toutes les vues de Shorts, et les créateurs constatent en
+    général 0,03 $ à 0,07 $ pour mille vues, ce qui explique que le réglage Shorts ignore la
+    niche.
+  </p>
+
+  <h2>Un exemple, calculé à la main</h2>
+  <p>
+    Une chaîne tech avec 100 000 vues par mois, au RPM médian tech de 5,50 $ : 100 000 ÷
+    1 000 × 5,50 = <strong>550 $ par mois</strong>, 6 600 $ par an si le rythme se
+    maintenait, ce qui n’arrive pas. Les mêmes vues sur une chaîne finance à 10,96 $
+    donneraient 1 096 $. En Shorts à 0,05 $, elles donneraient 5 $. Des vues ne sont de
+    l’argent que lorsqu’on sait de quelles vues il s’agit.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Combien de vues faut-il pour gagner 1 000 $ par mois ?</dt>
+    <dd>
+      À la médiane tech, environ 180 000 vues par mois. À la médiane finance, environ
+      90 000. À la médiane lifestyle, environ 225 000. Faites le calcul inverse pour votre
+      propre chaîne avec la formule ci-dessus : vues nécessaires = 1 000 × objectif ÷ votre
+      RPM.
+    </dd>
+    <dt>À partir de quand YouTube commence-t-il à payer ?</dt>
+    <dd>
+      Après votre admission au Programme Partenaire et le franchissement d’un seuil de
+      paiement de 100 $. Notez le changement annoncé : à partir du 1er février 2027, les
+      nouveaux candidats devront justifier de 8 000 heures de visionnage qualifiées sur un
+      an, ou de 20 millions de vues Shorts qualifiées en 90 jours, le double des chiffres
+      précédents. Vérifiez la règle en vigueur sur les pages d’aide de YouTube, car c’est
+      leur chiffre et ils peuvent le modifier.
+    </dd>
+    <dt>Les revenus publicitaires sont-ils tout le revenu ?</dt>
+    <dd>
+      Pour la plupart des créateurs qui en vivent, non. Les sponsors, les liens d’affiliation,
+      les abonnements payants et leurs propres produits pèsent souvent plus lourd que la
+      publicité. Ce calculateur ne compte que la part publicitaire, parce que c’est la seule
+      partie que les vues seules permettent d’estimer.
+    </dd>
+  </dl>
+
+  <p class="meta">Méthode : vues ÷ 1 000 × RPM, médianes par niche issues de chiffres communiqués par des créateurs et publiés en données ouvertes (CC BY 4.0). Dernière vérification de la page : 13 novembre 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' $';
+
+    function compute() {
+      const views = parseFloat($('views').value) || 0;
+      const shorts = $('kind').value === 'shorts';
+      const rpm = shorts ? 0.05 : parseFloat($('niche').value);
+      const monthly = views / 1000 * rpm;
+      const low = monthly * 0.6;
+      const high = monthly * 1.6;
+      out.innerHTML =
+        '<p class="result-figure">Environ ' + money(monthly) + ' par mois</p>' +
+        '<p>Réalistement, quelque part entre ' + money(low) + ' et ' + money(high) + ' par mois, selon le pays de vos spectateurs et la période de l’année. Cela représente environ ' + money(monthly * 12) + ' par an au chiffre médian.</p>' +
+        (shorts ? '<p class="result-note">Les Shorts utilisent un tarif fixe de 0,05 $ pour mille vues, le milieu de la fourchette de 0,03 $ à 0,07 $ rapportée par les créateurs.</p>' : '');
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

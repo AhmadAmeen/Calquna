@@ -1,0 +1,193 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Instagram unfollowers checker: who does not follow you back, checked privately"
+  description="See who you follow that does not follow you back, using your own Instagram data export. The file is read inside your browser and never uploaded, no login, no password."
+>
+  <h1>Instagram unfollowers checker</h1>
+  <p class="lede">
+    Every other checker wants your Instagram password. This one does not. It reads the data
+    export Instagram itself gives you, inside your browser, and compares the two lists. The
+    file never leaves your device. There is nothing here to log into.
+  </p>
+
+  <div class="sheet">
+    <h2 style="margin-top:0;">The three steps</h2>
+    <p>
+      <strong>1.</strong> In Instagram, go to Settings, then Accounts Centre, then “Your
+      information and permissions”, then “Download your information”. Ask for the followers
+      and following lists, in <strong>JSON</strong> format, for the shortest date range that
+      covers now. It arrives as a ZIP file, usually within a day.
+    </p>
+    <p>
+      <strong>2.</strong> Choose that ZIP here. <strong>3.</strong> Read the lists. That is
+      all. If the words “upload your file to our server” ever appear on a page like this,
+      close it. On this page the reading happens below, in your browser.
+    </p>
+    <label for="zip">Your Instagram export (ZIP file)</label>
+    <input type="file" id="zip" accept=".zip,application/zip" />
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;">
+      <p class="result-note">No file chosen yet. Nothing has been sent anywhere, and nothing will be.</p>
+    </div>
+  </div>
+
+  <h2>What one export can and cannot tell you</h2>
+  <p>
+    Be precise about this, because most pages in this corner of the internet are not. One
+    export shows who follows you today and who you follow today. Comparing them tells you who
+    <strong>does not follow you back</strong>. It cannot tell you who unfollowed you last
+    Tuesday, because nothing in the file records when anyone left.
+  </p>
+  <p>
+    To catch actual unfollowers, you need two exports at two times. This page keeps a
+    baseline, the follower list from your last visit, stored only in your own browser. Bring a
+    fresh export next month and it will name the accounts that were following you then and are
+    not now. That is the honest version of the feature, and it is free here, because it costs
+    nothing to do properly.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>Can Instagram ban me for using this?</dt>
+    <dd>
+      There is nothing to ban. You are reading your own data file on your own device. The
+      tools that get accounts banned are the ones you give your password to, which log in as
+      you and scrape. Never give any website or app your Instagram password for a follower
+      list. Turn on two factor authentication while you are thinking about it.
+    </dd>
+    <dt>Why do other sites claim to show unfollowers from one file?</dt>
+    <dd>
+      Because “unfollowers” is the word people search for. What they show is the
+      does-not-follow-back list, renamed. Some also say the analysis is done locally while
+      quietly uploading your file to their server. You can check any page, including this one:
+      turn your Wi-Fi off after it loads and it still works.
+    </dd>
+    <dt>What if my export is in HTML, not JSON?</dt>
+    <dd>
+      This page reads the HTML files too, but JSON is the better ask: it is smaller and the
+      lists come out cleaner. If Instagram gave you folders of HTML pages, the results here
+      may miss accounts the JSON would have caught.
+    </dd>
+    <dt>What is stored, exactly?</dt>
+    <dd>
+      Only the baseline: a list of usernames that followed you, plus the date, kept in your
+      browser’s local storage on this device, so the next export can be compared with it. It
+      is never transmitted. Clear your browser data and it is gone, and the comparison simply
+      starts again from the next export.
+    </dd>
+  </dl>
+
+  <p class="meta">Method: Instagram data export parsed locally with JSZip; followers compared against following as sets. Page last checked 13 November 2026. Not affiliated with Instagram or Meta.</p>
+
+  <script>
+    import JSZip from 'jszip';
+
+    const out = document.getElementById('out');
+    const BASE_KEY = 'calquna_ig_baseline';
+
+    function esc(s) {
+      return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function namesFromJson(data, into) {
+      const walk = (node) => {
+        if (!node || typeof node !== 'object') return;
+        if (Array.isArray(node)) { node.forEach(walk); return; }
+        if (Array.isArray(node.string_list_data)) {
+          for (const item of node.string_list_data) {
+            let name = item && item.value;
+            if (!name && item && item.href) name = item.href.split('/').filter(Boolean).pop();
+            if (name) into.add(String(name).toLowerCase());
+          }
+        }
+        Object.values(node).forEach(walk);
+      };
+      walk(data);
+    }
+
+    function namesFromHtml(text, into) {
+      const re = /instagram\.com\/([A-Za-z0-9._]+)/g;
+      let m;
+      while ((m = re.exec(text))) {
+        const name = m[1].toLowerCase();
+        if (!['p', 'reel', 'reels', 'stories', 'explore', 'accounts', 'direct'].includes(name)) into.add(name);
+      }
+    }
+
+    function listHtml(title, names, note) {
+      if (!names.length) return '<h3>' + title + '</h3><p>' + note + '</p>';
+      const items = names.map((n) => '<tr><td><a href="https://www.instagram.com/' + esc(n) + '/" target="_blank" rel="noopener">@' + esc(n) + '</a></td></tr>').join('');
+      return '<h3>' + title + ' (' + names.length + ')</h3><table><tbody>' + items + '</tbody></table>';
+    }
+
+    document.getElementById('zip').addEventListener('change', async (ev) => {
+      const file = ev.target.files[0];
+      if (!file) return;
+      out.innerHTML = '<p class="result-note">Reading the file here in your browser…</p>';
+      try {
+        const zip = await JSZip.loadAsync(file);
+        const followers = new Set();
+        const following = new Set();
+        const pending = new Set();
+        let found = 0;
+        for (const path of Object.keys(zip.files)) {
+          if (zip.files[path].dir) continue;
+          const base = path.split('/').pop().toLowerCase();
+          let target = null;
+          if (base.includes('pending')) target = pending;
+          else if (base.startsWith('following')) target = following;
+          else if (base.startsWith('followers')) target = followers;
+          else continue;
+          found++;
+          const text = await zip.files[path].async('string');
+          if (base.endsWith('.json')) {
+            try { namesFromJson(JSON.parse(text), target); } catch { /* skip a file that is not clean JSON */ }
+          } else if (base.endsWith('.html') || base.endsWith('.htm')) {
+            namesFromHtml(text, target);
+          }
+        }
+        if (!found || (!followers.size && !following.size)) {
+          out.innerHTML = '<p class="result-note">That ZIP does not look like an Instagram followers export. Check that the download included "Followers and following" and, if you can choose, ask again in JSON format.</p>';
+          return;
+        }
+        const notBack = [...following].filter((n) => !followers.has(n)).sort();
+        const fans = [...followers].filter((n) => !following.has(n)).sort();
+        const mutuals = [...followers].filter((n) => following.has(n)).length;
+
+        let html =
+          '<p class="result-figure">' + notBack.length + ' do not follow you back</p>' +
+          '<p>You follow ' + following.size + ' accounts. ' + followers.size + ' accounts follow you. ' + mutuals + ' of them are mutual.</p>';
+
+        let baselineNote = '';
+        try {
+          const saved = JSON.parse(localStorage.getItem(BASE_KEY) || 'null');
+          if (saved && Array.isArray(saved.followers) && saved.followers.length) {
+            const before = new Set(saved.followers);
+            const gone = [...before].filter((n) => !followers.has(n)).sort();
+            const gained = [...followers].filter((n) => !before.has(n)).length;
+            html += '<h3>Since your last export (' + esc(saved.date || '') + ')</h3>' +
+              '<p>' + gone.length + ' accounts that followed you then are not in this export' + (gained ? ', and ' + gained + ' new followers arrived' : '') + '.</p>';
+            if (gone.length) {
+              html += '<table><tbody>' + gone.map((n) => '<tr><td>@' + esc(n) + '</td></tr>').join('') + '</tbody></table>';
+            }
+            baselineNote = 'Your baseline has been updated to this export, so the next one compares against today.';
+          } else {
+            baselineNote = 'This export is now saved as your baseline in this browser. Bring the next export and this page will name the accounts that left in between.';
+          }
+          localStorage.setItem(BASE_KEY, JSON.stringify({ date: new Date().toLocaleDateString('en-GB'), followers: [...followers] }));
+        } catch {
+          baselineNote = 'Your browser would not store the baseline, so the since-last-time comparison is off for now. Everything else above still stands.';
+        }
+        html += '<p class="result-note">' + baselineNote + '</p>';
+        html += listHtml('Does not follow you back', notBack, 'Everyone you follow follows you back.');
+        html += listHtml('Fans: follow you, you do not follow them', fans, 'No one-sided fans. You follow back everyone who follows you.');
+        if (pending.size) html += listHtml('Follow requests you sent that are still pending', [...pending].sort(), '');
+        out.innerHTML = html;
+      } catch {
+        out.innerHTML = '<p class="result-note">That file could not be read as a ZIP. If Instagram sent you a folder instead, zip the folder first and try again.</p>';
+      }
+    });
+  </script>
+</Base>

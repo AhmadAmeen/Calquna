@@ -1,0 +1,186 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Generador de códigos QR: crea un código QR para un enlace, tu wifi o una tarjeta de contacto"
+  description="Crea un código QR para una dirección web, los datos de tu wifi o una tarjeta de contacto, y descárgalo como imagen. Se crea en tu navegador, sin subir ni rastrear nada."
+  lang="es"
+  altEn="/qr-code-generator/"
+  altEs="/es/generador-de-codigos-qr/"
+  altFr="/fr/generateur-qr-code/"
+>
+  <h1>Generador de códigos QR</h1>
+  <p class="lede">
+    Elige qué debe contener el código, escribe los datos y descarga la imagen. El código se
+    dibuja en esta página, así que tu enlace o tu contraseña del wifi nunca pasa por un
+    servidor, y el código no lleva ningún rastreo nuestro.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="kind">El código contiene</label>
+        <select id="kind">
+          <option value="url">Una dirección web o un texto</option>
+          <option value="wifi">Nombre y contraseña del wifi</option>
+          <option value="vcard">Una tarjeta de contacto</option>
+        </select>
+      </div>
+      <div>
+        <label for="size">Tamaño de la imagen</label>
+        <select id="size">
+          <option value="512">512 × 512, para pantallas</option>
+          <option value="1024" selected>1024 × 1024, para imprimir</option>
+          <option value="2048">2048 × 2048, para impresión grande</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="fields-url">
+      <label for="url">Dirección web o texto</label>
+      <input type="text" id="url" value="https://example.com" />
+    </div>
+    <div id="fields-wifi" hidden>
+      <div class="field-grid">
+        <div>
+          <label for="ssid">Nombre del wifi (SSID)</label>
+          <input type="text" id="ssid" placeholder="HomeWiFi" />
+        </div>
+        <div>
+          <label for="wifipass">Contraseña del wifi</label>
+          <input type="text" id="wifipass" placeholder="contraseña" />
+        </div>
+        <div>
+          <label for="security">Tipo de seguridad</label>
+          <select id="security">
+            <option value="WPA">WPA o WPA2 (la mayoría de los hogares)</option>
+            <option value="WEP">WEP (antiguo)</option>
+            <option value="nopass">Sin contraseña</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="fields-vcard" hidden>
+      <div class="field-grid">
+        <div>
+          <label for="vc-name">Nombre completo</label>
+          <input type="text" id="vc-name" placeholder="Ahmad Ameen" />
+        </div>
+        <div>
+          <label for="vc-phone">Teléfono</label>
+          <input type="text" id="vc-phone" placeholder="+92 300 0000000" />
+        </div>
+        <div>
+          <label for="vc-email">Correo electrónico</label>
+          <input type="text" id="vc-email" placeholder="name@example.com" />
+        </div>
+        <div>
+          <label for="vc-org">Empresa (opcional)</label>
+          <input type="text" id="vc-org" placeholder="" />
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:1rem;">
+      <button class="btn btn--primary" id="gen" type="button">Crear el código QR</button>
+      <a class="btn" id="download" href="#" download="calquna-qr.png" style="margin-left:0.5rem;text-decoration:none;">Descargar la imagen</a>
+    </p>
+    <div style="margin-top:1rem;">
+      <canvas id="qr" class="qr-preview" width="256" height="256" role="img" aria-label="Vista previa de tu código QR"></canvas>
+    </div>
+    <p class="result-note" id="note">Imprímelo y pruébalo con tu propio móvil antes de imprimir cincuenta.</p>
+  </div>
+
+  <h2>Qué puede contener un código QR</h2>
+  <p>
+    Un código QR no es más que texto dibujado en un cuadrado. Una dirección web se abre en el
+    navegador del móvil. El formato del wifi, WIFI:T:WPA;S:nombre;P:contraseña;; es una
+    convención que los móviles entienden, así que un invitado se conecta apuntando con la
+    cámara en lugar de leer una contraseña escrita en la nevera. El formato de tarjeta de
+    contacto, llamado vCard, deja un nombre y un número directamente en la agenda del móvil.
+    Todo código incluye datos de sobra, la corrección de errores, de modo que se sigue
+    leyendo aunque una cuarta parte esté rayada o tapada. Esta página usa el nivel de
+    corrección intermedio, un equilibrio razonable entre esa solidez y la densidad del código.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Caducan los códigos QR?</dt>
+    <dd>
+      Los que se crean aquí no pueden caducar, porque el código contiene la dirección misma,
+      no una referencia a nuestro sitio. Los códigos de algunos servicios dejan de funcionar
+      cuando vence una suscripción, porque apuntan primero al servicio. Si un código tiene
+      que funcionar durante años, en un cartel, una lápida o un libro, asegúrate de que
+      contiene la dirección directamente, como estos.
+    </dd>
+    <dt>¿Puedo cambiar la dirección después de imprimir?</dt>
+    <dd>
+      No. Lo que se imprime es lo que está codificado. Los servicios que te dejan cambiar el
+      destino son los de redirección descritos arriba, con el riesgo de caducidad que
+      conllevan. En todo lo impreso, revisa la dirección dos veces.
+    </dd>
+    <dt>¿A qué tamaño mínimo puedo imprimirlo?</dt>
+    <dd>
+      Mantenlo en al menos 2 cm de lado para un móvil a la distancia del brazo, y más grande
+      cuanto más lejos esté quien lo escanea. El contraste importa más que el tamaño:
+      cuadrados oscuros sobre fondo claro, nunca al revés, y conserva intacto el borde blanco
+      y despejado que rodea el código.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: codificación QR con nivel de corrección de errores M, dibujada localmente con una biblioteca de código abierto. Página revisada por última vez el 13 de noviembre de 2026.</p>
+
+  <script>
+    import QRCode from 'qrcode';
+
+    const $ = (id) => document.getElementById(id);
+    const canvas = $('qr');
+
+    function payload() {
+      const kind = $('kind').value;
+      if (kind === 'wifi') {
+        const esc = (s) => s.replace(/([\\;,:"'])/g, '\\$1');
+        const sec = $('security').value;
+        const pass = sec === 'nopass' ? '' : ';P:' + esc($('wifipass').value);
+        return 'WIFI:T:' + sec + ';S:' + esc($('ssid').value) + pass + ';;';
+      }
+      if (kind === 'vcard') {
+        return [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          'FN:' + $('vc-name').value,
+          'ORG:' + $('vc-org').value,
+          'TEL;TYPE=CELL:' + $('vc-phone').value,
+          'EMAIL:' + $('vc-email').value,
+          'END:VCARD',
+        ].join('\n');
+      }
+      return $('url').value || ' ';
+    }
+
+    async function generate() {
+      const size = parseInt($('size').value, 10);
+      try {
+        await QRCode.toCanvas(canvas, payload(), { width: size, errorCorrectionLevel: 'M', margin: 2 });
+        canvas.style.width = '256px';
+        canvas.style.height = '256px';
+        $('download').href = canvas.toDataURL('image/png');
+        $('note').textContent = 'Listo. La vista previa está reducida para caber en la página; la descarga tiene el tamaño completo que elegiste. Pruébalo con tu propio móvil antes de imprimir cincuenta.';
+      } catch {
+        $('note').textContent = 'Ese texto es demasiado largo para un solo código QR. Acórtalo y vuelve a intentarlo.';
+      }
+    }
+
+    $('kind').addEventListener('change', () => {
+      const k = $('kind').value;
+      $('fields-url').hidden = k !== 'url';
+      $('fields-wifi').hidden = k !== 'wifi';
+      $('fields-vcard').hidden = k !== 'vcard';
+      generate();
+    });
+    $('gen').addEventListener('click', generate);
+    document.querySelectorAll('input, select').forEach((el) => el.addEventListener('input', generate));
+    generate();
+  </script>
+</Base>

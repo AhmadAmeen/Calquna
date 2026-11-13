@@ -1,0 +1,124 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Compound interest calculator: what savings and investments grow to"
+  description="Work out what a lump sum and monthly deposits grow to at a given interest rate, year by year, with the contributions and the interest kept separate."
+>
+  <h1>Compound interest calculator</h1>
+  <p class="lede">
+    Money left alone earns interest on its interest. That second part, the interest on
+    interest, is what this page counts. Put in a starting amount, a monthly deposit if you
+    make one, a rate and a number of years, and you get the final figure with the growth shown
+    year by year.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="principal">Starting amount</label>
+        <input type="number" id="principal" inputmode="decimal" min="0" step="any" value="10000" />
+      </div>
+      <div>
+        <label for="monthly">Added each month</label>
+        <input type="number" id="monthly" inputmode="decimal" min="0" step="any" value="200" />
+      </div>
+      <div>
+        <label for="rate">Yearly interest rate (%)</label>
+        <input type="number" id="rate" inputmode="decimal" min="0" max="100" step="any" value="7" />
+      </div>
+      <div>
+        <label for="years">Years</label>
+        <input type="number" id="years" inputmode="numeric" min="1" max="60" step="1" value="10" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Work out the growth</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      This is arithmetic, not a forecast and not financial advice. Real investments move up
+      and down, charge fees, and get taxed. Savings accounts pay what they pay, and the rate
+      changes. Treat the answer as what the numbers would do if the rate held steady, which
+      it will not.
+    </p>
+  </div>
+
+  <h2>The formula</h2>
+  <p>
+    For a lump sum: A = P × (1 + r/n)<sup>nt</sup>, where P is the starting amount, r the yearly
+    rate as a decimal, n the number of times a year interest is added (12 for monthly), and t
+    the years. Monthly deposits are the same shape summed up: each deposit compounds for the
+    months it sits there, which works out to deposit × [((1 + r/n)<sup>nt</sup> − 1) ÷ (r/n)].
+    This page compounds monthly, the way most savings accounts and investment projections do.
+  </p>
+
+  <h2>One example, worked through</h2>
+  <p>
+    Start with 10,000 at 7% a year for 10 years, nothing added: 10,000 × (1 + 0.07/12)<sup>120</sup>
+    = <strong>20,096.61</strong>. The money roughly doubles, and only half of that second
+    10,000 was interest on the original sum in any simple sense. Add 200 a month on top and
+    the deposits grow to 34,616.96 by themselves. Together: you put in 34,000 over the decade
+    and end with <strong>54,713.58</strong>, of which 20,713.58 is interest. That gap, the
+    interest being more than half of what you paid in, is the whole point of starting early.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>What rate should I put in?</dt>
+    <dd>
+      For a savings account, the rate on the account. For long term stock market investing,
+      people often test 5% to 8% a year before inflation, because that brackets the long run
+      historical average in many markets, but it arrives in lumps, never as a steady line.
+      Anyone who promises you a fixed high rate is selling something.
+    </dd>
+    <dt>Why does the interest in later years get so much bigger?</dt>
+    <dd>
+      Because the pot it is calculated on keeps growing. In year one, 7% of 10,000 is 700. By
+      year ten of the example above the pot is near 50,000, so one year of growth is over
+      3,000. The rate never changed. The base did.
+    </dd>
+    <dt>Does this include inflation or tax?</dt>
+    <dd>
+      No. To think of it in real terms, a rough method is to use a rate about 2 to 3 points
+      lower, which stands in for inflation. Tax depends on the account and the country, and
+      no calculator page can know yours.
+    </dd>
+  </dl>
+
+  <p class="meta">Method: standard compound interest formula, monthly compounding, deposits at month end. Page last checked 13 November 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    function compute() {
+      const P = parseFloat($('principal').value) || 0;
+      const pmt = parseFloat($('monthly').value) || 0;
+      const rate = (parseFloat($('rate').value) || 0) / 100;
+      const years = Math.min(60, Math.max(1, parseInt($('years').value, 10) || 1));
+      const r = rate / 12;
+      let rows = '';
+      for (let y = 1; y <= years; y++) {
+        const n = y * 12;
+        const lump = P * Math.pow(1 + r, n);
+        const deps = r === 0 ? pmt * n : pmt * ((Math.pow(1 + r, n) - 1) / r);
+        const total = lump + deps;
+        const paid = P + pmt * n;
+        rows += '<tr' + (y === years ? ' class="point"' : '') + '><td>Year ' + y + '</td><td class="num">' + money(paid) + '</td><td class="num">' + money(total - paid) + '</td><td class="num">' + money(total) + '</td></tr>';
+      }
+      const n = years * 12;
+      const lump = P * Math.pow(1 + r, n);
+      const deps = r === 0 ? pmt * n : pmt * ((Math.pow(1 + r, n) - 1) / r);
+      const total = lump + deps;
+      const paid = P + pmt * n;
+      out.innerHTML =
+        '<p class="result-figure">' + money(total) + '</p>' +
+        '<p>You put in ' + money(paid) + '. The interest adds ' + money(total - paid) + '. Here is the pot at the end of each year:</p>' +
+        '<table><thead><tr><th scope="col">Year</th><th scope="col" class="num">You put in</th><th scope="col" class="num">Interest so far</th><th scope="col" class="num">Pot</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

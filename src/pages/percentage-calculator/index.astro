@@ -1,0 +1,123 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Percentage calculator: percent of, percent change, and what percent"
+  description="Three percentage sums on one page: what is X% of Y, X is what percent of Y, and the percentage increase or decrease between two numbers. Each with its working shown."
+>
+  <h1>Percentage calculator</h1>
+  <p class="lede">
+    Nearly every percentage question is one of three sums. This page holds all three, with the
+    answer sentence written out in words, because "25%" on its own rarely says which thing it
+    is 25% of.
+  </p>
+
+  <div class="sheet">
+    <h2 style="margin-top:0;">The three sums</h2>
+    <div class="field-grid">
+      <div>
+        <label for="a1">What is this percent</label>
+        <input type="number" id="a1" inputmode="decimal" step="any" value="15" />
+      </div>
+      <div>
+        <label for="a2">of this number?</label>
+        <input type="number" id="a2" inputmode="decimal" step="any" value="240" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-a" aria-live="polite"></p>
+    <div class="field-grid">
+      <div>
+        <label for="b1">This number</label>
+        <input type="number" id="b1" inputmode="decimal" step="any" value="45" />
+      </div>
+      <div>
+        <label for="b2">is what percent of this?</label>
+        <input type="number" id="b2" inputmode="decimal" step="any" value="180" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-b" aria-live="polite"></p>
+    <div class="field-grid">
+      <div>
+        <label for="c1">From this number</label>
+        <input type="number" id="c1" inputmode="decimal" step="any" value="80" />
+      </div>
+      <div>
+        <label for="c2">to this number is what change?</label>
+        <input type="number" id="c2" inputmode="decimal" step="any" value="100" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-c" aria-live="polite"></p>
+  </div>
+
+  <h2>The three formulas</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Question</th><th scope="col">Formula</th><th scope="col" class="num">Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>What is 15% of 240?</td><td>percent ÷ 100 × number</td><td class="num">36</td></tr>
+      <tr><td>45 is what percent of 180?</td><td>part ÷ whole × 100</td><td class="num">25%</td></tr>
+      <tr class="point"><td>80 up to 100 is what change?</td><td>(new − old) ÷ old × 100</td><td class="num">+25%</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The third one is where people get caught. The change is always measured against where you
+    started, never against where you land. Going from 80 to 100 is a 25% increase, and going
+    back from 100 to 80 is only a 20% decrease. That is why a price that falls 50% then rises
+    50% does not end up back where it started: it ends 25% down.
+  </p>
+
+  <h2>Questions people ask</h2>
+  <dl class="faq">
+    <dt>What is the difference between percent and percentage points?</dt>
+    <dd>
+      If an interest rate goes from 4% to 5%, it rose by one percentage point, which is a 25%
+      increase in the rate itself. News reports mix the two constantly. When the difference
+      matters, use points for the gap between two percents and percent for the change.
+    </dd>
+    <dt>How do I add a percentage to a number, like a tip or tax?</dt>
+    <dd>
+      Multiply by one plus the percent as a decimal. A bill of 84 with 15% added is 84 × 1.15
+      = 96.60. To take 20% off, multiply by 0.80. Or use the first sum on this page to find
+      the percent part and add it on.
+    </dd>
+    <dt>Why can a decrease not be more than 100%?</dt>
+    <dd>
+      Because a 100% decrease means the whole thing is gone. If a calculator anywhere tells
+      you something fell by 150%, it measured against the wrong end. Increases have no such
+      limit: going from 10 to 35 is a 250% increase.
+    </dd>
+  </dl>
+
+  <p class="meta">Method: the three standard percentage formulas, change always measured from the starting value. Page last checked 13 November 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const num = (n) => n.toLocaleString('en-GB', { maximumFractionDigits: 4 });
+
+    function compute() {
+      const a1 = parseFloat($('a1').value);
+      const a2 = parseFloat($('a2').value);
+      $('out-a').textContent = Number.isFinite(a1) && Number.isFinite(a2)
+        ? num(a1) + '% of ' + num(a2) + ' is ' + num(a1 / 100 * a2)
+        : '';
+      const b1 = parseFloat($('b1').value);
+      const b2 = parseFloat($('b2').value);
+      $('out-b').textContent = Number.isFinite(b1) && Number.isFinite(b2) && b2 !== 0
+        ? num(b1) + ' is ' + num(b1 / b2 * 100) + '% of ' + num(b2)
+        : '';
+      const c1 = parseFloat($('c1').value);
+      const c2 = parseFloat($('c2').value);
+      if (Number.isFinite(c1) && Number.isFinite(c2) && c1 !== 0) {
+        const ch = (c2 - c1) / c1 * 100;
+        $('out-c').textContent = num(c1) + ' to ' + num(c2) + ' is a ' + num(Math.abs(ch)) + '% ' + (ch >= 0 ? 'increase' : 'decrease');
+      } else {
+        $('out-c').textContent = '';
+      }
+    }
+
+    for (const id of ['a1', 'a2', 'b1', 'b2', 'c1', 'c2']) $(id).addEventListener('input', compute);
+    compute();
+  </script>
+</Base>

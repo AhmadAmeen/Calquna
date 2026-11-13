@@ -1,0 +1,139 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="De salario a por hora: cuánto paga un salario anual por hora"
+  description="Convierte un salario anual en su equivalente por hora, por semana y por mes, o un pago por hora en salario anual. Según las horas que trabajas de verdad."
+  lang="es"
+  altEn="/salary-to-hourly-calculator/"
+  altEs="/es/salario-por-hora/"
+  altFr="/fr/salaire-brut-net/"
+>
+  <h1>De salario a por hora</h1>
+  <p class="lede">
+    Un salario de 60.000 al año suena exacto hasta que alguien pregunta cuánto se paga por
+    hora. Esta página hace esa división con honestidad: entre las horas que trabajas de
+    verdad, no entre un número redondo inventado.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="mode">Conozco mi</label>
+        <select id="mode">
+          <option value="salary">Salario anual</option>
+          <option value="hourly">Pago por hora</option>
+        </select>
+      </div>
+      <div>
+        <label for="amount" id="amount-label">Salario anual</label>
+        <input type="number" id="amount" inputmode="decimal" min="0" step="any" value="60000" />
+      </div>
+      <div>
+        <label for="hours">Horas trabajadas por semana</label>
+        <input type="number" id="hours" inputmode="decimal" min="1" max="112" step="any" value="40" />
+      </div>
+      <div>
+        <label for="weeks">Semanas trabajadas al año</label>
+        <input type="number" id="weeks" inputmode="decimal" min="1" max="52" step="any" value="52" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Convertir</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Todas las cifras son antes de impuestos. Lo que convierte esta página es el salario
+      bruto: en España, el neto que llega a tu cuenta depende de la retención de IRPF que te
+      apliquen, y en otros países, de las deducciones locales. Las semanas trabajadas al año
+      son 52 si cobras también durante las vacaciones, como la mayoría de los asalariados. Si
+      no te pagan el tiempo libre, pon las semanas que trabajas de verdad, a menudo 48 o 49, y
+      la cifra por hora saldrá más alta, porque es la honesta.
+    </p>
+  </div>
+
+  <h2>Cómo se calcula</h2>
+  <p>
+    Pago por hora = salario anual ÷ (horas por semana × semanas al año). El supuesto estándar
+    de jornada completa, 40 horas durante 52 semanas, son 2.080 horas, y la mayoría de las
+    conversiones publicadas lo usan. El personal federal de Estados Unidos usa 2.087 horas, la
+    media que tiene en cuenta los años bisiestos, y por eso las tablas oficiales difieren en
+    unos céntimos. Esta página usa tus números, así que el trabajo a tiempo parcial o por
+    trimestres también sale bien.
+  </p>
+
+  <h2>Salarios habituales, convertidos</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Salario anual</th><th scope="col" class="num">Por hora</th><th scope="col" class="num">Por semana</th><th scope="col" class="num">Por mes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>30.000</td><td class="num">14,42</td><td class="num">576,92</td><td class="num">2.500,00</td></tr>
+      <tr><td>45.000</td><td class="num">21,63</td><td class="num">865,38</td><td class="num">3.750,00</td></tr>
+      <tr class="point"><td>60.000</td><td class="num">28,85</td><td class="num">1.153,85</td><td class="num">5.000,00</td></tr>
+      <tr><td>75.000</td><td class="num">36,06</td><td class="num">1.442,31</td><td class="num">6.250,00</td></tr>
+      <tr><td>100.000</td><td class="num">48,08</td><td class="num">1.923,08</td><td class="num">8.333,33</td></tr>
+    </tbody>
+  </table>
+  <p>Con 40 horas a la semana, 52 semanas al año, antes de impuestos. La cifra mensual es el salario dividido entre 12.</p>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Por qué mi nómina muestra otra cantidad por hora?</dt>
+    <dd>
+      Las empresas suelen dividir solo entre las horas de contrato, o entre 52,14 semanas, o
+      incluyen las horas extra y los complementos en la tarifa. Si tu contrato fija una
+      cantidad por hora, esa es la que manda. Esta página sirve para comparar ofertas y
+      comprobar tus propias cuentas.
+    </dd>
+    <dt>¿Cómo comparo un salario con la tarifa diaria de un autónomo?</dt>
+    <dd>
+      Primero convierte el salario a tarifa diaria (lo semanal ÷ los días trabajados por
+      semana) y recuerda después que el autónomo no tiene vacaciones pagadas, cotización para
+      la jubilación, bajas pagadas ni impuestos de empresa pagados por otro. Una regla práctica
+      habitual es que la tarifa diaria del autónomo debe ser aproximadamente el doble de la del
+      asalariado para quedar en empate.
+    </dd>
+    <dt>¿Y las horas extra pagadas a 1,5 veces?</dt>
+    <dd>
+      Multiplica tu cantidad por hora por 1,5 para esas horas. Diez horas extra a la semana a
+      28,85 son 432,75 antes de impuestos. Revisa tu contrato, en cualquier caso: muchos
+      contratos asalariados no pagan horas extra en absoluto, lo que baja en silencio la tarifa
+      real por hora, y esta calculadora lo muestra si introduces las horas verdaderas.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: salario dividido entre horas por semana por semanas al año; 2.080 horas es el año estándar a jornada completa. Página revisada el 13 de noviembre de 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    $('mode').addEventListener('change', () => {
+      $('amount-label').textContent = $('mode').value === 'salary' ? 'Salario anual' : 'Pago por hora';
+      compute();
+    });
+
+    function compute() {
+      const amount = parseFloat($('amount').value) || 0;
+      const hours = parseFloat($('hours').value) || 40;
+      const weeks = parseFloat($('weeks').value) || 52;
+      const yearHours = hours * weeks;
+      const yearly = $('mode').value === 'salary' ? amount : amount * yearHours;
+      const hourly = yearHours ? yearly / yearHours : 0;
+      out.innerHTML =
+        '<p class="result-figure">' + money(hourly) + ' por hora</p>' +
+        '<table><tbody>' +
+        '<tr><td>Por hora</td><td class="num">' + money(hourly) + '</td></tr>' +
+        '<tr><td>Por día (' + hours / 5 + ' horas)</td><td class="num">' + money(hourly * hours / 5) + '</td></tr>' +
+        '<tr><td>Por semana</td><td class="num">' + money(hourly * hours) + '</td></tr>' +
+        '<tr><td>Por mes</td><td class="num">' + money(yearly / 12) + '</td></tr>' +
+        '<tr><td>Por año</td><td class="num">' + money(yearly) + '</td></tr>' +
+        '</tbody></table>' +
+        '<p class="result-note">Calculado con ' + hours + ' horas a la semana durante ' + weeks + ' semanas: ' + yearHours.toLocaleString('es-ES') + ' horas al año, antes de impuestos.</p>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

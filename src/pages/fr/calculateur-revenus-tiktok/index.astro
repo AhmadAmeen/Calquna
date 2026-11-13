@@ -1,0 +1,135 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/tiktok-money-calculator/"
+  altEs="/es/calculadora-dinero-tiktok/"
+  altFr="/fr/calculateur-revenus-tiktok/"
+  title="Calculateur de revenus TikTok : estimations Creator Rewards et partenariats de marque"
+  description="Estimez vos revenus TikTok de deux façons : les Creator Rewards pour mille vues qualifiées, et ce qu’une marque pourrait payer par post à votre niveau de vues. Plus votre taux d’engagement."
+>
+  <h1>Calculateur de revenus TikTok</h1>
+  <p class="lede">
+    L’argent TikTok vient de deux sources très différentes : les Creator Rewards de la
+    plateforme, qui paient par vue qualifiée, et les marques qui paient des posts, là où se
+    trouve en réalité l’essentiel de l’argent. Cette page estime les deux, séparément, pour
+    que le petit chiffre ne se cache pas derrière le gros.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="views">Vues par vidéo (typiques)</label>
+        <input type="number" id="views" inputmode="numeric" min="0" step="any" value="100000" />
+      </div>
+      <div>
+        <label for="videos">Vidéos par mois</label>
+        <input type="number" id="videos" inputmode="numeric" min="0" max="200" step="1" value="12" />
+      </div>
+      <div>
+        <label for="followers">Abonnés</label>
+        <input type="number" id="followers" inputmode="numeric" min="0" step="any" value="50000" />
+      </div>
+      <div>
+        <label for="likes">Mentions J’aime + commentaires + partages sur une vidéo typique</label>
+        <input type="number" id="eng" inputmode="numeric" min="0" step="any" value="6000" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Estimer les revenus</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Estimations uniquement. Les taux des Creator Rewards ne sont pas publiés par TikTok et
+      varient selon le fonds, le pays et le contenu. Les tarifs des marques dépendent de
+      votre niche et de votre assurance en négociation bien plus que de n’importe quelle
+      formule.
+    </p>
+  </div>
+
+  <h2>Les deux sources, honnêtement</h2>
+  <p>
+    Les Creator Rewards paient les vues qualifiées : vues d’au moins cinq secondes, sur des
+    vidéos originales de plus d’une minute, depuis des pays éligibles. Les créateurs
+    rapportent de façon constante 0,40 $ à 1,00 $ pour mille vues qualifiées, très au-dessus
+    des quelques centimes de l’ancien Creator Fund. Pour être éligible, il faut 10 000
+    abonnés et 100 000 vues au cours des 30 derniers jours, et le programme ne fonctionne
+    que dans une poignée de pays, dont les États-Unis, le Royaume-Uni, l’Allemagne, la
+    France, l’Espagne, l’Italie, le Brésil et le Japon. Si vous êtes ailleurs, cette source
+    vaut zéro, quel que soit le nombre de vues.
+  </p>
+  <p>
+    Les partenariats de marque se négocient par post. Comme repère grossier du marché, les
+    créateurs avec un engagement réel obtiennent souvent entre 10 $ et 25 $ pour mille vues
+    sur un post sponsorisé, la finance et le business au-dessus, le divertissement
+    en dessous. Un post sponsorisé par mois à 100 000 vues vaut couramment plus qu’un mois
+    entier de Creator Rewards. Ce n’est pas un défaut du calcul, c’est la forme que prend
+    l’argent sur cette plateforme.
+  </p>
+
+  <h2>Un exemple, calculé à la main</h2>
+  <p>
+    100 000 vues par vidéo, 12 vidéos par mois, toutes qualifiées : 1,2 million de vues ×
+    0,70 $ (le milieu de la fourchette rapportée) ÷ 1 000 = <strong>840 $ par mois</strong>
+    de Creator Rewards. Un post de marque au même nombre de vues, à 15 $ pour mille, vaut
+    1 500 $ pour ce seul post. Et avec 6 000 mentions J’aime, commentaires et partages pour
+    50 000 abonnés, le taux d’engagement est de 6 000 ÷ 50 000 × 100 = <strong>12 %</strong>,
+    ce qui est fort, et c’est le chiffre que les marques demandent réellement.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Pourquoi ma rémunération par vue est-elle plus basse que la fourchette indiquée ici ?</dt>
+    <dd>
+      En général parce que toutes les vues ne sont pas qualifiées : les vues de moins de
+      cinq secondes, les vues sur des vidéos de moins d’une minute et les vues depuis des
+      pays non éligibles ne comptent pas. Une vidéo peut afficher un million de vues et
+      n’en avoir qu’un tiers de qualifiées.
+    </dd>
+    <dt>Quel taux d’engagement est bon ?</dt>
+    <dd>
+      Mesuré comme sur cette page, les interactions divisées par les abonnés : en dessous de
+      2 %, c’est faible ; de 3 % à 6 %, c’est un niveau sain et ordinaire ; au-dessus, c’est
+      fort. Les petits comptes obtiennent en général de meilleurs scores, parce que leurs
+      abonnés les connaissent vraiment.
+    </dd>
+    <dt>TikTok paie-t-il directement pour les mentions J’aime ou les abonnés ?</dt>
+    <dd>
+      Non. Les abonnés déterminent votre éligibilité aux programmes et fixent votre tarif
+      de marque. La plateforme paie les vues qualifiées, et les marques paient les posts.
+      Quiconque vous vend une rémunération par abonné décrit un programme qui n’existe pas.
+    </dd>
+  </dl>
+
+  <p class="meta">Méthode : Creator Rewards à 0,40 $ à 1,00 $ pour mille vues qualifiées, quatre sources de créateurs publiées concordantes ; repère marques de 10 $ à 25 $ pour mille vues par post. Dernière vérification de la page : 13 novembre 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const money = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' $';
+
+    function compute() {
+      const views = parseFloat($('views').value) || 0;
+      const videos = parseFloat($('videos').value) || 0;
+      const followers = parseFloat($('followers').value) || 0;
+      const eng = parseFloat($('eng').value) || 0;
+      const monthlyViews = views * videos;
+      const low = monthlyViews / 1000 * 0.40;
+      const mid = monthlyViews / 1000 * 0.70;
+      const high = monthlyViews / 1000 * 1.00;
+      const brandLow = views / 1000 * 10;
+      const brandHigh = views / 1000 * 25;
+      const rate = followers ? (eng / followers * 100) : 0;
+      out.innerHTML =
+        '<p class="result-figure">Environ ' + money(mid) + ' par mois de Creator Rewards</p>' +
+        '<p>Cela représente ' + (monthlyViews / 1000).toLocaleString('fr-FR') + ' milliers de vues par mois, au tarif rapporté de 0,40 $ à 1,00 $ pour mille : la fourchette va de ' + money(low) + ' à ' + money(high) + ', si chaque vue est qualifiée et si vous êtes dans un pays éligible.</p>' +
+        '<table><tbody>' +
+        '<tr><td>Un post sponsorisé à votre niveau de vues</td><td class="num">' + money(brandLow) + ' à ' + money(brandHigh) + '</td></tr>' +
+        '<tr><td>Votre taux d’engagement</td><td class="num">' + rate.toFixed(1).replace('.', ',') + ' %</td></tr>' +
+        '</tbody></table>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>

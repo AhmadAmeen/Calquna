@@ -1,0 +1,129 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/percentage-calculator/"
+  altEs="/es/calculadora-de-porcentajes/"
+  altFr="/fr/calculateur-de-pourcentage/"
+  title="Calculateur de pourcentage : part d’un nombre, quel pourcentage, et variation"
+  description="Trois calculs de pourcentage sur une page : combien font X % de Y, X représente quel pourcentage de Y, et la hausse ou la baisse en pourcentage entre deux nombres. Chacun avec son calcul détaillé."
+>
+  <h1>Calculateur de pourcentage</h1>
+  <p class="lede">
+    Presque toutes les questions de pourcentage sont l’un de trois calculs. Cette page les
+    regroupe tous les trois, avec la phrase de réponse écrite en toutes lettres, parce que
+    « 25 % » tout seul dit rarement de quoi il est les 25 %.
+  </p>
+
+  <div class="sheet">
+    <h2 style="margin-top:0;">Les trois calculs</h2>
+    <div class="field-grid">
+      <div>
+        <label for="a1">Quel pourcentage</label>
+        <input type="number" id="a1" inputmode="decimal" step="any" value="15" />
+      </div>
+      <div>
+        <label for="a2">de ce nombre ?</label>
+        <input type="number" id="a2" inputmode="decimal" step="any" value="240" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-a" aria-live="polite"></p>
+    <div class="field-grid">
+      <div>
+        <label for="b1">Ce nombre</label>
+        <input type="number" id="b1" inputmode="decimal" step="any" value="45" />
+      </div>
+      <div>
+        <label for="b2">représente quel pourcentage de celui-ci ?</label>
+        <input type="number" id="b2" inputmode="decimal" step="any" value="180" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-b" aria-live="polite"></p>
+    <div class="field-grid">
+      <div>
+        <label for="c1">De ce nombre</label>
+        <input type="number" id="c1" inputmode="decimal" step="any" value="80" />
+      </div>
+      <div>
+        <label for="c2">à celui-ci, quelle est la variation ?</label>
+        <input type="number" id="c2" inputmode="decimal" step="any" value="100" />
+      </div>
+    </div>
+    <p class="result-figure" id="out-c" aria-live="polite"></p>
+  </div>
+
+  <h2>Les trois formules</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Question</th><th scope="col">Formule</th><th scope="col" class="num">Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Combien font 15 % de 240 ?</td><td>pourcentage ÷ 100 × nombre</td><td class="num">36</td></tr>
+      <tr><td>45 représente quel pourcentage de 180 ?</td><td>partie ÷ total × 100</td><td class="num">25 %</td></tr>
+      <tr class="point"><td>Passer de 80 à 100, quelle variation ?</td><td>(nouveau − ancien) ÷ ancien × 100</td><td class="num">+25 %</td></tr>
+    </tbody>
+  </table>
+  <p>
+    C’est le troisième qui piège tout le monde. La variation se mesure toujours par rapport au
+    point de départ, jamais par rapport au point d’arrivée. Passer de 80 à 100 est une hausse
+    de 25 %, et revenir de 100 à 80 n’est qu’une baisse de 20 %. C’est pourquoi un prix qui
+    baisse de 50 % puis remonte de 50 % ne revient pas à son point de départ : il termine 25 %
+    en dessous.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Quelle est la différence entre pour cent et points de pourcentage ?</dt>
+    <dd>
+      Si un taux d’intérêt passe de 4 % à 5 %, il a augmenté d’un point de pourcentage, ce qui
+      représente une hausse de 25 % du taux lui-même. Les médias confondent constamment les
+      deux. Quand la distinction compte, utilisez les points pour l’écart entre deux
+      pourcentages et le pour cent pour la variation.
+    </dd>
+    <dt>Comment ajouter un pourcentage à un nombre, comme un pourboire ou une taxe ?</dt>
+    <dd>
+      Multipliez par un plus le pourcentage sous forme décimale. Une addition de 84 avec 15 %
+      ajoutés fait 84 × 1,15 = 96,60. Pour retirer 20 %, multipliez par 0,80. Ou utilisez le
+      premier calcul de cette page pour trouver la part en pourcentage et l’ajouter ensuite.
+    </dd>
+    <dt>Pourquoi une baisse ne peut-elle pas dépasser 100 % ?</dt>
+    <dd>
+      Parce qu’une baisse de 100 % signifie que tout a disparu. Si un calculateur quelque part
+      vous annonce une chute de 150 %, il a mesuré par rapport au mauvais bout. Les hausses
+      n’ont pas cette limite : passer de 10 à 35 est une hausse de 250 %.
+    </dd>
+  </dl>
+
+  <p class="meta">Méthode : les trois formules standard de pourcentage, variation toujours mesurée à partir de la valeur de départ. Page vérifiée le 13 novembre 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const num = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 4 });
+
+    function compute() {
+      const a1 = parseFloat($('a1').value);
+      const a2 = parseFloat($('a2').value);
+      $('out-a').textContent = Number.isFinite(a1) && Number.isFinite(a2)
+        ? num(a1) + ' % de ' + num(a2) + ' font ' + num(a1 / 100 * a2)
+        : '';
+      const b1 = parseFloat($('b1').value);
+      const b2 = parseFloat($('b2').value);
+      $('out-b').textContent = Number.isFinite(b1) && Number.isFinite(b2) && b2 !== 0
+        ? num(b1) + ' représente ' + num(b1 / b2 * 100) + ' % de ' + num(b2)
+        : '';
+      const c1 = parseFloat($('c1').value);
+      const c2 = parseFloat($('c2').value);
+      if (Number.isFinite(c1) && Number.isFinite(c2) && c1 !== 0) {
+        const ch = (c2 - c1) / c1 * 100;
+        $('out-c').textContent = 'Passer de ' + num(c1) + ' à ' + num(c2) + ' est une ' + (ch >= 0 ? 'hausse' : 'baisse') + ' de ' + num(Math.abs(ch)) + ' %';
+      } else {
+        $('out-c').textContent = '';
+      }
+    }
+
+    for (const id of ['a1', 'a2', 'b1', 'b2', 'c1', 'c2']) $(id).addEventListener('input', compute);
+    compute();
+  </script>
+</Base>

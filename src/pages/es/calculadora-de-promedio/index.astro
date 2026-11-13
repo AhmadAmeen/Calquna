@@ -1,0 +1,139 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="Calculadora de promedio: nota media ponderada sobre 10"
+  description="Calcula tu nota media sobre 10 a partir de las notas de tus asignaturas y sus créditos o peso. Promedio ponderado, asignatura por asignatura, con el procedimiento a la vista."
+  lang="es"
+  altEn="/gpa-calculator/"
+  altEs="/es/calculadora-de-promedio/"
+  altFr="/fr/calculateur-de-moyenne/"
+>
+  <h1>Calculadora de promedio</h1>
+  <p class="lede">
+    Añade una fila por asignatura: la nota, sobre 10, y los créditos o el peso que tiene. La
+    calculadora pondera cada nota por su peso, que es justo lo que se suele hacer mal al
+    calcular la media de cabeza.
+  </p>
+
+  <div class="sheet">
+    <table>
+      <thead>
+        <tr><th scope="col">Asignatura (opcional)</th><th scope="col">Nota (0 a 10)</th><th scope="col" class="num">Créditos o peso</th><th scope="col"></th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p>
+      <button class="btn" id="add" type="button">Añadir una asignatura</button>
+      <button class="btn btn--primary" id="calc" type="button" style="margin-left:0.5rem;">Calcular mi nota media</button>
+    </p>
+    <div id="out" aria-live="polite" style="margin-top:1rem;">
+      <p class="result-note">Tu nota media aparece aquí.</p>
+    </div>
+  </div>
+
+  <h2>Cómo se calcula la nota media</h2>
+  <p>
+    Cada nota se multiplica por los créditos o el peso de su asignatura, se suman todos esos
+    productos y el resultado se divide entre el total de créditos o peso. Así, una asignatura
+    de 6 créditos con un 7,0 suma 42 puntos a la cuenta, mientras que una de 3 créditos con un
+    9,0 suma 27. La asignatura pesada tira de la media más que la ligera aunque su nota sea
+    peor, y esa ponderación es justo lo que la fórmula viene a hacer.
+  </p>
+  <p>
+    La escala es de 0 a 10, la habitual en España y en la mayoría de los países
+    hispanohablantes. Si tu centro pondera por horas lectivas en lugar de por créditos,
+    escribe esas horas en la tercera columna y el cálculo sigue valiendo.
+  </p>
+
+  <h2>Un ejemplo, calculado a mano</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Asignatura</th><th scope="col">Nota</th><th scope="col" class="num">Créditos o peso</th><th scope="col" class="num">Nota × peso</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Historia</td><td>8,5</td><td class="num">3</td><td class="num">25,5</td></tr>
+      <tr><td>Biología</td><td>7,0</td><td class="num">4</td><td class="num">28,0</td></tr>
+      <tr><td>Lengua</td><td>9,2</td><td class="num">3</td><td class="num">27,6</td></tr>
+      <tr class="point"><td>Total</td><td>81,1 ÷ 10 de peso</td><td class="num">10</td><td class="num">Nota media 8,11</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Preguntas frecuentes</h2>
+  <dl class="faq">
+    <dt>¿Qué se considera un buen promedio?</dt>
+    <dd>
+      Sobre 10, y con los nombres habituales en España: un 5 es el aprobado justo, de 6 a 6,9
+      es un bien, de 7 a 8,9 es notable y de 9 en adelante, sobresaliente. Una media de 7 ya es
+      sólida, y de 8 para arriba es fuerte: es la zona que miran muchas becas y los másteres
+      con plazas limitadas, cada cual con su propio corte. El contexto también cuenta, porque
+      un 7,5 en una carrera dura con asignaturas de muchos créditos no es lo mismo que un 7,5
+      en otra más ligera.
+    </dd>
+    <dt>¿Cómo puedo subir mi nota media?</dt>
+    <dd>
+      Mira primero el peso, no las notas sueltas. Un punto más en una asignatura de 6 créditos
+      suma 6 puntos a la cuenta total; el mismo punto en una de 2 créditos suma solo 2. Para
+      saber qué necesitas en lo que te queda por cursar, la media que debes sacar es (objetivo
+      × peso total al terminar − puntos ya sumados) ÷ peso que falta. Si ese número sale por
+      encima de 10, el objetivo no se alcanza este curso, y saberlo pronto vale más que
+      esperar.
+    </dd>
+    <dt>¿Así se calcula la nota media oficial?</dt>
+    <dd>
+      En la universidad española, sí: la nota media del expediente se calcula ponderando la
+      nota de cada asignatura por sus créditos, sobre una escala de 0 a 10. En secundaria,
+      muchos centros reparten el peso por horas lectivas o hacen la media a partes iguales
+      entre materias, así que ajusta la columna de peso a lo que use tu centro. Y si tu país
+      usa otra escala, por ejemplo de 0 a 20 o de 1 a 7, esta página no te sirve tal cual: la
+      ponderación es la misma, pero la escala no.
+    </dd>
+  </dl>
+
+  <p class="meta">Método: promedio ponderado, cada nota multiplicada por los créditos o el peso de su asignatura, en escala de 0 a 10. Página revisada el 13 de noviembre de 2026.</p>
+
+  <script>
+    const rowsEl = document.getElementById('rows');
+    const out = document.getElementById('out');
+    const fmt = (n, d) => n.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+    function addRow(name, grade, weight) {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><input type="text" class="g-name" value="' + (name || '') + '" aria-label="Nombre de la asignatura" /></td>' +
+        '<td><input type="number" class="g-nota" value="' + (grade ?? '') + '" min="0" max="10" step="0.1" aria-label="Nota" /></td>' +
+        '<td><input type="number" class="g-peso" value="' + (weight || 3) + '" min="0" step="0.5" aria-label="Créditos o peso" /></td>' +
+        '<td><button type="button" class="btn g-del">Quitar</button></td>';
+      tr.querySelector('.g-del').addEventListener('click', () => { tr.remove(); });
+      rowsEl.appendChild(tr);
+    }
+
+    addRow('Historia', 8.5, 3);
+    addRow('Biología', 7, 4);
+    addRow('Lengua', 9.2, 3);
+
+    document.getElementById('add').addEventListener('click', () => addRow('', '', 3));
+
+    document.getElementById('calc').addEventListener('click', () => {
+      let pts = 0;
+      let wts = 0;
+      rowsEl.querySelectorAll('tr').forEach((tr) => {
+        const raw = tr.querySelector('.g-nota').value;
+        if (raw === '') return;
+        const g = parseFloat(String(raw).replace(',', '.')) || 0;
+        const w = parseFloat(tr.querySelector('.g-peso').value) || 0;
+        pts += g * w;
+        wts += w;
+      });
+      if (!wts) {
+        out.innerHTML = '<p class="result-note">Añade al menos una asignatura con nota y peso y tu nota media aparece aquí.</p>';
+        return;
+      }
+      const wtsText = Number.isInteger(wts) ? String(wts) : fmt(wts, 1);
+      out.innerHTML =
+        '<p class="result-figure">Nota media ' + fmt(pts / wts, 2) + '</p>' +
+        '<p>Eso son ' + fmt(pts, 1) + ' puntos ponderados repartidos entre ' + wtsText + ' créditos o unidades de peso. Cada crédito con un 10 suma 10 puntos a la cuenta, por lo que las asignaturas con más peso son las que más mueven la media.</p>';
+    });
+  </script>
+</Base>

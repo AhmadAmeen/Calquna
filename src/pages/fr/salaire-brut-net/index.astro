@@ -1,0 +1,144 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  lang="fr"
+  altEn="/salary-to-hourly-calculator/"
+  altEs="/es/salario-por-hora/"
+  altFr="/fr/salaire-brut-net/"
+  title="Salaire brut en net : convertisseur mensuel et annuel, cadre et non-cadre"
+  description="Convertissez un salaire brut mensuel en salaire net avant et après impôt, pour un cadre ou un non-cadre. Coefficients affichés, calcul expliqué, aucune donnée envoyée."
+>
+  <h1>Salaire brut en net</h1>
+  <p class="lede">
+    Le salaire annoncé dans une offre d’emploi est presque toujours un brut. Ce qui arrive sur
+    votre compte est un net, et l’écart entre les deux dépend de votre statut. Cette page fait
+    la conversion avec des coefficients affichés clairement, pour que vous sachiez exactement
+    quelle approximation se cache derrière le chiffre.
+  </p>
+
+  <div class="sheet">
+    <div class="field-grid">
+      <div>
+        <label for="brut">Salaire brut mensuel (€)</label>
+        <input type="number" id="brut" inputmode="decimal" min="0" step="any" value="2500" />
+      </div>
+      <div>
+        <label for="statut">Statut</label>
+        <select id="statut">
+          <option value="0.77" selected>Non-cadre</option>
+          <option value="0.75">Cadre</option>
+        </select>
+      </div>
+      <div>
+        <label for="taux">Prélèvement à la source (%)</label>
+        <input type="number" id="taux" inputmode="decimal" min="0" max="60" step="any" value="0" />
+      </div>
+    </div>
+    <button class="btn btn--primary" id="calc" type="button">Convertir en net</button>
+    <div id="out" aria-live="polite" style="margin-top:1.5rem;"></div>
+    <p class="result-note">
+      Le résultat est une estimation. Le chiffre exact dépend de votre convention collective,
+      de la mutuelle d’entreprise, des tickets-restaurant, des primes et d’autres lignes de
+      votre fiche de paie qu’aucun convertisseur en ligne ne peut connaître. Pour le montant
+      définitif, seul le bulletin de salaire fait foi.
+    </p>
+  </div>
+
+  <h2>Comment le calcul marche</h2>
+  <p>
+    Entre le brut et le net, il y a les cotisations salariales : retraite, santé, chômage,
+    prévoyance et quelques contributions plus petites. Pour un salarié du privé, elles
+    représentent environ 23 % du brut pour un non-cadre et environ 25 % pour un cadre, dont
+    les cotisations de retraite complémentaire et de prévoyance sont plus élevées. Cette page
+    applique donc un coefficient simple : net avant impôt = brut × 0,77 pour un non-cadre,
+    brut × 0,75 pour un cadre. Le taux horaire part de 151,67 heures, la durée mensuelle
+    moyenne d’un temps plein à 35 heures.
+  </p>
+  <p>
+    À titre de repère, le SMIC 2026 s’établit à 12,31 € brut de l’heure, soit environ
+    1 867 € brut par mois à temps plein. Un brut mensuel en dessous de ce repère, pour un
+    temps plein, mérite une vérification.
+  </p>
+
+  <h2>Salaires courants, convertis</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Brut mensuel</th><th scope="col" class="num">Net non-cadre</th><th scope="col" class="num">Net cadre</th><th scope="col" class="num">Brut annuel</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1 900 €</td><td class="num">1 463 €</td><td class="num">1 425 €</td><td class="num">22 800 €</td></tr>
+      <tr class="point"><td>2 500 €</td><td class="num">1 925 €</td><td class="num">1 875 €</td><td class="num">30 000 €</td></tr>
+      <tr><td>3 000 €</td><td class="num">2 310 €</td><td class="num">2 250 €</td><td class="num">36 000 €</td></tr>
+      <tr><td>3 500 €</td><td class="num">2 695 €</td><td class="num">2 625 €</td><td class="num">42 000 €</td></tr>
+      <tr><td>4 000 €</td><td class="num">3 080 €</td><td class="num">3 000 €</td><td class="num">48 000 €</td></tr>
+    </tbody>
+  </table>
+  <p>Net mensuel avant impôt, estimé avec les coefficients 0,77 et 0,75 décrits ci-dessus.</p>
+
+  <h2>Un exemple, calculé à la main</h2>
+  <p>
+    Un salaire de 2 500 € brut par mois pour un non-cadre : 2 500 × 0,77 =
+    <strong>1 925 € net avant impôt</strong>, soit 23 100 € net sur l’année. Pour un cadre à
+    3 000 € brut : 3 000 × 0,75 = <strong>2 250 € net avant impôt</strong>. L’impôt sur le
+    revenu vient ensuite, prélevé à la source chaque mois.
+  </p>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Pourquoi le brut n’est-il pas ce qui arrive sur mon compte ?</dt>
+    <dd>
+      Parce que les cotisations salariales sont retirées avant le versement. Elles financent
+      votre retraite, votre assurance santé et votre assurance chômage, et elles apparaissent
+      ligne par ligne sur la fiche de paie. Votre employeur paie en plus ses propres
+      cotisations patronales, qui ne passent jamais par votre salaire. Ce qui arrive sur le
+      compte, c’est le net après cotisations, puis diminué du prélèvement à la source.
+    </dd>
+    <dt>Qu’est-ce que le prélèvement à la source ?</dt>
+    <dd>
+      C’est l’impôt sur le revenu, collecté chaque mois directement sur le salaire net depuis
+      2019, au lieu d’être payé l’année suivante. Le taux appliqué est calculé par
+      l’administration fiscale à partir de votre dernière déclaration. Renseignez ce taux
+      dans le champ prévu ci-dessus pour obtenir le net après impôt, celui qui correspond au
+      virement que vous recevez réellement.
+    </dd>
+    <dt>Comment passer du net au brut ?</dt>
+    <dd>
+      En divisant par le même coefficient. Pour retrouver le brut à partir d’un net de
+      2 000 € en non-cadre : 2 000 ÷ 0,77 ≈ 2 597 € brut. En cadre : 2 000 ÷ 0,75 ≈ 2 667 €
+      brut. C’est le calcul à faire quand vous négociez en net et que l’employeur raisonne
+      en brut.
+    </dd>
+  </dl>
+
+  <p class="meta">Méthode : net estimé = brut × 0,77 (non-cadre) ou × 0,75 (cadre) ; taux horaire sur 151,67 heures mensuelles ; SMIC 2026 à 12,31 € brut de l’heure comme repère. Dernière vérification de la page : 13 novembre 2026.</p>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const out = $('out');
+    const eur = (n) => n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+
+    function compute() {
+      const brut = parseFloat($('brut').value) || 0;
+      const coef = parseFloat($('statut').value) || 0.77;
+      const taux = Math.min(60, Math.max(0, parseFloat($('taux').value) || 0));
+      const net = brut * coef;
+      const netApresImpot = net * (1 - taux / 100);
+      const statutLabel = coef === 0.75 ? 'cadre' : 'non-cadre';
+      out.innerHTML =
+        '<p class="result-figure">' + eur(net) + ' net par mois</p>' +
+        '<table><tbody>' +
+        '<tr><td>Net mensuel avant impôt</td><td class="num">' + eur(net) + '</td></tr>' +
+        '<tr><td>Net mensuel après impôt (taux de ' + taux.toLocaleString('fr-FR') + ' %)</td><td class="num">' + eur(netApresImpot) + '</td></tr>' +
+        '<tr><td>Net annuel avant impôt</td><td class="num">' + eur(net * 12) + '</td></tr>' +
+        '<tr><td>Brut annuel</td><td class="num">' + eur(brut * 12) + '</td></tr>' +
+        '<tr><td>Net horaire approximatif</td><td class="num">' + eur(net / 151.67) + '</td></tr>' +
+        '</tbody></table>' +
+        '<p class="result-note">Estimation pour un ' + statutLabel + ' : brut × ' + coef.toLocaleString('fr-FR') + ', avant impôt sauf la ligne qui applique votre taux de prélèvement à la source. Le montant exact dépend de votre convention collective et de votre fiche de paie.</p>';
+    }
+
+    $('calc').addEventListener('click', compute);
+    compute();
+  </script>
+</Base>
