@@ -11,6 +11,10 @@ h1 { max-width: 20ch; font-size: var(--text-display); } h2 { max-width: 30ch; fo
 .lead { font-size: var(--text-lead); line-height: 1.45; max-width: 52ch; }
 p { margin: 0; text-wrap: pretty; }
 p:not([class]) { max-width: 65ch; }
+/* Content lists in guide articles keep the same measure as plain paragraphs.
+   Nav and related-tools lists are nested deeper, so this only touches lists
+   that sit directly in the page body. */
+main .wrap > ul:not([class]), main .wrap > ol:not([class]) { max-width: 65ch; }
 img, video { max-width: 100%; height: auto; display: block; }
 svg { display: block; }
 [hidden] { display: none !important; }

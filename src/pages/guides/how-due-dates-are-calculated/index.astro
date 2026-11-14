@@ -1,0 +1,167 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="How due dates are calculated: Naegele’s rule explained"
+  description="A due date is counted forward from the first day of your last period, using Naegele’s rule. The rule, two examples worked by hand, and where it goes wrong."
+  altEn="/guides/how-due-dates-are-calculated/"
+  singleLang
+>
+  <h1>How due dates are calculated</h1>
+  <p class="lede">
+    A due date is not a prediction of the day the baby arrives. It is a date counted forward
+    from the first day of the last period, using a rule from the 1800s that clinics still use
+    first. This page explains the rule, works two examples by hand, and says where it goes wrong.
+  </p>
+  <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#the-short-answer">The short answer</a></li><li><a href="#the-rule-step-by-step">The rule, step by step</a></li><li><a href="#one-example-worked-by-hand">One example, worked by hand</a></li><li><a href="#why-count-from-the-last-period">Why count from the last period</a></li><li><a href="#when-the-rule-goes-wrong">When the rule goes wrong</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
+
+  <h2 id="the-short-answer">The short answer</h2>
+  <p>
+    The standard method is Naegele’s rule, named after Franz Karl Naegele, a German obstetrician
+    who published it in the early 1800s. Take the first day of the last menstrual period and add
+    280 days. That is 40 weeks. The rule assumes a regular 28 day cycle with ovulation on day 14.
+  </p>
+  <p>
+    Only about 1 baby in 20 arrives on the exact date. Most arrive within two weeks either side
+    of it. The date is a planning date: it sets the schedule for scans, appointments and leave,
+    not the day the birth will happen.
+  </p>
+
+  <h2 id="the-rule-step-by-step">The rule, step by step</h2>
+  <p>
+    The version most people are taught uses calendar months instead of counting days:
+  </p>
+  <ol>
+    <li>Start with the first day of the last period.</li>
+    <li>Add 7 days.</li>
+    <li>Subtract 3 months.</li>
+    <li>Add 1 year.</li>
+  </ol>
+  <p>
+    The result is the estimated due date. Clinics usually count 280 days instead, and the two
+    usually land on the same day or within a few days of each other. They can differ by a day or
+    two because calendar months are uneven: a date counted through February lands differently
+    from one counted through a 31 day month. For example, a last period starting 10 May 2026
+    gives 17 February 2027 by the three step version and 14 February 2027 by the 280 day count.
+    Both are estimates, and the gap does not matter, because the date is a planning date.
+  </p>
+  <p>
+    If the cycle is longer or shorter than 28 days, shift the date by the difference. A 35 day
+    cycle moves the date 7 days later, and a 21 day cycle moves it 7 days earlier, because
+    ovulation usually moves with the cycle.
+  </p>
+
+  <h2 id="one-example-worked-by-hand">One example, worked by hand</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Working</th><th scope="col">Date</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Last period starts</td><td>The date you enter</td><td class="num">1 Feb 2026</td></tr>
+      <tr><td>Add 7 days</td><td>1 Feb plus 7 days</td><td class="num">8 Feb 2026</td></tr>
+      <tr><td>Subtract 3 months</td><td>8 Feb minus 3 months</td><td class="num">8 Nov 2025</td></tr>
+      <tr><td>Add 1 year</td><td>8 Nov 2025 plus 1 year</td><td class="num">8 Nov 2026</td></tr>
+      <tr class="point"><td>Estimated due date</td><td>Same as adding 280 days</td><td class="num">8 Nov 2026</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Second example: with a last period starting 1 February 2026 and a 35 day cycle, the 280 day
+    count plus the 7 day shift gives 15 November 2026. If the conception date is known instead,
+    count 266 days from it: conception on 1 March 2026 gives 22 November 2026.
+  </p>
+
+  <h2 id="why-count-from-the-last-period">Why count from the last period</h2>
+  <p>
+    Most people know the first day of their last period and do not know the day they conceived.
+    Pregnancy is dated from the period, so the count starts about two weeks before conception in
+    the standard model. That is why someone is called four weeks pregnant on the day a period is
+    missed, and two weeks pregnant at conception. French practice counts the same span as
+    semaines d’aménorrhée, weeks since the last period, and the arithmetic is the same.
+  </p>
+
+  <h2 id="when-the-rule-goes-wrong">When the rule goes wrong</h2>
+  <p>
+    The rule is a starting point, and it is wrong more often than people expect. The common
+    cases:
+  </p>
+  <ul>
+    <li>
+      <strong>Irregular cycles.</strong> The rule assumes ovulation on day 14. When cycles vary
+      by more than a few days, the error grows, and the date is little more than a rough guide.
+    </li>
+    <li>
+      <strong>Recent hormonal contraception or breastfeeding.</strong> Cycles may not have
+      settled into a regular pattern yet, so the last period is a weak anchor.
+    </li>
+    <li>
+      <strong>IVF or a known conception date.</strong> Count 266 days from conception. For IVF,
+      clinics count from the transfer date and the age of the embryo, and their date is the one
+      to use.
+    </li>
+    <li>
+      <strong>The dating scan.</strong> An ultrasound in the first trimester, measuring the baby
+      from head to bottom, is more accurate than any date counted from a period. If the scan date
+      differs from the period date by more than about five to seven days, clinics use the scan
+      date.
+    </li>
+  </ul>
+
+  <div class="well">
+    <h2 style="margin-top:0;">Work out your own date</h2>
+    <p>
+      The rule above is the same one our calculator uses, with the cycle adjustment built in.
+      Put in the first day of your last period and it gives the estimated due date, how far along
+      you are today, and the date each trimester turns.
+    </p>
+    <p>
+      <a class="btn btn--primary" href="/due-date-calculator/" style="display:inline-block;text-decoration:none;">Open the due date calculator</a>
+    </p>
+  </div>
+
+  <h2 id="questions-people-ask">Questions people ask</h2>
+  <dl class="faq">
+    <dt>How accurate is a due date from my last period?</dt>
+    <dd>
+      Within about a week for most people with regular cycles, wider if the cycle varies by more
+      than a few days or hormonal contraception was stopped recently. The dating scan is more
+      accurate, which is why clinics use the scan date when the two disagree by more than a few
+      days.
+    </dd>
+    <dt>Why 280 days and not 266?</dt>
+    <dd>
+      280 days counts from the first day of the last period, and 266 days counts from conception.
+      The 14 days between them are the standard gap between the period and ovulation in a 28 day
+      cycle. Both counts aim at the same date.
+    </dd>
+    <dt>What if my cycle is not 28 days?</dt>
+    <dd>
+      Shift the date by the difference between your cycle and 28 days. A 35 day cycle moves the
+      date a week later, and a 21 day cycle moves it a week earlier. If the cycle is irregular,
+      no shift fixes it, and the scan matters more.
+    </dd>
+    <dt>What if I know the conception date?</dt>
+    <dd>
+      Add 266 days to it. That is 280 days minus the 14 days Naegele’s rule assumes between the
+      period and ovulation.
+    </dd>
+    <dt>Does the rule work after IVF?</dt>
+    <dd>
+      Not as written. Clinics date the pregnancy from the embryo transfer date and the age of the
+      embryo at transfer. Use the date the clinic gives you.
+    </dd>
+    <dt>What does EDD mean?</dt>
+    <dd>
+      Estimated date of delivery, also called the estimated due date. The word estimated is doing
+      real work: only about 1 baby in 20 arrives on that exact day.
+    </dd>
+  </dl>
+
+  <p>
+    Related tools: <a href="/due-date-calculator/">due date calculator</a>,
+    <a href="/days-between-dates/">days between dates</a>,
+    <a href="/sleep-calculator/">sleep calculator</a>.
+  </p>
+
+  <p class="meta">Sources: Naegele’s rule as set out by ACOG in its guidance on estimating the due date. This page explains the calculation. It is not medical advice. Confirm your due date with your midwife or doctor. Page last checked 14 November 2026.</p>
+</Base>

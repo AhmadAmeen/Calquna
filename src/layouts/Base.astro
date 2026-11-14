@@ -9,9 +9,12 @@ interface Props {
   altEn?: string;
   altEs?: string;
   altFr?: string;
+  // Pages with no translated version yet (guides launch EN first): emit only
+  // the English hreflang and x-default, never a wrong-language link.
+  singleLang?: boolean;
 }
 
-const { title, description, lang = 'en', altEn, altEs, altFr } = Astro.props;
+const { title, description, lang = 'en', altEn, altEs, altFr, singleLang = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const site = Astro.site;
 
@@ -151,10 +154,19 @@ const L = {
       gtag('js', new Date());
       gtag('config', 'G-X13MBGVFWD');
     </script>
-    <link rel="alternate" hreflang="en" href={urlEn} />
-    <link rel="alternate" hreflang="es" href={urlEs} />
-    <link rel="alternate" hreflang="fr" href={urlFr} />
-    <link rel="alternate" hreflang="x-default" href={urlEn} />
+    {singleLang ? (
+      <>
+        <link rel="alternate" hreflang="en" href={canonical} />
+        <link rel="alternate" hreflang="x-default" href={canonical} />
+      </>
+    ) : (
+      <>
+        <link rel="alternate" hreflang="en" href={urlEn} />
+        <link rel="alternate" hreflang="es" href={urlEs} />
+        <link rel="alternate" hreflang="fr" href={urlFr} />
+        <link rel="alternate" hreflang="x-default" href={urlEn} />
+      </>
+    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
