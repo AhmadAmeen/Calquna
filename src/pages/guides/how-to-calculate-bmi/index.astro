@@ -1,0 +1,232 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="How to calculate BMI by hand: the formula, worked examples and the 703"
+  description="BMI is one division: weight in kilograms divided by height in metres squared. The metric and imperial formulas, where the 703 comes from, and three examples worked by hand."
+  altEn="/guides/how-to-calculate-bmi/"
+  singleLang
+>
+  <h1>How to calculate BMI by hand</h1>
+  <p class="lede">
+    Body mass index is one division: your weight divided by your height squared. It needs
+    only a scale, a tape measure and a pocket calculator, and doing it once by hand takes the
+    mystery out of the number. This page shows both formulas, explains where the 703 in the
+    imperial version comes from, and works three examples by hand.
+  </p>
+  <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#the-short-answer">The short answer</a></li><li><a href="#the-formula-step-by-step">The formula, step by step</a></li><li><a href="#where-the-703-comes-from">Where the 703 comes from</a></li><li><a href="#two-examples-worked-by-hand">Two examples, worked by hand</a></li><li><a href="#checking-both-formulas-agree">Checking both formulas agree</a></li><li><a href="#the-healthy-weight-range-for-your-height">The healthy weight range for your height</a></li><li><a href="#five-mistakes-that-break-the-calculation">Five mistakes that break the calculation</a></li><li><a href="#what-the-number-cannot-tell-you">What the number cannot tell you</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
+
+  <h2 id="the-short-answer">The short answer</h2>
+  <p>
+    In metric units, BMI is your weight in kilograms divided by your height in metres squared:
+  </p>
+  <p>
+    BMI = weight (kg) ÷ height (m)²
+  </p>
+  <p>
+    In imperial units, the same definition needs a conversion factor, because pounds and inches
+    are not metric units:
+  </p>
+  <p>
+    BMI = 703 × weight (lb) ÷ height (in)²
+  </p>
+  <p>
+    Both versions give the same answer when the numbers are converted correctly. The result is
+    rounded to one decimal place, then read against the World Health Organization bands for
+    adults: under 18.5 is underweight, 18.5 to 24.9 is the healthy weight band, 25.0 to 29.9 is
+    overweight, and 30.0 and over is obese. The number is a screening tool, not a diagnosis.
+  </p>
+
+  <h2 id="the-formula-step-by-step">The formula, step by step</h2>
+  <p>
+    The calculation has three steps, whichever unit system you use:
+  </p>
+  <ol>
+    <li>Write down your weight and your height in matching units.</li>
+    <li>Square your height: multiply it by itself.</li>
+    <li>Divide your weight by that number. In imperial units, multiply by 703 as well.</li>
+  </ol>
+  <p>
+    The one step people get wrong is the height conversion. The metric formula wants metres,
+    not centimetres, so divide centimetres by 100 first: 170 cm is 1.70 m. If you would rather
+    stay in centimetres, there is a matching version of the formula: BMI = weight (kg) ÷
+    height (cm)² × 10,000. It gives the same answer, because 10,000 is 100 squared. The
+    imperial formula wants total inches, not feet and inches, so convert first: 5 feet 9
+    inches is 5 × 12 + 9 = 69 inches.
+  </p>
+
+  <h2 id="where-the-703-comes-from">Where the 703 comes from</h2>
+  <p>
+    The 703 is not a magic number and it is not a fudge factor. It is the number that converts
+    pounds per square inch into kilograms per square metre, so the imperial formula lands on
+    the same value as the metric one. One pound is 0.45359237 kilograms, and one inch is
+    0.0254 metres, so one square inch is 0.0254² = 0.00064516 square metres. Divide the two:
+    0.45359237 ÷ 0.00064516 = 703.07, rounded to 703. The rounding never moves a BMI reported
+    to one decimal place by more than 0.01. If you ever want to check a conversion, multiply
+    by 703.07 instead of 703: the third digit drops out of any rounded result.
+  </p>
+
+  <h2 id="two-examples-worked-by-hand">Two examples, worked by hand</h2>
+  <p>
+    Metric first. Someone who weighs 65 kg and is 170 cm tall:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Working</th><th scope="col">Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Convert height to metres</td><td>170 ÷ 100</td><td class="num">1.70 m</td></tr>
+      <tr><td>Square the height</td><td>1.70 × 1.70</td><td class="num">2.89 m²</td></tr>
+      <tr><td>Divide weight by that</td><td>65 ÷ 2.89</td><td class="num">22.49</td></tr>
+      <tr class="point"><td>Round to one decimal place</td><td>BMI</td><td class="num">22.5</td></tr>
+    </tbody>
+  </table>
+  <p>
+    22.5 sits inside the healthy weight band of 18.5 to 24.9. The centimetre version gives the
+    same answer: 65 ÷ 170² × 10,000 = 65 ÷ 28,900 × 10,000 = 22.49, which rounds to 22.5.
+  </p>
+  <p>
+    Imperial next. Someone who weighs 175 lb and is 5 feet 9 inches tall:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Working</th><th scope="col">Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Convert height to inches</td><td>5 × 12 + 9</td><td class="num">69 in</td></tr>
+      <tr><td>Square the height</td><td>69 × 69</td><td class="num">4,761 in²</td></tr>
+      <tr><td>Multiply pounds by 703</td><td>175 × 703</td><td class="num">123,025</td></tr>
+      <tr><td>Divide</td><td>123,025 ÷ 4,761</td><td class="num">25.84</td></tr>
+      <tr class="point"><td>Round to one decimal place</td><td>BMI</td><td class="num">25.8</td></tr>
+    </tbody>
+  </table>
+  <p>
+    25.8 sits just inside the overweight band, which starts at 25.0. A second person at 200 lb
+    and 5 feet 10 inches (70 inches) works out at 703 × 200 ÷ 4,900 = 28.7, further into the
+    same band.
+  </p>
+
+  <h2 id="checking-both-formulas-agree">Checking both formulas agree</h2>
+  <p>
+    The two formulas are the same equation in different units, so the same person worked out
+    both ways should land on the same number. Take someone who weighs 90 kg and is 183 cm
+    tall. Metric: 1.83² = 3.3489, and 90 ÷ 3.3489 = 26.87, which rounds to 26.9. In imperial
+    units the same person is about 198 lb and 72 inches tall: 703 × 198 ÷ 5,184 = 26.85,
+    which also rounds to 26.9. If your two answers differ by more than 0.1, one of the
+    conversions is off, and the height conversion is the usual suspect.
+  </p>
+
+  <h2 id="the-healthy-weight-range-for-your-height">The healthy weight range for your height</h2>
+  <p>
+    The formula can be turned around. If BMI = weight ÷ height², then weight = BMI ×
+    height². Put the two edges of the healthy band, 18.5 and 24.9, into that rearranged form
+    and you get the weight range for any height. For someone 160 cm tall, height squared is
+    1.60² = 2.56, so the range is 18.5 × 2.56 = 47.4 kg up to 24.9 × 2.56 = 63.7 kg. For
+    someone 175 cm tall it is 56.7 kg to 76.3 kg. Treat the middle of the range as a rough
+    landmark, not a target you owe anyone.
+  </p>
+
+  <h2 id="five-mistakes-that-break-the-calculation">Five mistakes that break the calculation</h2>
+  <ul>
+    <li>
+      <strong>Forgetting to convert centimetres to metres.</strong> Dividing 65 by 170² gives
+      0.0022, a number so small it is obviously wrong. A quick sanity check catches almost
+      every error: a real BMI sits between about 10 and 60.
+    </li>
+    <li>
+      <strong>Mixing the two systems.</strong> The 703 belongs only with pounds and inches. Use
+      it with kilograms or centimetres and the answer is meaningless.
+    </li>
+    <li>
+      <strong>Rounding before the end.</strong> Round your height to the nearest inch and your
+      weight to the nearest pound before computing, and the errors can add up to about 0.3,
+      enough to change your band at a boundary. Keep the full numbers until the last step,
+      then round once.
+    </li>
+    <li>
+      <strong>Measuring height with shoes on.</strong> An extra couple of centimetres matters
+      more than an extra kilo, because height is squared and weight is not. Measure without
+      shoes, standing straight against a wall.
+    </li>
+    <li>
+      <strong>Using the adult bands for a child.</strong> Children and teenagers aged 2 to 19
+      are judged against age and sex percentiles, not the adult cut-offs. The adult formula
+      still gives a number, but the bands do not apply to it.
+    </li>
+  </ul>
+
+  <h2 id="what-the-number-cannot-tell-you">What the number cannot tell you</h2>
+  <p>
+    BMI uses only height and weight. It does not measure body fat, and it cannot tell muscle
+    from fat, so a rugby player and a sedentary office worker can share a BMI of 27 with very
+    different health. It says nothing about where fat sits, and waist size matters: fat
+    around the waist carries more risk than the same weight spread elsewhere. It also misses
+    fitness, blood pressure and age. Doctors still use it because it is free, instant and
+    roughly right across whole populations, but it is a first sort, not a verdict. The healthy
+    range is drawn for adults of European background; several health bodies use lower action
+    points, 23 and 27.5, for people of South Asian, Chinese and some other backgrounds,
+    because risk rises earlier. If the result worries you, take it to a doctor, not to a diet
+    you found online.
+  </p>
+
+  <div class="well">
+    <h2 style="margin-top:0;">Work out your own BMI</h2>
+    <p>
+      The formula above is the same one our calculator uses, with the healthy weight range for
+      your height printed under the result. Put in your height and weight and it gives your BMI
+      and the band it falls in.
+    </p>
+    <p>
+      <a class="btn btn--primary" href="/bmi-calculator/" style="display:inline-block;text-decoration:none;">Open the BMI calculator</a>
+    </p>
+  </div>
+
+  <h2 id="questions-people-ask">Questions people ask</h2>
+  <dl class="faq">
+    <dt>Do I round my height and weight before calculating?</dt>
+    <dd>
+      No. Keep the full numbers through the calculation and round once, at the end, to one
+      decimal place. Rounding early can shift the answer by about 0.3, enough to change your
+      band at a boundary.
+    </dd>
+    <dt>Why is my BMI different on different calculators?</dt>
+    <dd>
+      Usually rounding, or a height entered in the wrong units. Two calculators fed the same
+      height and weight should agree to within 0.1. If they differ by more, check the height
+      conversion first, then whether one of them rounded halfway through.
+    </dd>
+    <dt>Is the healthy range the same for everyone?</dt>
+    <dd>
+      No. The WHO bands are drawn for adults of European background. Several health bodies use
+      lower action points, 23 and 27.5, for people of South Asian, Chinese and some other
+      backgrounds, because risk rises earlier. Children use age and sex percentiles instead.
+    </dd>
+    <dt>Does BMI work for children?</dt>
+    <dd>
+      Not with the adult bands. Children and teenagers aged 2 to 19 are judged against
+      percentiles for their age and sex, because their bodies are still growing and the same
+      number means different things at different ages.
+    </dd>
+    <dt>My BMI is just over a boundary. Does that matter?</dt>
+    <dd>
+      Not much on its own. The bands are screening cut-offs, not lines where health changes
+      suddenly. A BMI of 25.1 and a BMI of 24.9 describe almost the same person, and a small
+      change in how you measured your height can move you across the line. What matters is
+      the trend over time and the rest of your health, which is a conversation with a doctor.
+    </dd>
+    <dt>What is the centimetre version of the formula?</dt>
+    <dd>
+      BMI = weight (kg) ÷ height (cm)² × 10,000. It is the same formula with the metres
+      conversion folded in: 10,000 is 100 squared. For 65 kg and 170 cm it gives 65 ÷ 28,900
+      × 10,000 = 22.5, the same as the metres version.
+    </dd>
+  </dl>
+
+  <p>
+    Related tools: <a href="/bmi-calculator/">BMI calculator</a>,
+    <a href="/percentage-calculator/">percentage calculator</a>.
+  </p>
+
+  <p class="meta">Sources: World Health Organization BMI classification; CDC adult BMI categories. This page explains the calculation. It is not medical advice. Confirm any health decision with your doctor. Page last checked 15 November 2026.</p>
+</Base>
