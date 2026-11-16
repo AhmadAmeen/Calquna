@@ -1,0 +1,322 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+
+<Base
+  title="How compound interest works: the formula, worked examples and the rule of 72"
+  description="Compound interest is interest on interest: $10,000 at 7% a year becomes $76,123 in 30 years, against $31,000 on simple interest. The formula, a year-by-year table, monthly deposits, and the rule of 72, all worked by hand."
+  altEn="/guides/how-compound-interest-works/"
+  singleLang
+>
+  <h1>How compound interest works</h1>
+  <p class="lede">
+    Compound interest is interest paid on your original sum and on the interest it has already
+    earned. That one sentence explains most of personal finance. Put $10,000 away at 7% a year
+    and leave it alone: after 30 years it is worth about $76,123. If only the original $10,000
+    had earned interest, the simple-interest answer, it would be $31,000. This page shows the
+    formula, works the numbers by hand, and explains the rule of 72 and the one cost that
+    matters most: starting late.
+  </p>
+  <nav class="onpage" aria-label="On this page"><p class="onpage-title">On this page</p><ul><li><a href="#the-short-answer">The short answer</a></li><li><a href="#simple-interest-against-compound-interest">Simple interest against compound interest</a></li><li><a href="#the-formula">The formula</a></li><li><a href="#worked-example-one-a-lump-sum">Worked example one: a lump sum</a></li><li><a href="#worked-example-two-monthly-deposits">Worked example two: monthly deposits</a></li><li><a href="#how-often-interest-is-added">How often interest is added</a></li><li><a href="#the-rule-of-72">The rule of 72</a></li><li><a href="#starting-ten-years-earlier">Starting ten years earlier</a></li><li><a href="#five-mistakes-that-break-the-calculation">Five mistakes that break the calculation</a></li><li><a href="#what-compounding-cannot-do">What compounding cannot do</a></li><li><a href="#questions-people-ask">Questions people ask</a></li></ul></nav>
+
+  <h2 id="the-short-answer">The short answer</h2>
+  <p>
+    Each period, interest is worked out on the balance as it stands, and the balance already
+    contains every earlier period's interest. So the interest added keeps growing even though
+    the rate never moves. At 7% a year, $10,000 earns $700 in the first year. The second year's
+    interest is 7% of $10,700, which is $749. By year 10 the balance has grown enough that one
+    year's interest is about $1,287; by year 30 it is about $4,980, nearly half the original
+    sum, earned in a single year without anything new being added.
+  </p>
+  <p>
+    The formula for a lump sum is A = P × (1 + r/n)<sup>nt</sup>, where P is the starting
+    amount, r the yearly rate as a decimal, n the number of times a year interest is added, and
+    t the number of years. The rest of this page is that formula, taken apart piece by piece.
+  </p>
+
+  <h2 id="simple-interest-against-compound-interest">Simple interest against compound interest</h2>
+  <p>
+    Simple interest pays the same amount every year, because it only ever looks at the original
+    sum. Compound interest pays on a balance that grows, so the yearly payment grows too. The
+    gap is small at first and then widens quickly:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Years</th><th scope="col">Compound balance</th><th scope="col">Simple-interest balance</th><th scope="col">Extra from compounding</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td class="num">$10,700</td><td class="num">$10,700</td><td class="num">$0</td></tr>
+      <tr><td>2</td><td class="num">$11,449</td><td class="num">$11,400</td><td class="num">$49</td></tr>
+      <tr><td>3</td><td class="num">$12,250</td><td class="num">$12,100</td><td class="num">$150</td></tr>
+      <tr><td>5</td><td class="num">$14,026</td><td class="num">$13,500</td><td class="num">$526</td></tr>
+      <tr><td>10</td><td class="num">$19,672</td><td class="num">$17,000</td><td class="num">$2,672</td></tr>
+      <tr><td>20</td><td class="num">$38,697</td><td class="num">$24,000</td><td class="num">$14,697</td></tr>
+      <tr class="point"><td>30</td><td class="num">$76,123</td><td class="num">$31,000</td><td class="num">$45,123</td></tr>
+    </tbody>
+  </table>
+  <p>
+    $10,000 at 7% a year, compounded once a year, no deposits added. Between year 20 and year
+    30 the compounded balance nearly doubles, while the simple-interest balance rises by only
+    $7,000. Time does the heavy lifting: the first ten years add $9,672, the last ten add
+    $37,426.
+  </p>
+
+  <h2 id="the-formula">The formula</h2>
+  <p>
+    For a lump sum left alone:
+  </p>
+  <p>
+    A = P × (1 + r/n)<sup>nt</sup>
+  </p>
+  <p>
+    Each letter: A is the final amount, principal plus interest. P is the starting amount. r is
+    the yearly rate written as a decimal, so 7% is 0.07. n is how many times a year interest is
+    added: 1 for yearly, 4 for quarterly, 12 for monthly, 365 for daily. t is the number of
+    years. To find only the interest earned, subtract the starting amount: interest = A − P.
+  </p>
+  <p>
+    For regular deposits, a different formula is needed, because every deposit has a different
+    amount of time to grow. With a fixed deposit C made at the end of every period:
+  </p>
+  <p>
+    Future value = C × [((1 + r/n)<sup>nt</sup> − 1) ÷ (r/n)]
+  </p>
+  <p>
+    Our compound interest calculator uses this second formula for the monthly deposit, and the
+    first one for the starting amount, with monthly compounding and deposits at month end. The
+    worked examples below use the same setup, so you can check them against the calculator.
+  </p>
+
+  <h2 id="worked-example-one-a-lump-sum">Worked example one: a lump sum</h2>
+  <p>
+    $5,000 at 8% a year, compounded quarterly, for 5 years. No deposits added.
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Working</th><th scope="col">Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Convert the rate to a decimal</td><td>8 ÷ 100</td><td class="num">0.08</td></tr>
+      <tr><td>Rate per period</td><td>0.08 ÷ 4</td><td class="num">0.02</td></tr>
+      <tr><td>Total number of periods</td><td>4 × 5</td><td class="num">20</td></tr>
+      <tr><td>Growth factor</td><td>(1.02)<sup>20</sup></td><td class="num">1.485947</td></tr>
+      <tr><td>Multiply by the starting amount</td><td>5,000 × 1.485947</td><td class="num">$7,429.74</td></tr>
+      <tr class="point"><td>Interest earned</td><td>7,429.74 − 5,000</td><td class="num">$2,429.74</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The same $5,000 at 8% on simple interest would earn $400 a year, $2,000 over five years,
+    and end at $7,000. Compounding quarterly adds $429.74 on top.
+  </p>
+
+  <h2 id="worked-example-two-monthly-deposits">Worked example two: monthly deposits</h2>
+  <p>
+    $200 deposited at the end of every month, earning 7% a year compounded monthly, for 30
+    years, starting from nothing.
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Working</th><th scope="col">Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Rate per month</td><td>0.07 ÷ 12</td><td class="num">0.0058333</td></tr>
+      <tr><td>Total number of months</td><td>12 × 30</td><td class="num">360</td></tr>
+      <tr><td>Growth factor</td><td>(1.0058333)<sup>360</sup></td><td class="num">8.1165</td></tr>
+      <tr><td>Deposit formula</td><td>200 × (8.1165 − 1) ÷ 0.0058333</td><td class="num">$243,994.20</td></tr>
+      <tr><td>Total paid in</td><td>200 × 360</td><td class="num">$72,000</td></tr>
+      <tr class="point"><td>Interest earned</td><td>243,994.20 − 72,000</td><td class="num">$171,994.20</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The deposits total $72,000. The interest, $171,994, is more than twice what was paid in.
+    That is the shape of compounding with regular saving: the deposits matter early, the
+    interest takes over late. After 10 years the balance is about $34,617, of which $24,000
+    was deposited and $10,617 is interest. After 20 years the balance is about $104,185,
+    $48,000 deposited and $56,185 interest.
+  </p>
+
+  <h2 id="how-often-interest-is-added">How often interest is added</h2>
+  <p>
+    Compounding more often helps, but far less than people expect. The rate matters much more
+    than the frequency. Take $10,000 held for one year at a 6% nominal rate:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Compounding</th><th scope="col">After one year</th><th scope="col">Effective yearly rate</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Yearly</td><td class="num">$10,600.00</td><td class="num">6.000%</td></tr>
+      <tr><td>Monthly</td><td class="num">$10,616.78</td><td class="num">6.168%</td></tr>
+      <tr class="point"><td>Daily</td><td class="num">$10,618.31</td><td class="num">6.183%</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Moving from yearly to daily compounding adds $18.31 on $10,000 in a year. Moving the rate
+    from 6% to 7% adds $100. When two accounts quote different schedules, compare them with the
+    effective annual rate, the APY in consumer banking, which is (1 + r/n)<sup>n</sup> − 1.
+    That is the number that already folds the frequency in.
+  </p>
+
+  <h2 id="the-rule-of-72">The rule of 72</h2>
+  <p>
+    Divide 72 by the yearly rate and you get roughly how many years money takes to double. The
+    US Securities and Exchange Commission's investor-education site gives the standard example:
+    at 9% a year, money doubles about every eight years. The rule is a shortcut, not exact, but
+    it is close where it matters most:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Yearly rate</th><th scope="col">Rule of 72: years to double</th><th scope="col">Exact: years to double</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>4%</td><td class="num">18.0</td><td class="num">17.7</td></tr>
+      <tr><td>6%</td><td class="num">12.0</td><td class="num">11.9</td></tr>
+      <tr><td>8%</td><td class="num">9.0</td><td class="num">9.0</td></tr>
+      <tr><td>9%</td><td class="num">8.0</td><td class="num">8.0</td></tr>
+      <tr><td>12%</td><td class="num">6.0</td><td class="num">6.1</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The exact doubling time is ln(2) ÷ ln(1 + r), with r as a decimal. The rule stays within
+    about half a year of exact between 4% and 12%, which covers most savings and investment
+    rates people actually meet. Outside that range it drifts: at 2% it says 36 years against an
+    exact 35.0, and at 20% it says 3.6 years against an exact 3.8. Use it for a quick sense of
+    scale, then use the formula for the real number.
+  </p>
+
+  <h2 id="starting-ten-years-earlier">Starting ten years earlier</h2>
+  <p>
+    The main input to compounding is time, not cleverness. Two people both deposit $200 at the
+    end of every month at 7% a year compounded monthly, and both stop at 65. One starts at 25,
+    the other at 35:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Starts at</th><th scope="col">Years of deposits</th><th scope="col">Total paid in</th><th scope="col">Balance at 65</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>25</td><td class="num">40</td><td class="num">$96,000</td><td class="num">$524,963</td></tr>
+      <tr class="point"><td>35</td><td class="num">30</td><td class="num">$72,000</td><td class="num">$243,994</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The early starter pays in only $24,000 more and ends with $280,969 more. To reach the early
+    starter's balance by 65, the late starter would have to deposit about $430 a month, more
+    than double, for 30 years. No rate you can pick fixes a missing decade: at 10% a year the
+    late starter still ends behind the early starter at 7%. This is the one honest argument for
+    starting small now rather than waiting until you can afford a bigger deposit.
+  </p>
+
+  <h2 id="five-mistakes-that-break-the-calculation">Five mistakes that break the calculation</h2>
+  <ul>
+    <li>
+      <strong>Using the percentage as a decimal.</strong> Putting 7 into the formula instead of
+      0.07 treats the rate as 700% and the answer explodes. Divide the rate by 100 first,
+      every time.
+    </li>
+    <li>
+      <strong>Mixing up n and t.</strong> The exponent is n times t, the total number of
+      periods, not the number of years. Monthly compounding for 30 years is 360 periods, not
+      30. Using 30 instead understates the result badly.
+    </li>
+    <li>
+      <strong>Using the lump-sum formula for regular deposits.</strong> A = P(1 + r/n)<sup>nt</sup>
+      assumes one deposit at the start and nothing after. Monthly saving needs the deposit
+      formula in the section above, because every deposit has a different amount of time to
+      grow.
+    </li>
+    <li>
+      <strong>Treating the rate as a promise.</strong> The formula assumes the same rate every
+      year. Real investments rise and fall, and savings account rates change. A projection is
+      a picture of what a steady rate would do, not a forecast of what will happen.
+    </li>
+    <li>
+      <strong>Forgetting inflation, fees and tax.</strong> A balance that doubles in 30 years
+      at 7% has not doubled in buying power if prices rose 3% a year over the same period.
+      Fees and tax take their cut before the balance is yours. The calculator shows the
+      nominal balance; the real value is lower.
+    </li>
+  </ul>
+
+  <h2 id="what-compounding-cannot-do">What compounding cannot do</h2>
+  <p>
+    Compounding runs on debt the same way it runs on savings. Unpaid interest on a card or loan
+    is added to the balance, and then interest is charged on that larger balance. At 21% a year,
+    a debt doubles in about three and a half years if nothing is paid; at 45%, in under two
+    years. The same arithmetic that builds a retirement balance quietly builds a debt
+    balance, which is why the first use of the formula most people meet is the expensive one.
+  </p>
+  <p>
+    It also cannot create money from nothing. The formula multiplies whatever rate you feed it,
+    so a wrong rate gives a confidently wrong answer. A 7% projection is only as honest as the
+    assumption behind the 7%. Check the rate against what the account actually pays, after
+    fees, and run the same numbers at a lower rate to see how much the answer depends on it.
+    At $200 a month for 30 years, 7% gives $243,994 and 5% gives $166,452: a two-point change
+    in the rate moves the answer by $77,542.
+  </p>
+
+  <div class="well">
+    <h2 style="margin-top:0;">Work out your own numbers</h2>
+    <p>
+      The formula above is the same one our calculator uses, with a year-by-year table and the
+      contributions kept separate from the interest. Put in your starting amount, monthly
+      deposit and rate, and it shows what each year adds.
+    </p>
+    <p>
+      <a class="btn btn--primary" href="/compound-interest-calculator/" style="display:inline-block;text-decoration:none;">Open the compound interest calculator</a>
+    </p>
+  </div>
+
+  <h2 id="questions-people-ask">Questions people ask</h2>
+  <dl class="faq">
+    <dt>How do I calculate compound interest by hand?</dt>
+    <dd>
+      Use A = P × (1 + r/n)<sup>nt</sup>. Convert the rate to a decimal, divide it by the
+      number of compounding periods per year, add 1, raise it to the total number of periods,
+      and multiply by the starting amount. Subtract the starting amount to get the interest
+      earned. For monthly deposits, use the deposit formula in the section above instead.
+    </dd>
+    <dt>What is the difference between compound and simple interest?</dt>
+    <dd>
+      Simple interest pays only on the original sum, the same amount every year. Compound
+      interest pays on the original sum plus all interest already earned, so the yearly payment
+      grows. On $10,000 at 7% for 30 years, simple interest ends at $31,000 and compound
+      interest at $76,123.
+    </dd>
+    <dt>Is monthly compounding much better than yearly?</dt>
+    <dd>
+      Not much. On $10,000 at a 6% nominal rate for one year, yearly compounding gives
+      $10,600.00 and monthly gives $10,616.78. The rate matters far more than the frequency.
+      Compare accounts by their effective annual rate, the APY, which already folds the
+      frequency in.
+    </dd>
+    <dt>How accurate is the rule of 72?</dt>
+    <dd>
+      Within about half a year of the exact doubling time for rates between 4% and 12%. At 9%
+      it says 8 years and the exact answer is 8.0 years. It drifts outside that range, so use
+      it for a quick sense of scale and the formula for the real number.
+    </dd>
+    <dt>Does compound interest work on shares, which pay no interest?</dt>
+    <dd>
+      The same arithmetic applies when returns are reinvested instead of taken out: dividends
+      buy more shares, and the growth applies to a bigger holding each year. The difference is
+      that share returns are not steady, so the formula shows what a steady average return
+      would do, not what will actually happen.
+    </dd>
+    <dt>Why does my calculator give a different answer from yours?</dt>
+    <dd>
+      Usually the deposit timing or the compounding frequency. Our calculator compounds
+      monthly and treats deposits as made at month end. A calculator that treats deposits as
+      made at month start, or compounds yearly, gives a slightly different number from the
+      same inputs. Check those two settings first.
+    </dd>
+  </dl>
+
+  <p>
+    Related tools: <a href="/compound-interest-calculator/">compound interest calculator</a>,
+    <a href="/percentage-calculator/">percentage calculator</a>,
+    <a href="/salary-to-hourly-calculator/">salary to hourly calculator</a>.
+  </p>
+
+  <p class="meta">Sources: US Securities and Exchange Commission investor education (rule of 72 example); standard compound interest formula. This page explains the calculation. It is not financial advice, and projections assume a constant rate, which real investments do not provide. Page last checked 16 November 2026.</p>
+</Base>
